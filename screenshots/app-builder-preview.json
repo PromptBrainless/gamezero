@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "ECHO//BRUCH",
+      "hasCanvas": false,
+      "bodyTextLen": 207,
+      "bodyTextHash": "7a7c56198570207bdadebb97d05bf85e680ddfa9660465120617551d035f8176",
+      "bodyTextPrefix": "Basis · zum Prüfen ECHO//BRUCH Zwei Spielkarten, nur die fünf Gr",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "ECHO//BRUCH",
+      "hasCanvas": false,
+      "bodyTextLen": 207,
+      "bodyTextHash": "7a7c56198570207bdadebb97d05bf85e680ddfa9660465120617551d035f8176",
+      "bodyTextPrefix": "Basis · zum Prüfen ECHO//BRUCH Zwei Spielkarten, nur die fünf Gr",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

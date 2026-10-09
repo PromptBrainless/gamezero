@@ -1,0 +1,10 @@
+ECHO//BRUCH Kampfsystem, eingefroren.
+
+Diese Kopien sind der letzte Stand vor dem Neubau:
+resolve.ts, basis.ts, model.ts, content.ts, ai.ts.
+
+Nicht löschen. Das laufende Spiel benutzt sie nicht mehr als Einstieg.
+Der Neubau liegt in src/game/w100.
+Karte: Gitter nach Into the Breach.
+Aktionen: Folge von board-game-rules.com/game-mechanics/actions.
+Kampf: W100, Trefferzone automatisch, Krit und Patzer nach Warhammer Fantasy Roleplay 4.

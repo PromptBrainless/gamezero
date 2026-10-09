@@ -1,0 +1,26 @@
+ECHO//BRUCH · Simulationsprotokoll
+Paarungen 5×5 · 16 Samen · Schwierigkeit taktisch · Deckel 28 Runden
+Duelle 400 · vollständig, nicht gekürzt
+
+Siegquote je Figur (beide Seiten, Standardausrüstung)
+Figur | Spiele | Siege | Niederlagen | Unentschieden | Quote | Ø Runden | Ø Körper übrig | Siege nach Grund
+Brecher | 160 | 121 | 23 | 16 | 75.6% | 3.9 | 16.2 | Körper 121
+Wächter | 160 | 113 | 47 | 0 | 70.6% | 5.8 | 14.6 | Bruch 15, Körper 98
+Jäger | 160 | 77 | 83 | 0 | 48.1% | 3.3 | 4.2 | Körper 77
+Läuferin | 160 | 64 | 96 | 0 | 40.0% | 6.6 | 4.9 | Bruch 21, Körper 43
+Archivar | 160 | 17 | 143 | 0 | 10.6% | 4.6 | 3.2 | Körper 2, Echo 14, Bruch 1
+
+Aktionen je Figur (Summe über alle eigenen Züge)
+Brecher | Angriff 78% | Schutz 0% | Bewegung 22% | Einfluss 0%
+Wächter | Angriff 91% | Schutz 9% | Bewegung 0% | Einfluss 0%
+Jäger | Angriff 84% | Schutz 16% | Bewegung 0% | Einfluss 0%
+Läuferin | Angriff 50% | Schutz 12% | Bewegung 39% | Einfluss 0%
+Archivar | Angriff 9% | Schutz 2% | Bewegung 0% | Einfluss 89%
+
+Matrix · Siege der linken Figur / Spiele (Unentschieden in Klammern)
+ | Brecher | Läuferin | Archivar | Wächter | Jäger
+Brecher | 5/16 (8) | 9/16 | 16/16 | 15/16 | 16/16
+Läuferin | 7/16 | 8/16 | 16/16 | 0/16 | 1/16
+Archivar | 0/16 | 0/16 | 8/16 | 0/16 | 1/16
+Wächter | 0/16 | 16/16 | 16/16 | 10/16 | 16/16
+Jäger | 0/16 | 15/16 | 16/16 | 0/16 | 9/16
