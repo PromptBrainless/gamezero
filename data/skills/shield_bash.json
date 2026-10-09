@@ -6,7 +6,7 @@
   "cost": {
     "stamina": 8
   },
-  "cooldown": 2,
+  "cooldown": 1,
   "target": "enemy",
   "damage": {
     "damage_type": "physical",

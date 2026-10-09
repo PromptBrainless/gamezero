@@ -1,49 +1,13 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { K as require_react, b as require_jsx_runtime } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as SkipForward, c as Pause, d as BookOpen, i as Swords, l as Orbit, n as Volume2, o as Shield, s as Play, t as VolumeX, u as Footprints } from "../_libs/lucide-react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-B8AMJNfl.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-B-z9Vr7d.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var AKTIONEN = [
-	{
-		id: "bewegen",
-		name: "Bewegen",
-		kosten: 1,
-		text: "Felder entlang der Linien, bis zur Bewegungsweite. Nicht durch Gegner oder Bau."
-	},
-	{
-		id: "schlagen",
-		name: "Schlagen",
-		kosten: 1,
-		text: "W100, wenn das Ziel in der Form liegt. Nahkampf vergleicht, Fernkampf ist eine einfache Probe."
-	},
-	{
-		id: "parieren",
-		name: "Parieren",
-		kosten: 1,
-		text: "Der nächste Schlag gegen dich ist eine Vergleichsprobe mit deiner Waffenfertigkeit."
-	},
-	{
-		id: "ausweichen",
-		name: "Ausweichen",
-		kosten: 1,
-		text: "Der nächste Schlag gegen dich ist eine Vergleichsprobe mit deiner Ausweichen-Fertigkeit."
-	},
-	{
-		id: "passen",
-		name: "Passen",
-		kosten: 0,
-		text: "Die Runde endet. Was angekündigt ist, wird jetzt gewürfelt."
-	}
-];
-var FOLGE = [
-	"Prüfen, was legal ist.",
-	"Eine Option wählen.",
-	"Einen Aktionspunkt zahlen.",
-	"Die Wirkung sofort ausführen.",
-	"Abschließen, wenn keine Punkte übrig sind."
-];
-var leicht = {
+function bonus$1(wert) {
+	return Math.floor(wert / 10);
+}
+var leder = {
 	kopf: 0,
 	"arm-links": 1,
 	"arm-rechts": 1,
@@ -51,138 +15,153 @@ var leicht = {
 	"bein-links": 1,
 	"bein-rechts": 1
 };
-var platte$1 = {
-	kopf: 2,
-	"arm-links": 3,
-	"arm-rechts": 3,
-	koerper: 4,
-	"bein-links": 2,
-	"bein-rechts": 2
-};
 var CHARAKTERE = [
 	{
 		id: "brecher",
 		name: "Brecher",
-		zeile: "Nah, hart, langsam.",
-		ws: 55,
+		zeile: "Hammer +6, Kreis 8. Ein klarer Treffer wirft um.",
+		ws: 45,
 		bs: 25,
-		staerke: 5,
-		widerstand: 4,
+		staerke: 45,
+		widerstand: 45,
+		wille: 35,
 		ausweichen: 25,
-		wunden: 16,
-		bewegung: 3,
+		wunden: 15,
+		bewegung: 24,
 		form: "nah",
-		reichweite: 1,
-		waffe: 6,
+		reichweite: 8,
+		mindest: 1,
+		schaden: 6,
+		laenge: 2,
+		effekt: "sturz",
+		ortwahl: false,
 		ruestung: {
-			...platte$1,
-			koerper: 3,
-			kopf: 1
+			kopf: 1,
+			"arm-links": 1,
+			"arm-rechts": 1,
+			koerper: 2,
+			"bein-links": 1,
+			"bein-rechts": 1
 		}
 	},
 	{
 		id: "laeuferin",
 		name: "Läuferin",
-		zeile: "Weit gehen, dem Schlag ausweichen.",
-		ws: 48,
+		zeile: "Schwert +4, Kreis 5. Ein klarer Treffer öffnet eine Blutung.",
+		ws: 40,
 		bs: 30,
-		staerke: 4,
-		widerstand: 3,
-		ausweichen: 60,
+		staerke: 30,
+		widerstand: 30,
+		wille: 30,
+		ausweichen: 55,
 		wunden: 12,
-		bewegung: 5,
+		bewegung: 40,
 		form: "nah",
-		reichweite: 1,
-		waffe: 4,
-		ruestung: leicht
+		reichweite: 5,
+		mindest: 1,
+		schaden: 4,
+		laenge: 1,
+		effekt: "blutung",
+		ortwahl: false,
+		ruestung: leder
 	},
 	{
 		id: "archivar",
 		name: "Archivar",
-		zeile: "Bogen über Bau. Einmal die Zone wählen.",
-		ws: 40,
-		bs: 52,
-		staerke: 3,
-		widerstand: 3,
+		zeile: "Kette +5, Ring 16 bis 40, über den Bau. Klarer Treffer fesselt.",
+		ws: 30,
+		bs: 45,
+		staerke: 30,
+		widerstand: 30,
+		wille: 45,
 		ausweichen: 35,
 		wunden: 13,
-		bewegung: 4,
+		bewegung: 32,
 		form: "bogen",
-		reichweite: 6,
-		waffe: 5,
-		ruestung: leicht
+		reichweite: 40,
+		mindest: 16,
+		schaden: 5,
+		laenge: 3,
+		effekt: "fessel",
+		ortwahl: true,
+		ruestung: leder
 	},
 	{
 		id: "waechter",
 		name: "Wächter",
-		zeile: "Parieren und Rüstung.",
-		ws: 48,
+		zeile: "Speer +4, Kreis 16. Im Nahbereich sperrig.",
+		ws: 40,
 		bs: 25,
-		staerke: 4,
-		widerstand: 5,
+		staerke: 35,
+		widerstand: 50,
+		wille: 35,
 		ausweichen: 30,
-		wunden: 18,
-		bewegung: 3,
+		wunden: 16,
+		bewegung: 24,
 		form: "nah",
-		reichweite: 1,
-		waffe: 4,
-		ruestung: platte$1
+		reichweite: 16,
+		mindest: 1,
+		schaden: 4,
+		laenge: 4,
+		effekt: "blutung",
+		ortwahl: false,
+		ruestung: {
+			kopf: 2,
+			"arm-links": 3,
+			"arm-rechts": 3,
+			koerper: 4,
+			"bein-links": 2,
+			"bein-rechts": 2
+		}
 	},
 	{
 		id: "jaeger",
 		name: "Jäger",
-		zeile: "Schuss bis zum ersten Hindernis.",
-		ws: 35,
-		bs: 58,
-		staerke: 3,
-		widerstand: 3,
-		ausweichen: 42,
-		wunden: 13,
-		bewegung: 4,
+		zeile: "Bogen 4, Kreis 48, nur mit Sicht am Bau vorbei.",
+		ws: 30,
+		bs: 50,
+		staerke: 30,
+		widerstand: 30,
+		wille: 30,
+		ausweichen: 45,
+		wunden: 12,
+		bewegung: 32,
 		form: "schuss",
-		reichweite: 6,
-		waffe: 5,
-		ruestung: leicht
+		reichweite: 48,
+		mindest: 1,
+		schaden: 4,
+		laenge: 0,
+		effekt: "keine",
+		ortwahl: false,
+		ruestung: leder
 	}
 ];
 function charakter(id) {
 	return CHARAKTERE.find((item) => item.id === id);
 }
-var BAU = [
-	{
-		x: 3,
-		y: 3
-	},
-	{
-		x: 4,
-		y: 3
-	},
-	{
-		x: 3,
-		y: 4
-	},
-	{
-		x: 4,
-		y: 4
-	}
-];
+var BAU = [];
+for (let y = 24; y < 40; y += 1) for (let x = 24; x < 40; x += 1) BAU.push({
+	x,
+	y
+});
+var BAU_IDS = new Set(BAU.map((feld) => feld.y * 64 + feld.x));
 function index(feld) {
-	return feld.y * 8 + feld.x;
+	return feld.y * 64 + feld.x;
 }
 function vonIndex(id) {
 	return {
-		x: id % 8,
-		y: Math.floor(id / 8)
+		x: id % 64,
+		y: Math.floor(id / 64)
 	};
 }
 function gleich(a, b) {
 	return a.x === b.x && a.y === b.y;
 }
 function imFeld(feld) {
-	return feld.x >= 0 && feld.y >= 0 && feld.x < 8 && feld.y < 8;
+	return feld.x >= 0 && feld.y >= 0 && feld.x < 64 && feld.y < 64;
 }
 function istBau(feld) {
-	return BAU.some((bau) => gleich(bau, feld));
+	return BAU_IDS.has(index(feld));
 }
 var RICHTUNG = [
 	{
@@ -233,26 +212,125 @@ function erreichbar(von, weite, block) {
 	}
 	return treffer;
 }
-function ziele(form, von, weite, gegner) {
-	if (form === "nah") return nachbarn(von).filter((feld) => !istBau(feld));
-	const liste = [];
-	for (const richtung of RICHTUNG) for (let schritt = 1; schritt <= weite; schritt += 1) {
-		const feld = {
-			x: von.x + richtung.x * schritt,
-			y: von.y + richtung.y * schritt
-		};
-		if (!imFeld(feld)) break;
-		if (form === "schuss" && istBau(feld)) break;
-		if (form === "schuss" && gleich(feld, gegner)) {
-			liste.push(feld);
-			break;
+/** Schablone der Waffe: Kreis oder Ring, noch ohne Mauer. */
+function inSchablone(von, feld, weite, mindest = 1) {
+	if (!imFeld(feld) || gleich(von, feld)) return false;
+	const dx = feld.x - von.x;
+	const dy = feld.y - von.y;
+	const quadrat = dx * dx + dy * dy;
+	return quadrat <= weite * weite && quadrat >= mindest * mindest;
+}
+/** Fläche der Waffe. Nahkampf und Schuss brauchen eine freie Ecke, der Bogen geht über den Bau. */
+function bereich(form, von, feld, weite, mindest = 1) {
+	if (!inSchablone(von, feld, weite, mindest) || istBau(feld)) return false;
+	if (form === "bogen") return true;
+	return sichtfrei(von, feld);
+}
+function sichtfrei(von, nach) {
+	const ox = von.x + .5;
+	const oy = von.y + .5;
+	return [
+		[nach.x + .05, nach.y + .05],
+		[nach.x + .95, nach.y + .05],
+		[nach.x + .05, nach.y + .95],
+		[nach.x + .95, nach.y + .95]
+	].some(([tx, ty]) => strahlFrei(ox, oy, tx, ty, nach));
+}
+function strahlFrei(x0, y0, x1, y1, ziel) {
+	let x = Math.floor(x0);
+	let y = Math.floor(y0);
+	const dx = x1 - x0;
+	const dy = y1 - y0;
+	const stepX = dx > 0 ? 1 : dx < 0 ? -1 : 0;
+	const stepY = dy > 0 ? 1 : dy < 0 ? -1 : 0;
+	const tDeltaX = dx === 0 ? Number.POSITIVE_INFINITY : Math.abs(1 / dx);
+	const tDeltaY = dy === 0 ? Number.POSITIVE_INFINITY : Math.abs(1 / dy);
+	const bruchX = x0 - Math.floor(x0);
+	const bruchY = y0 - Math.floor(y0);
+	let tMaxX = dx === 0 ? Number.POSITIVE_INFINITY : (dx > 0 ? 1 - bruchX : bruchX) * tDeltaX;
+	let tMaxY = dy === 0 ? Number.POSITIVE_INFINITY : (dy > 0 ? 1 - bruchY : bruchY) * tDeltaY;
+	for (let n = 0; n < 128; n += 1) {
+		if (x === ziel.x && y === ziel.y) return true;
+		if (tMaxX < tMaxY) {
+			x += stepX;
+			tMaxX += tDeltaX;
+		} else if (tMaxY < tMaxX) {
+			y += stepY;
+			tMaxY += tDeltaY;
+		} else {
+			const seiteX = istBau({
+				x: x + stepX,
+				y
+			});
+			const seiteY = istBau({
+				x,
+				y: y + stepY
+			});
+			if (seiteX && seiteY) return false;
+			x += stepX;
+			y += stepY;
+			tMaxX += tDeltaX;
+			tMaxY += tDeltaY;
 		}
-		if (form === "bogen" && !istBau(feld)) liste.push(feld);
+		if (x === ziel.x && y === ziel.y) return true;
+		if (!imFeld({
+			x,
+			y
+		}) || istBau({
+			x,
+			y
+		})) return false;
+	}
+	return false;
+}
+function ziele(form, von, weite, _gegner, mindest = 1) {
+	const liste = [];
+	const vonX = Math.max(0, von.x - weite);
+	const bisX = Math.min(63, von.x + weite);
+	const vonY = Math.max(0, von.y - weite);
+	const bisY = Math.min(63, von.y + weite);
+	for (let y = vonY; y <= bisY; y += 1) for (let x = vonX; x <= bisX; x += 1) {
+		const feld = {
+			x,
+			y
+		};
+		if (bereich(form, von, feld, weite, mindest)) liste.push(feld);
 	}
 	return liste;
 }
-function kannTreffen(form, von, weite, gegner) {
-	return ziele(form, von, weite, gegner).some((feld) => gleich(feld, gegner));
+function kannTreffen(form, von, weite, gegner, mindest = 1) {
+	return bereich(form, von, gegner, weite, mindest);
+}
+function weg(von, ziel, weite, block) {
+	if (gleich(von, ziel)) return [];
+	const herkunft = /* @__PURE__ */ new Map();
+	const gesehen = /* @__PURE__ */ new Set([index(von)]);
+	let rand = [von];
+	let gefunden = false;
+	for (let schritt = 0; schritt < weite && !gefunden; schritt += 1) {
+		const naechste = [];
+		for (const feld of rand) for (const nachbar of nachbarn(feld)) {
+			const id = index(nachbar);
+			if (gesehen.has(id) || istBau(nachbar) || block.some((item) => gleich(item, nachbar))) continue;
+			gesehen.add(id);
+			herkunft.set(id, index(feld));
+			naechste.push(nachbar);
+			if (gleich(nachbar, ziel)) gefunden = true;
+		}
+		rand = naechste;
+	}
+	if (!herkunft.has(index(ziel))) return null;
+	const schritte = [];
+	let cursor = index(ziel);
+	const start = index(von);
+	while (cursor !== start) {
+		schritte.push(vonIndex(cursor));
+		const davor = herkunft.get(cursor);
+		if (davor === void 0) return null;
+		cursor = davor;
+	}
+	schritte.reverse();
+	return schritte;
 }
 var ZONE_NAME = {
 	kopf: "Kopf",
@@ -294,14 +372,15 @@ function zoneAusWurf(wurf) {
 	return "bein-rechts";
 }
 function probe(fertigkeit, wurf) {
-	const bestanden = wurf >= 96 ? false : wurf <= 5 ? true : wurf <= fertigkeit;
+	const wert = Math.max(5, fertigkeit);
+	const bestanden = wurf >= 96 ? false : wurf <= 5 ? true : wurf <= wert;
 	const zehnerWurf = wurf === 100 ? 0 : Math.floor(wurf / 10);
-	let sl = Math.floor(fertigkeit / 10) - zehnerWurf;
+	let sl = Math.floor(wert / 10) - zehnerWurf;
 	if (bestanden && sl < 0) sl = 0;
 	if (!bestanden && sl > 0) sl = -sl;
 	return {
 		wurf,
-		fertigkeit,
+		fertigkeit: wert,
 		bestanden,
 		sl,
 		kritisch: bestanden && istPasch(wurf),
@@ -325,7 +404,8 @@ function vergleich(angriff, abwehr, waffe, widerstand, ruestung) {
 	};
 	const zone = zoneAusWurf(angriff.wurf);
 	const roh = sl + waffe - (widerstand + ruestung);
-	const wunden = roh <= 0 ? 1 : roh;
+	const wunden = Math.max(0, roh);
+	const gehalten = wunden === 0 ? " Die Rüstung hält." : "";
 	return {
 		getroffen: true,
 		zone,
@@ -336,7 +416,7 @@ function vergleich(angriff, abwehr, waffe, widerstand, ruestung) {
 		patzer: false,
 		werfer: angriff,
 		abwehr,
-		text: `Wurf ${angriff.wurf} wird ${umdrehen(angriff.wurf)}, ${ZONE_NAME[zone]}. Erfolgsgrade ${sl}. Waffe ${waffe} minus Widerstand ${widerstand} und Rüstung ${ruestung}: ${wunden} Wunden.${angriff.kritisch ? " Kritisch." : ""}`
+		text: `Wurf ${angriff.wurf} wird ${umdrehen(angriff.wurf)}, ${ZONE_NAME[zone]}. Erfolgsgrade ${sl}. Waffe ${waffe} minus Zähigkeit ${widerstand} und Rüstung ${ruestung}: ${wunden} Wunden.${gehalten}${angriff.kritisch ? " Kritisch." : ""}`
 	};
 }
 var KRIT = {
@@ -584,29 +664,30 @@ function kaempfer(id, seite, feld) {
 		bewusstlos: 0,
 		wenigerAktionen: 0,
 		waffeHin: false,
-		zoneWahl: id === "archivar"
+		zoneWahl: charakter(id).ortwahl
 	};
 }
 function neuerKampf(a, b, rng = Math.random) {
 	return {
 		kaempfer: {
 			A: kaempfer(a, "A", {
-				x: 1,
-				y: 6
+				x: 8,
+				y: 48
 			}),
 			B: kaempfer(b, "B", {
-				x: 6,
-				y: 1
+				x: 48,
+				y: 8
 			})
 		},
 		amZug: "A",
 		punkte: 2,
 		eingehend: null,
 		angesetzt: null,
-		log: ["Beide stehen. Die Form auf der Karte zeigt, wo ein Schlag treffen kann."],
+		log: ["Ihr steht euch gegenüber."],
 		blick: null,
 		vorbei: false,
 		sieger: null,
+		gegenueber: true,
 		rng
 	};
 }
@@ -625,20 +706,19 @@ function laufFelder(state, seite) {
 	const gegner = state.kaempfer[andere(seite)].feld;
 	return erreichbar(k.feld, bewegung(k), [gegner]);
 }
-function schlagFelder(state, seite) {
-	const k = state.kaempfer[seite];
-	if (k.liegt || k.armHin || k.bewusstlos > 0 || state.vorbei) return [];
-	const c = charakter(k.id);
-	const gegner = state.kaempfer[andere(seite)].feld;
-	return ziele(c.form, k.feld, c.reichweite, gegner);
-}
 function kann(state, art) {
 	if (state.vorbei || state.punkte <= 0 && art !== "passen") return false;
 	const k = state.kaempfer[state.amZug];
 	if (k.bewusstlos > 0) return art === "passen";
 	if (art === "passen") return true;
 	if (art === "bewegen") return state.punkte >= 1 && (k.liegt || laufFelder(state, state.amZug).length > 0);
-	if (art === "schlagen") return state.punkte >= 1 && schlagFelder(state, state.amZug).some((feld) => gleich(feld, state.kaempfer[andere(state.amZug)].feld));
+	if (art === "schlagen") {
+		if (k.liegt || k.armHin || k.bewusstlos > 0 || k.waffeHin) return false;
+		if (state.gegenueber) return state.punkte >= 1;
+		const c = charakter(k.id);
+		const gegner = state.kaempfer[andere(state.amZug)].feld;
+		return state.punkte >= 1 && bereich(c.form, k.feld, gegner, c.reichweite, c.mindest);
+	}
 	if (art === "parieren" || art === "ausweichen") return state.punkte >= 1 && k.abwehr === "keine";
 	return false;
 }
@@ -653,10 +733,29 @@ function bewegen(state, feld) {
 		return next;
 	}
 	if (!laufFelder(next, next.amZug).some((item) => gleich(item, feld))) return state;
-	k.feld = feld;
+	const gegnerSeite = andere(next.amZug);
+	const gegner = next.kaempfer[gegnerSeite];
+	const gc = charakter(gegner.id);
+	const route = weg(k.feld, feld, bewegung(k), [gegner.feld]);
+	if (!route) return state;
+	const schonDrin = bereich(gc.form, gegner.feld, k.feld, gc.reichweite, gc.mindest);
+	let ziel = feld;
+	let hinein = false;
+	if (!schonDrin) {
+		for (const schritt of route) if (bereich(gc.form, gegner.feld, schritt, gc.reichweite, gc.mindest)) {
+			ziel = schritt;
+			hinein = true;
+			break;
+		}
+	}
+	k.feld = ziel;
 	next.punkte -= 1;
-	next.log.unshift(`${k.name} geht nach ${feld.x + 1},${feld.y + 1}.`);
-	if (next.punkte <= 0) return abschluss(next);
+	next.log.unshift(`${k.name} geht nach ${ziel.x + 1},${ziel.y + 1}.`);
+	if (hinein && !gegner.liegt && !gegner.armHin && gegner.bewusstlos <= 0 && !next.vorbei) {
+		next.log.unshift(`${k.name} läuft in den Radius von ${gegner.name}.`);
+		schlagAufloesen(next, gegnerSeite, next.amZug, null);
+	}
+	if (next.vorbei || next.punkte <= 0) return next.vorbei ? next : abschluss(next);
 	return next;
 }
 function abwehrWaehlen(state, art) {
@@ -673,8 +772,7 @@ function ankuendigen(state, zone = null) {
 	const next = klon(state);
 	const k = next.kaempfer[next.amZug];
 	const gegnerSeite = andere(next.amZug);
-	const zoneFest = zone && k.zoneWahl ? zone : null;
-	if (zoneFest) k.zoneWahl = false;
+	const zoneFest = zone && charakter(k.id).ortwahl ? zone : null;
 	next.punkte -= 1;
 	schlagAufloesen(next, next.amZug, gegnerSeite, zoneFest);
 	if (next.vorbei || next.punkte <= 0) return next.vorbei ? next : abschluss(next);
@@ -704,23 +802,36 @@ function abschluss(state) {
 	if (state.punkte === 0 && !state.vorbei) return abschluss(state);
 	return state;
 }
+function laengenMalus(angriff, abwehr, distanz) {
+	if (angriff.form !== "nah" || abwehr.form !== "nah") return 0;
+	const gedrangt = distanz <= 8;
+	if (!gedrangt && angriff.laenge < abwehr.laenge) return 10;
+	if (gedrangt && angriff.laenge > abwehr.laenge) return 10;
+	return 0;
+}
+function schwaechsteZone(ruestung) {
+	return [
+		"kopf",
+		"arm-links",
+		"arm-rechts",
+		"koerper",
+		"bein-links",
+		"bein-rechts"
+	].reduce((beste, zone) => ruestung[zone] < ruestung[beste] ? zone : beste);
+}
 function schlagAufloesen(state, von, nach, festeZone) {
 	const a = state.kaempfer[von];
 	const b = state.kaempfer[nach];
 	const ac = charakter(a.id);
-	const fertigkeit = (ac.form === "nah" ? ac.ws : ac.bs) - a.malusAngriff - (a.waffeHin ? 20 : 0);
-	const wurf = w100(state.rng);
-	const angriff = probe(Math.max(5, Math.min(95, fertigkeit)), wurf);
-	angriff.sl += Math.min(3, a.vorteil);
+	const bc = charakter(b.id);
+	const malus = laengenMalus(ac, bc, abstand(a.feld, b.feld));
+	const angriff = probe((ac.form === "nah" ? ac.ws : ac.bs) + a.vorteil * 10 - a.malusAngriff - (a.waffeHin ? 20 : 0) - malus, w100(state.rng));
 	let abwehrProbe = null;
-	if (b.abwehr !== "keine") {
-		const bc = charakter(b.id);
-		const wert = (b.abwehr === "parieren" ? bc.ws : bc.ausweichen) - b.malusAbwehr;
-		abwehrProbe = probe(Math.max(5, Math.min(95, wert)), w100(state.rng));
-	}
-	const waffe = ac.form === "nah" ? ac.waffe + ac.staerke : ac.waffe;
-	const treffer = vergleich(angriff, abwehrProbe, waffe, charakter(b.id).widerstand, 0);
+	if (b.abwehr !== "keine") abwehrProbe = probe((b.abwehr === "parieren" ? bc.ws : bc.ausweichen) + b.vorteil * 10 - b.malusAbwehr, w100(state.rng));
+	const waffe = ac.schaden + (ac.laenge > 0 ? bonus$1(ac.staerke) : 0);
+	const treffer = vergleich(angriff, abwehrProbe, waffe, bonus$1(bc.widerstand), 0);
 	if (!treffer.getroffen || !treffer.zone) {
+		if (abwehrProbe && abwehrProbe.sl > angriff.sl) b.vorteil += 1;
 		a.vorteil = 0;
 		const art = b.abwehr === "parieren" ? "pariert" : b.abwehr === "ausweichen" ? "ausgewichen" : treffer.patzer ? "patzer" : "daneben";
 		state.blick = {
@@ -729,16 +840,21 @@ function schlagAufloesen(state, von, nach, festeZone) {
 			art,
 			text: treffer.text
 		};
-		state.log.unshift(`${a.name}: ${treffer.text}`);
+		state.log.unshift(`${a.name}: ${treffer.text}${malus ? " Waffenlänge −10." : ""}`);
 		if (treffer.patzer) patzerAnwenden(state, a);
 		return;
 	}
-	const zone = festeZone ?? treffer.zone;
-	const ruestung = charakter(b.id).ruestung[zone];
-	const korrigiert = vergleich(angriff, abwehrProbe, waffe, charakter(b.id).widerstand, ruestung);
+	const spanne = angriff.sl - (abwehrProbe?.sl ?? 0);
+	const ort = ac.ortwahl && (spanne >= 2 || angriff.kritisch);
+	let zone = treffer.zone;
+	if (ort && festeZone) zone = festeZone;
+	else if (ort) zone = schwaechsteZone(bc.ruestung);
+	const ruestung = angriff.kritisch ? 0 : bc.ruestung[zone];
+	const korrigiert = vergleich(angriff, abwehrProbe, waffe, bonus$1(bc.widerstand), ruestung);
 	korrigiert.zone = zone;
+	korrigiert.text = korrigiert.text.replace(ZONE_NAME[treffer.zone], ZONE_NAME[zone]);
 	b.wunden -= korrigiert.wunden;
-	a.vorteil = Math.min(3, a.vorteil + 1);
+	a.vorteil += 1;
 	b.vorteil = 0;
 	state.blick = {
 		angreifer: a.id,
@@ -746,9 +862,31 @@ function schlagAufloesen(state, von, nach, festeZone) {
 		art: "treffer",
 		text: korrigiert.text
 	};
-	state.log.unshift(`${a.name} gegen ${b.name}: ${korrigiert.text}`);
+	const extra = [];
+	if (malus) extra.push("Waffenlänge −10.");
+	if (festeZone && !ort) extra.push("Die Zone bleibt dem Wurf, der Vorsprung fehlt.");
+	if (ort && zone !== treffer.zone) extra.push(`Ort gewählt: ${ZONE_NAME[zone]}.`);
+	if (angriff.kritisch) extra.push("Die Rüstung wird umgangen.");
+	if (korrigiert.wunden > 0 && spanne >= 2) extra.push(effektAnwenden(a.id, b));
+	state.log.unshift(`${a.name} gegen ${b.name}: ${korrigiert.text} ${extra.join(" ")}`.trim());
 	if (korrigiert.kritisch) kritischAnwenden(state, b, zone);
 	if (b.wunden <= 0) fallen(state, b, "Die Wunden sind auf 0.");
+}
+function effektAnwenden(von, ziel) {
+	const effekt = charakter(von).effekt;
+	if (effekt === "sturz") {
+		ziel.liegt = true;
+		return "Sturz.";
+	}
+	if (effekt === "blutung") {
+		ziel.blutung = true;
+		return "Blutung.";
+	}
+	if (effekt === "fessel") {
+		ziel.wenigerAktionen += 1;
+		return "Gefesselt, eine Aktion weniger.";
+	}
+	return "";
 }
 function kritischAnwenden(state, ziel, zone) {
 	const wurf = w100(state.rng);
@@ -819,7 +957,8 @@ function klon(state) {
 			feld: { ...state.angesetzt.feld }
 		} : null,
 		log: [...state.log],
-		blick: state.blick
+		blick: state.blick,
+		gegenueber: state.gegenueber
 	};
 }
 function bot(state) {
@@ -837,10 +976,10 @@ function bot(state) {
 			geschlagen = true;
 			continue;
 		}
-		if (geschlagen && !gewichen && c.bewegung >= 5 && kann(next, "bewegen")) {
+		if (geschlagen && !gewichen && c.bewegung >= 40 && kann(next, "bewegen")) {
 			gewichen = true;
 			const weit = laufFelder(next, seite).sort((a, b) => abstand(b, gegner().feld) - abstand(a, gegner().feld))[0];
-			if (weit && abstand(weit, gegner().feld) >= 4) next = bewegen(next, weit);
+			if (weit && abstand(weit, gegner().feld) >= 32) next = bewegen(next, weit);
 			break;
 		}
 		if (kann(next, "schlagen")) {
@@ -861,7 +1000,7 @@ function bot(state) {
 		if (!kann(next, "bewegen")) break;
 		const schritte = laufFelder(next, seite);
 		const nah = charakter(gegner().id).form === "nah";
-		const treffend = schritte.filter((feld) => kannTreffen(c.form, feld, c.reichweite, gegner().feld));
+		const treffend = schritte.filter((feld) => kannTreffen(c.form, feld, c.reichweite, gegner().feld, c.mindest));
 		const ziel = (treffend.length ? treffend : schritte).sort((a, b) => {
 			const da = abstand(a, gegner().feld);
 			const db = abstand(b, gegner().feld);
@@ -879,13 +1018,109 @@ function bot(state) {
 function gegnerTrifft(state, seite, feld) {
 	const gegner = state.kaempfer[andere(seite)];
 	const c = charakter(gegner.id);
-	return kannTreffen(c.form, gegner.feld, c.reichweite, feld);
+	return kannTreffen(c.form, gegner.feld, c.reichweite, feld, c.mindest);
 }
-function imMuster(state, seite, feld) {
-	return gegnerTrifft(state, seite, feld);
+/** Foundry 14: Region mit GridShape, nicht die abgeschaffte MeasuredTemplate. Kein fertiges Weltdokument. */
+function foundryPaket(stellung) {
+	return {
+		hinweis: "Foundry 14. shapes[].type grid entspricht GridShapeData: offsets sind Felder relativ zum Token. Wände sind die Kante des Baus in Feldern, mal die Gitterweite der Szene. Erst importierbar, wenn ein eigenes System die Actor-Felder kennt.",
+		actors: CHARAKTERE.map(actor),
+		waende: [
+			kante(24, 24, 40, 24),
+			kante(40, 24, 40, 40),
+			kante(40, 40, 24, 40),
+			kante(24, 40, 24, 24)
+		],
+		regionen: stellung.map((wer) => ({
+			name: `${wer.name} Radius`,
+			color: "#e16a4e",
+			visibility: 2,
+			attachment: { token: wer.name },
+			shapes: [{
+				type: "grid",
+				origin: {
+					x: wer.feld.x,
+					y: wer.feld.y
+				},
+				offsets: ziele(wer.form, wer.feld, wer.reichweite, wer.feld, wer.mindest).map((feld) => ({
+					i: feld.x - wer.feld.x,
+					j: feld.y - wer.feld.y
+				}))
+			}]
+		}))
+	};
 }
-function bedroht(state, seite) {
-	return gegnerTrifft(state, seite, state.kaempfer[seite].feld);
+function kante(x1, y1, x2, y2) {
+	return {
+		x1,
+		y1,
+		x2,
+		y2,
+		move: "block",
+		sense: "block",
+		light: "block"
+	};
+}
+function actor(c) {
+	return {
+		name: c.name,
+		type: "character",
+		system: {
+			ws: c.ws,
+			bs: c.bs,
+			staerke: c.staerke,
+			widerstand: c.widerstand,
+			wille: c.wille,
+			ausweichen: c.ausweichen,
+			wunden: {
+				value: c.wunden,
+				max: c.wunden
+			},
+			bonus: {
+				sb: bonus$1(c.staerke),
+				zb: bonus$1(c.widerstand)
+			},
+			waffe: {
+				schaden: c.schaden,
+				laenge: c.laenge,
+				reichweite: c.reichweite,
+				mindest: c.mindest,
+				form: c.form,
+				effekt: c.effekt,
+				ortwahl: c.ortwahl
+			},
+			ruestung: c.ruestung
+		}
+	};
+}
+/** Roll20-Blatt und ein Makro. Die Karte, das Hineinlaufen und die Szenen fehlen dort bewusst. */
+function roll20Paket() {
+	return {
+		hinweis: "Attribute für ein Roll20-Charakterblatt. Das Makro würfelt nur W100 und liest WS oder BS. Erfolgsgrade, Zone, Rüstung und Radius rechnet Duellzeit.",
+		characters: CHARAKTERE.map((c) => ({
+			name: c.name,
+			attributes: {
+				WS: c.ws,
+				BS: c.bs,
+				Staerke: c.staerke,
+				Widerstand: c.widerstand,
+				Wille: c.wille,
+				Ausweichen: c.ausweichen,
+				Wunden: c.wunden,
+				SB: bonus$1(c.staerke),
+				ZB: bonus$1(c.widerstand),
+				Schaden: c.schaden,
+				Radius: c.reichweite,
+				Mindest: c.mindest,
+				Laenge: c.laenge,
+				Form: c.form
+			}
+		})),
+		macros: [{
+			name: "Schlag",
+			action: "/desc @{selected|character_name} schlägt. Wurf [[1d100]] gegen WS @{selected|WS}, Fernkampf gegen BS @{selected|BS}."
+		}]
+	};
 }
 var WAFFE = {
 	brecher: "hammer",
@@ -918,39 +1153,9 @@ function sequenz(id, gegnerIstZiel, art) {
 		platte(id, ende)
 	];
 }
-function SpielerBlick({ blick, gegner }) {
-	const [frame, setFrame] = (0, import_react.useState)(0);
-	const bilder = sequenz(gegner, !blick || blick.ziel === gegner, blick?.art ?? null);
-	const key = `${gegner}-${blick?.text ?? "bereit"}`;
-	(0, import_react.useEffect)(() => {
-		setFrame(0);
-	}, [key]);
-	(0, import_react.useEffect)(() => {
-		if (frame >= bilder.length - 1) return;
-		const timer = window.setTimeout(() => setFrame((aktuell) => aktuell + 1), 680);
-		return () => window.clearTimeout(timer);
-	}, [
-		frame,
-		bilder.length,
-		key
-	]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figure", {
-		className: "relative overflow-hidden rounded-2xl border border-white/10 bg-black",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
-			src: bilder[frame],
-			alt: "",
-			className: "plate-in scene-drift aspect-video w-full object-cover"
-		}, `${key}-${frame}`), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("figcaption", {
-			className: "absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-[10px] uppercase tracking-wide text-white/60",
-				children: "Deine Sicht"
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-sm text-white",
-				children: blick?.text ?? "Er steht dir gegenüber."
-			})]
-		})]
-	});
+function pose(id, art, istZiel) {
+	const folge = sequenz(id, istZiel, art);
+	return folge[folge.length - 1] ?? folge[0];
 }
 var ZONEN = [
 	"kopf",
@@ -960,18 +1165,189 @@ var ZONEN = [
 	"bein-links",
 	"bein-rechts"
 ];
+function SeitenKampf({ kampf, setKampf, modus, onNeu, onArchiv }) {
+	const [zone, setZone] = (0, import_react.useState)("koerper");
+	const [zahlen, setZahlen] = (0, import_react.useState)([]);
+	const vorher = (0, import_react.useRef)(kampf);
+	const zaehler = (0, import_react.useRef)(0);
+	const seite = kampf.amZug;
+	const duBist = modus === "bot" && seite === "B";
+	const ich = kampf.kaempfer[seite];
+	const c = charakter(ich.id);
+	const blick = kampf.blick;
+	(0, import_react.useEffect)(() => {
+		if (!kampf || kampf.vorbei || modus !== "bot" || kampf.amZug !== "B") return;
+		const timer = window.setTimeout(() => setKampf(bot(kampf)), 900);
+		return () => window.clearTimeout(timer);
+	}, [
+		kampf,
+		modus,
+		setKampf
+	]);
+	(0, import_react.useEffect)(() => {
+		const alt = vorher.current;
+		const neu = [];
+		for (const wer of ["A", "B"]) {
+			const delta = alt.kaempfer[wer].wunden - kampf.kaempfer[wer].wunden;
+			if (delta > 0) {
+				zaehler.current += 1;
+				neu.push({
+					seite: wer,
+					text: `−${delta}`,
+					id: zaehler.current
+				});
+			}
+		}
+		if (neu.length > 0) setZahlen(neu);
+		vorher.current = kampf;
+	}, [kampf]);
+	function schlagen() {
+		if (duBist) return;
+		setKampf(ankuendigen(kampf, c.ortwahl ? zone : null));
+	}
+	const wurf = blick && (blick.art === "treffer" || blick.art === "daneben" || blick.art === "patzer") ? blick.angreifer === kampf.kaempfer.A.id ? "von-links" : "von-rechts" : null;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
+		className: "seite-buehne",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+				className: "flex items-center justify-between px-3 pt-3",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "text-[10px] uppercase tracking-[0.2em] text-[#d7c4a3]",
+					children: kampf.vorbei ? "Ende" : `${ich.name} ist am Zug`
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex gap-1",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						type: "button",
+						className: "btn px-2 py-1 text-xs",
+						onClick: onNeu,
+						children: "Neu"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						type: "button",
+						className: "btn px-2 py-1 text-xs",
+						onClick: onArchiv,
+						children: "Archiv"
+					})]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+				className: "seite-arena",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(KaempferSeite, {
+						wer: kampf.kaempfer.A,
+						blick
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(KaempferSeite, {
+						wer: kampf.kaempfer.B,
+						blick,
+						rechts: true
+					}),
+					wurf && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `seite-wurf ${wurf}` }, blick?.text),
+					zahlen.map((zahl) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: `seite-zahl ${zahl.seite === "A" ? "links" : "rechts"}`,
+						children: zahl.text
+					}, zahl.id))
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "seite-spruch",
+				children: kampf.vorbei ? kampf.sieger ? `${kampf.kaempfer[kampf.sieger].name} steht.` : "Unentschieden" : kampf.log[0] ?? ""
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+				className: "seite-leiste",
+				children: [c.ortwahl && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+					className: "text-[11px] text-[#d7c4a3]",
+					children: ["Zone", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", {
+						className: "btn ml-2 py-1 text-xs",
+						value: zone,
+						onChange: (event) => setZone(event.target.value),
+						children: ZONEN.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+							value: item,
+							children: ZONE_NAME[item]
+						}, item))
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "grid grid-cols-2 gap-2",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							className: "seite-aktion",
+							disabled: duBist || !kann(kampf, "schlagen"),
+							onClick: schlagen,
+							children: "Schlagen"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							className: "seite-aktion",
+							disabled: duBist || !kann(kampf, "parieren"),
+							onClick: () => setKampf(abwehrWaehlen(kampf, "parieren")),
+							children: "Parieren"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							className: "seite-aktion",
+							disabled: duBist || !kann(kampf, "ausweichen"),
+							onClick: () => setKampf(abwehrWaehlen(kampf, "ausweichen")),
+							children: "Ausweichen"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							className: "seite-aktion",
+							disabled: duBist || kampf.vorbei,
+							onClick: () => setKampf(passen(kampf)),
+							children: "Passen"
+						})
+					]
+				})]
+			})
+		]
+	});
+}
+function KaempferSeite({ wer, blick, rechts = false }) {
+	const dabei = Boolean(blick && (blick.ziel === wer.id || blick.angreifer === wer.id));
+	const src = pose(wer.id, dabei ? blick.art : null, blick?.ziel === wer.id);
+	const stoss = blick?.angreifer === wer.id && (blick.art === "treffer" || blick.art === "daneben" || blick.art === "patzer");
+	const anteil = Math.max(0, wer.wunden) / wer.wundenMax;
+	const farbe = anteil < .3 ? "#c44536" : anteil < .6 ? "#e0b15a" : "#6ea86a";
+	const klasse = [
+		"seite-figur",
+		rechts ? "rechts" : "links",
+		stoss ? rechts ? "stoss-links" : "stoss-rechts" : "",
+		blick?.ziel === wer.id && blick.art === "treffer" ? "getroffen" : "",
+		blick?.ziel === wer.id && blick.art === "ausgewichen" ? "weicht" : ""
+	].filter(Boolean).join(" ");
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: klasse,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: `seite-balken ${rechts ? "text-right" : ""}`,
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex justify-between text-[10px] uppercase tracking-wide",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: wer.name }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+					Math.max(0, wer.wunden),
+					"/",
+					wer.wundenMax
+				] })]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "mt-1 h-2 overflow-hidden rounded-full bg-black/55",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "h-full",
+					style: {
+						width: `${anteil * 100}%`,
+						background: farbe,
+						marginLeft: rechts ? "auto" : 0
+					}
+				})
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+			src,
+			alt: wer.name
+		})]
+	});
+}
 function BreachApp({ onArchiv }) {
 	const [kampf, setKampf] = (0, import_react.useState)(null);
 	const [a, setA] = (0, import_react.useState)("brecher");
 	const [b, setB] = (0, import_react.useState)("jaeger");
 	const [modus, setModus] = (0, import_react.useState)("bot");
-	const [wahl, setWahl] = (0, import_react.useState)(null);
-	const [zone, setZone] = (0, import_react.useState)("koerper");
-	(0, import_react.useEffect)(() => {
-		if (!kampf || kampf.vorbei || modus !== "bot" || kampf.amZug !== "B") return;
-		const timer = window.setTimeout(() => setKampf(bot(kampf)), 1500);
-		return () => window.clearTimeout(timer);
-	}, [kampf, modus]);
 	if (!kampf) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
 		className: "mx-auto flex min-h-dvh max-w-3xl flex-col gap-6 px-4 py-8",
 		children: [
@@ -981,11 +1357,11 @@ function BreachApp({ onArchiv }) {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 				className: "display text-4xl",
-				children: "Gitter und W100"
+				children: "Gegenüber"
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 				className: "text-sm text-muted",
-				children: "Acht mal acht Felder. Schlagen würfelt sofort mit einem W100. Die Zone ist der umgedrehte Wurf. Die Szene zeigt nur, was du siehst."
+				children: "Seitenansicht. Zwei Figuren stehen sich gegenüber. Schlagen, parieren, ausweichen."
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "grid gap-3 sm:grid-cols-2",
@@ -1019,6 +1395,20 @@ function BreachApp({ onArchiv }) {
 				onClick: () => setKampf(neuerKampf(a, b)),
 				children: "Kampf beginnen"
 			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+					type: "button",
+					className: "btn",
+					onClick: () => datei("echo-bruch-foundry.json", foundryPaket([])),
+					children: "Foundry"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+					type: "button",
+					className: "btn",
+					onClick: () => datei("echo-bruch-roll20.json", roll20Paket()),
+					children: "Roll20"
+				})]
+			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 				type: "button",
 				className: "btn",
@@ -1027,159 +1417,21 @@ function BreachApp({ onArchiv }) {
 			})
 		]
 	});
-	const seite = kampf.amZug;
-	const ich = kampf.kaempfer[seite];
-	const duBist = modus === "bot" && seite === "B";
-	const laufen = wahl === "bewegen" ? laufFelder(kampf, seite) : [];
-	const zielen = schlagFelder(kampf, seite);
-	const c = charakter(ich.id);
-	function waehleFeld(feld) {
-		if (duBist || kampf.vorbei) return;
-		if (wahl === "bewegen") {
-			setKampf(bewegen(kampf, feld));
-			setWahl(null);
-		}
-	}
-	const auge = modus === "bot" ? "A" : seite;
-	const gegnerId = kampf.kaempfer[auge === "A" ? "B" : "A"].id;
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
-		className: "mx-auto flex min-h-dvh max-w-6xl flex-col gap-4 px-3 py-4",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-				className: "flex flex-wrap items-center justify-between gap-3",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-xs uppercase tracking-wide text-muted",
-					children: "Am Zug"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-					className: "display text-3xl",
-					children: ich.name
-				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-						type: "button",
-						className: "btn",
-						onClick: () => setKampf(null),
-						children: "Neu"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-						type: "button",
-						className: "btn",
-						onClick: onArchiv,
-						children: "Archiv"
-					})]
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SpielerBlick, {
-				blick: kampf.blick,
-				gegner: gegnerId
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "grid grid-cols-8 gap-1",
-					children: Array.from({ length: 64 }, (_, id) => {
-						const feld = vonIndex(id);
-						const aDa = gleich(kampf.kaempfer.A.feld, feld);
-						const bDa = gleich(kampf.kaempfer.B.feld, feld);
-						const bau = istBau(feld);
-						const ziel = imMuster(kampf, seite, feld);
-						const lauf = laufen.some((item) => gleich(item, feld));
-						const inForm = zielen.some((item) => gleich(item, feld));
-						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							type: "button",
-							disabled: !lauf,
-							onClick: () => waehleFeld(feld),
-							className: `relative aspect-square rounded-md border text-xs ${bau ? "border-transparent bg-raised" : "border-line bg-surface"} ${ziel ? "ring-2 ring-accent" : ""} ${lauf ? "ring-2 ring-soft" : ""} ${inForm && !bau ? "outline outline-1 outline-white/30" : ""}`,
-							children: [
-								aDa && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "display text-lg",
-									children: "A"
-								}),
-								bDa && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "display text-lg text-accent",
-									children: "B"
-								}),
-								bau && !aDa && !bDa && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "text-[10px] text-faint",
-									children: "Bau"
-								})
-							]
-						}, id);
-					})
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "mt-2 text-xs text-muted",
-					children: bedroht(kampf, seite) ? "Du stehst in der Form des anderen. Ausweichen oder Parieren gilt für den nächsten Schlag." : "Die umrandeten Felder sind die Form des Gegners. Schlagen würfelt sofort, wenn du ihn darin hast."
-				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
-					className: "flex flex-col gap-3",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Karte, {
-							seite: "A",
-							kampf
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Karte, {
-							seite: "B",
-							kampf
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-							className: "text-xs text-muted",
-							children: [
-								"Aktionen: ",
-								kampf.punkte,
-								". ",
-								c.zeile
-							]
-						}),
-						ich.zoneWahl && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
-							className: "text-xs text-muted",
-							children: ["Zone festlegen", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", {
-								className: "btn mt-1 w-full",
-								value: zone,
-								onChange: (event) => setZone(event.target.value),
-								children: ZONEN.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
-									value: item,
-									children: ZONE_NAME[item]
-								}, item))
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "grid grid-cols-2 gap-2",
-							children: AKTIONEN.map((aktion) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-								type: "button",
-								disabled: duBist || !kann(kampf, aktion.id),
-								className: `btn h-auto flex-col items-start py-2 text-left ${wahl === aktion.id ? "btn-on" : ""}`,
-								onClick: () => {
-									if (aktion.id === "bewegen") setWahl(wahl === "bewegen" ? null : "bewegen");
-									if (aktion.id === "schlagen") {
-										setKampf(ankuendigen(kampf, ich.zoneWahl ? zone : null));
-										setWahl(null);
-									}
-									if (aktion.id === "parieren" || aktion.id === "ausweichen") setKampf(abwehrWaehlen(kampf, aktion.id));
-									if (aktion.id === "passen") setKampf(passen(kampf));
-								},
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: aktion.name }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "text-xs text-faint",
-									children: aktion.text
-								})]
-							}, aktion.id))
-						}),
-						kampf.vorbei && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "display text-2xl",
-							children: kampf.sieger ? `${kampf.kaempfer[kampf.sieger].name} steht.` : "Unentschieden"
-						})
-					]
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-				className: "panel max-h-48 overflow-auto p-3",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-[10px] uppercase tracking-wide text-faint",
-					children: FOLGE[Math.min(4, 4 - kampf.punkte)]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ol", {
-					className: "mt-2 flex flex-col gap-1 text-sm text-muted",
-					children: kampf.log.slice(0, 8).map((zeile, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: zeile }, `${i}-${zeile}`))
-				})]
-			})
-		]
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SeitenKampf, {
+		kampf,
+		setKampf,
+		modus,
+		onNeu: () => setKampf(null),
+		onArchiv
 	});
+}
+function datei(name, inhalt) {
+	const url = URL.createObjectURL(new Blob([JSON.stringify(inhalt, null, 2)], { type: "application/json" }));
+	const link = document.createElement("a");
+	link.href = url;
+	link.download = name;
+	link.click();
+	URL.revokeObjectURL(url);
 }
 function Wahl({ label, value, onChange }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
@@ -1197,45 +1449,6 @@ function Wahl({ label, value, onChange }) {
 				]
 			}, item.id))
 		})]
-	});
-}
-function Karte({ seite, kampf }) {
-	const k = kampf.kaempfer[seite];
-	const c = charakter(k.id);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", {
-		className: `panel p-3 ${kampf.amZug === seite ? "ring-1 ring-white/40" : ""}`,
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex items-baseline justify-between",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-					className: "display text-xl",
-					children: k.name
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-xs text-muted",
-					children: seite
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-				className: "text-xs tabular-nums text-muted",
-				children: [
-					k.wunden,
-					"/",
-					k.wundenMax,
-					" Wunden · Vorteil ",
-					k.vorteil,
-					" · ",
-					c.form === "nah" ? `WS ${c.ws}` : `BS ${c.bs}`
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-				className: "text-xs text-faint",
-				children: [
-					k.abwehr !== "keine" ? k.abwehr : "keine Abwehr",
-					k.liegt ? " · liegt" : "",
-					k.blutung ? " · blutet" : ""
-				]
-			})
-		]
 	});
 }
 var CHARACTERS = [

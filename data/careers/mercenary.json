@@ -8,7 +8,7 @@
     "stamina": 30,
     "focus": 20,
     "attack": 7,
-    "defense": 6,
+    "defense": 4,
     "magic": 0,
     "speed": 4,
     "crit_chance": 0.05
@@ -18,7 +18,7 @@
     "stamina": 3,
     "focus": 1,
     "attack": 1,
-    "defense": 1,
+    "defense": 0,
     "magic": 0,
     "speed": 0
   },
