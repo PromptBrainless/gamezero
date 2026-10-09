@@ -1,19 +1,22 @@
 {
   "id": "arcane_bolt",
-  "type": "skill",
   "name": "Arkanes Geschoss",
-  "description": "Verursacht zuverlässigen arkanen Schaden aus sicherer Entfernung.",
   "career": "scholar_mage",
-  "action_type": "attack",
-  "cost": { "focus": 8 },
-  "cooldown": 0,
-  "range": "ranged",
-  "target": "enemy",
-  "hit_stat": "speed",
-  "damage": {
-    "base": 4,
-    "type": "arcane",
-    "scaling": { "stat": "power", "multiplier": 1.1 }
+  "type": "attack",
+  "cost": {
+    "focus": 8
   },
-  "tags": ["spell", "ranged"]
+  "cooldown": 0,
+  "target": "enemy",
+  "damage": {
+    "damage_type": "arcane",
+    "scaling_stat": "magic",
+    "multiplier": 1.1,
+    "flat": 4
+  },
+  "tags": [
+    "spell",
+    "ranged"
+  ],
+  "description": "Verursacht zuverlässigen arkanen Schaden aus sicherer Entfernung."
 }

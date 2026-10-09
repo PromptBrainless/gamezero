@@ -1,0 +1,47 @@
+{
+  "id": "hedge_cultist",
+  "name": "Heckenkultist",
+  "role": "caster",
+  "tier": 1,
+  "base_stats": {
+    "hp": 30,
+    "attack": 3,
+    "defense": 2,
+    "magic": 0,
+    "speed": 5,
+    "crit_chance": 0.05
+  },
+  "skills": [
+    "frost_sigil",
+    "arcane_bolt"
+  ],
+  "weaknesses": [
+    "physical"
+  ],
+  "resistances": [
+    "frost"
+  ],
+  "ai": {
+    "pattern": "weighted_random",
+    "weights": {
+      "frost_sigil": 1,
+      "arcane_bolt": 1
+    }
+  },
+  "loot_table": [
+    {
+      "item": "focus_draught",
+      "chance": 0.4
+    },
+    {
+      "item": "ward_talisman",
+      "chance": 0.15
+    }
+  ],
+  "xp_reward": 24,
+  "description": "Okkulter Wanderprediger, schwach im Nahkampf, gefährlich mit Zaubern.",
+  "visual": {
+    "silhouette": "caster",
+    "accent_color": "#6b4fa3"
+  }
+}

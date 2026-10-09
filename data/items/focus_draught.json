@@ -1,0 +1,20 @@
+{
+  "id": "focus_draught",
+  "name": "Fokustrank",
+  "slot": "consumable",
+  "rarity": "common",
+  "stat_modifiers": {},
+  "description": "Stellt 15 Fokus wieder her.",
+  "value": 20,
+  "use": {
+    "restore_focus": 15,
+    "applies_statuses": [
+      {
+        "status": "focused",
+        "duration": 2
+      }
+    ],
+    "stackable": true,
+    "max_stack": 5
+  }
+}

@@ -1,19 +1,14 @@
 {
   "id": "chilled",
-  "type": "status",
   "name": "Unterkühlt",
-  "description": "Senkt das Tempo um drei und reduziert die Ausdauerregeneration um 25 Prozent.",
   "kind": "debuff",
-  "duration_default": 3,
-  "expires_on_combat_end": true,
+  "default_duration": 3,
   "max_stacks": 1,
-  "stacking": "refresh",
-  "tick": "turn_start",
-  "effects": [
-    { "stat": "speed", "op": "add", "value": -3 },
-    { "stat": "stamina_regen", "op": "mul", "value": 0.75 }
-  ],
-  "removed_by": ["quick_feint"],
+  "effect": {
+    "speed_modifier": -3,
+    "stamina_regen_multiplier": 0.75
+  },
+  "description": "Senkt das Tempo um drei und reduziert die Ausdauerregeneration um 25 Prozent.",
   "icon_shape": "snowflake",
-  "tags": ["debuff", "control"]
+  "tick": "turn_start"
 }

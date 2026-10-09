@@ -1,27 +1,44 @@
 {
   "id": "scholar_mage",
-  "type": "career",
   "name": "Gelehrtenmagier",
-  "description": "Ein fokussierter Zauberwirker, der Gegner mit arkanem Schaden und Frost kontrolliert.",
   "role": "control_caster",
-  "tags": ["ranged", "magic"],
+  "description": "Ein fokussierter Zauberwirker, der Gegner mit arkanem Schaden und Frost kontrolliert.",
   "base_stats": {
     "hp": 38,
-    "stamina": 22,
     "focus": 50,
-    "guard": 2,
-    "power": 9,
+    "stamina": 22,
+    "attack": 2,
+    "defense": 2,
+    "magic": 9,
     "speed": 5,
-    "crit_chance": 6
+    "crit_chance": 0.06
   },
-  "skills": ["arcane_bolt", "frost_sigil", "focused_mind"],
-  "starting_skills": ["arcane_bolt", "frost_sigil"],
-  "progression": [
-    {
-      "level": 2,
-      "xp_required": 100,
-      "unlocks": ["focused_mind"],
-      "stat_bonus": { "power": 1 }
-    }
-  ]
+  "stat_growth": {
+    "hp": 4,
+    "focus": 5,
+    "stamina": 1,
+    "attack": 0,
+    "defense": 0,
+    "magic": 1,
+    "speed": 0
+  },
+  "starting_skills": [
+    "arcane_bolt",
+    "frost_sigil"
+  ],
+  "skill_pool": [
+    "arcane_bolt",
+    "frost_sigil",
+    "focused_mind"
+  ],
+  "starting_items": [
+    "oak_staff",
+    "scholars_robe",
+    "focus_draught"
+  ],
+  "reaction": "ward",
+  "visual": {
+    "silhouette": "hooded_staff",
+    "accent_color": "#7789c4"
+  }
 }

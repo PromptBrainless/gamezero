@@ -1,42 +1,52 @@
-# Docs
+# GameZero Documentation
 
-Canonical entry point for the documentation of the first playable vertical slice (Career Select → Encounter Preview → Combat → Reward → Progression). Each topic has exactly one source of truth; see `repo-consolidation-plan.md` for the rationale and which sources were replaced.
+Canonical entry point for the first playable vertical slice. Each subject has one source of truth; [`repo-consolidation-plan.md`](repo-consolidation-plan.md) explains the selected baseline and [`pr-integration-review.md`](pr-integration-review.md) records how the PR strands were reviewed.
 
-## Core docs (first playable slice)
+## First-playable execution
 
-| Doc | Owns |
+| Document | Owns |
 |---|---|
-| [`milestones.md`](milestones.md) | Milestone definitions: Docs Final, First Playable Build, Post-Slice Expansion |
-| [`implementation-board.md`](implementation-board.md) | Work tracks, priorities, order and dependencies |
-| [`vertical-slice-implementation-plan.md`](vertical-slice-implementation-plan.md) | Slice goal, tracks, sequence, scope and done criteria |
-| [`runtime-data-plan.md`](runtime-data-plan.md) | Track 1: loader, validator, registry, `EncounterResolver` |
-| [`first-playable-ui-plan.md`](first-playable-ui-plan.md) | Tracks 2 and 3: HUD foundation and screen flow |
-| [`data-schema.md`](data-schema.md) | JSON content shape under `data/`, required/optional fields, references, validation |
-| [`data-authoring-rules.md`](data-authoring-rules.md) | How content is written and reviewed |
-| [`ui-style-guide.md`](ui-style-guide.md) | How numbers and states are shown |
-| [`hud-spec.md`](hud-spec.md) | Combat HUD modules, states, tooltips |
+| [`milestones.md`](milestones.md) | Sequential gates: Docs Final, First Playable Build, Post-Slice Expansion |
+| [`implementation-board.md`](implementation-board.md) | Ordered tracks, deliverables, dependencies, review focus |
+| [`vertical-slice-implementation-plan.md`](vertical-slice-implementation-plan.md) | Scope, build sequence, slice done criteria |
+| [`runtime-data-plan.md`](runtime-data-plan.md) | JSON loading, validation, registries, encounter resolution |
+| [`first-playable-ui-plan.md`](first-playable-ui-plan.md) | Combat HUD foundation and screen flow |
 
-## Supporting docs
+## Data and combat
 
-| Doc | Owns |
+| Document | Owns |
 |---|---|
-| [`visual-reference-brief.md`](visual-reference-brief.md) | Art direction and generation prompt rules |
-| [`repo-consolidation-plan.md`](repo-consolidation-plan.md) | Target file set, sources, replacements |
+| [`data-schema.md`](data-schema.md) | Canonical JSON entities, fields, references, validation |
+| [`data-authoring-rules.md`](data-authoring-rules.md) | How content is authored and reviewed |
+| [`combat-architecture.md`](combat-architecture.md) | Resolver/event/presentation boundary; no detailed mechanics |
 
-## Optional high-level docs (not slice blockers)
+## UI and visual direction
 
-`vision.md`, `combat-design.md`, `system-scaling.md`, `implementation-roadmap.md` — selectively taken from PR #4 after being aligned with the core docs. If they conflict with a core doc, the core doc wins.
+| Document | Owns |
+|---|---|
+| [`hud-spec.md`](hud-spec.md) | HUD modules and interaction states |
+| [`ui-style-guide.md`](ui-style-guide.md) | Readability, values, visual and interaction rules |
+| [`visual-reference-brief.md`](visual-reference-brief.md) | Stable visual direction and prompt structure |
+| [`art-sprint-1-production-pack.md`](art-sprint-1-production-pack.md) | Sprint 1 HUD kit and exact 36-icon production brief |
+| [`art-sprint-1-task-checklist.md`](art-sprint-1-task-checklist.md) | Actionable phases and review gates |
+| [`art-sprint-1-prompt-sheet.md`](art-sprint-1-prompt-sheet.md) | Generator-ready HUD and per-icon prompts |
+
+## Project context
+
+| Document | Owns |
+|---|---|
+| [`vision.md`](vision.md) | Slice-level game direction and principles |
+| [`project-history-and-execution-log.md`](project-history-and-execution-log.md) | Decisions, sequencing, and historical context |
+| [`repo-consolidation-plan.md`](repo-consolidation-plan.md) | Baseline choices and source replacement rules |
+| [`pr-integration-review.md`](pr-integration-review.md) | Per-PR adoption/defer/exclusion decisions |
 
 ## Reading order
 
-1. `milestones.md` — what "done" means
-2. `implementation-board.md` — what is worked on, in which order
-3. `vertical-slice-implementation-plan.md` — how the slice is executed
-4. `runtime-data-plan.md`, then `data-schema.md` and `data-authoring-rules.md` — data
-5. `first-playable-ui-plan.md`, `hud-spec.md`, `ui-style-guide.md` — UI
-6. `visual-reference-brief.md` — art
-7. Optional high-level docs
+1. `milestones.md` and `implementation-board.md`
+2. `vertical-slice-implementation-plan.md`
+3. `data-schema.md`, `data-authoring-rules.md`, and `runtime-data-plan.md`
+4. `first-playable-ui-plan.md`, `hud-spec.md`, and `ui-style-guide.md`
+5. `visual-reference-brief.md` and Sprint 1 art documents
+6. Vision, architecture, history, and integration review as supporting context
 
-## Not in this index
-
-Draft or superseded material (PR #2, #3, #6 content, early `.tres`/`godot/data/` notes). Slice content is JSON under `data/`, not under `godot/`.
+Optional high-level drafts, alternate datasets, and unapproved mechanics are not canonical. If a supporting document conflicts with the schema or slice plan, the schema and plan win.

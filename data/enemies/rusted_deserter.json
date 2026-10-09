@@ -1,0 +1,45 @@
+{
+  "id": "rusted_deserter",
+  "name": "Verrosteter Deserteur",
+  "role": "bruiser",
+  "tier": 1,
+  "base_stats": {
+    "hp": 45,
+    "attack": 6,
+    "defense": 4,
+    "magic": 0,
+    "speed": 3,
+    "crit_chance": 0.05
+  },
+  "skills": [
+    "shield_bash",
+    "rending_cut"
+  ],
+  "weaknesses": [
+    "frost"
+  ],
+  "resistances": [],
+  "ai": {
+    "pattern": "weighted_random",
+    "weights": {
+      "shield_bash": 1,
+      "rending_cut": 1
+    }
+  },
+  "loot_table": [
+    {
+      "item": "bandage_roll",
+      "chance": 0.4
+    },
+    {
+      "item": "iron_sword",
+      "chance": 0.1
+    }
+  ],
+  "xp_reward": 20,
+  "description": "Ausgemusterter Soldat mit Rostpanzer; langsam, aber zäh.",
+  "visual": {
+    "silhouette": "bruiser",
+    "accent_color": "#8c5a3c"
+  }
+}

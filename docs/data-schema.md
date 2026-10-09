@@ -50,7 +50,7 @@ Optional: `visual`.
 ## skills
 
 Required: `id`, `name`, `type` (`attack` | `defense` | `control` | `reaction`), `cost` (object with optional `stamina` / `focus` ints; `{}` means free), `cooldown` (turns ≥ 0), `target` (`enemy` | `self`), `description`.
-Optional: `career` (career id; **omit for enemy/boss-only skills**), `damage`, `applies_statuses`, `tags` (strings).
+Optional: `career` (career id; **omit for enemy/boss-only skills**), `damage`, `applies_statuses`, `tags` (strings), `trigger` (`after_melee_hit` for the current reaction skill), `removes_statuses` (status ids removed by the skill).
 Rule: a skill has at least a `damage` or an `applies_statuses` entry.
 
 ## statuses
@@ -88,6 +88,7 @@ Required: `id`, `name`, `type` (`tutorial` | `standard` | `boss`), `order` (int,
 | career | `starting_items` | items (`career_tags` absent or containing the career) |
 | skill | `career` | careers |
 | skill | `applies_statuses[].status` | statuses |
+| skill | `removes_statuses` | statuses |
 | status / item | `removes_statuses`, `use.applies_statuses[].status` | statuses |
 | enemy | `skills`, `ai.weights` keys | skills |
 | boss | `phases[].skills`, `telegraphs[].skill`, `on_enter[].apply_status` | skills / statuses |

@@ -1,0 +1,14 @@
+{
+  "id": "whetstone",
+  "name": "Wetzstein",
+  "slot": "consumable",
+  "rarity": "common",
+  "stat_modifiers": {},
+  "description": "Nächster physischer Angriff: +3 Schaden.",
+  "value": 18,
+  "use": {
+    "next_attack_bonus": 3,
+    "stackable": true,
+    "max_stack": 5
+  }
+}

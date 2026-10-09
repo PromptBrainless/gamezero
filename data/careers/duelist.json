@@ -1,27 +1,44 @@
 {
   "id": "duelist",
-  "type": "career",
   "name": "Duellant",
-  "description": "Ein schneller Präzisionskämpfer, der Öffnungen schafft und mit Gegenangriffen bestraft.",
   "role": "fast_precision",
-  "tags": ["melee", "precision"],
+  "description": "Schlanker Klingenkämpfer: hohe Initiative, Präzision und Konter.",
   "base_stats": {
     "hp": 44,
-    "stamina": 34,
     "focus": 26,
-    "guard": 3,
-    "power": 8,
+    "stamina": 34,
+    "attack": 8,
+    "defense": 3,
+    "magic": 1,
     "speed": 9,
-    "crit_chance": 12
+    "crit_chance": 0.12
   },
-  "skills": ["precise_thrust", "riposte", "quick_feint"],
-  "starting_skills": ["precise_thrust", "riposte"],
-  "progression": [
-    {
-      "level": 2,
-      "xp_required": 100,
-      "unlocks": ["quick_feint"],
-      "stat_bonus": { "power": 1 }
-    }
-  ]
+  "stat_growth": {
+    "hp": 5,
+    "focus": 2,
+    "stamina": 2,
+    "attack": 1,
+    "defense": 0,
+    "magic": 0,
+    "speed": 1
+  },
+  "starting_skills": [
+    "riposte",
+    "precise_thrust"
+  ],
+  "skill_pool": [
+    "riposte",
+    "precise_thrust",
+    "quick_feint"
+  ],
+  "starting_items": [
+    "rapier",
+    "leather_jerkin",
+    "bandage_roll"
+  ],
+  "reaction": "parry",
+  "visual": {
+    "silhouette": "slim_sideways",
+    "accent_color": "#d9b44a"
+  }
 }

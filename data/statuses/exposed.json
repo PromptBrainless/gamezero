@@ -1,19 +1,13 @@
 {
   "id": "exposed",
-  "type": "status",
   "name": "Entblößt",
-  "description": "Senkt die Verteidigung um drei und erhöht die erlittene Kritchance um 15 Prozentpunkte.",
   "kind": "debuff",
-  "duration_default": 2,
-  "expires_on_combat_end": true,
+  "default_duration": 2,
   "max_stacks": 1,
-  "stacking": "refresh",
-  "tick": "turn_start",
-  "effects": [
-    { "stat": "defense", "op": "add", "value": -3 },
-    { "stat": "crit_chance_taken", "op": "add", "value": 15 }
-  ],
-  "removed_by": ["hold_the_line"],
-  "icon_shape": "crack",
-  "tags": ["debuff", "defense"]
+  "effect": {
+    "defense_modifier": -3,
+    "crit_chance_taken_bonus": 0.15
+  },
+  "description": "Senkt die Verteidigung um drei und erhöht die erlittene Kritchance um 15 Prozentpunkte.",
+  "icon_shape": "crack"
 }

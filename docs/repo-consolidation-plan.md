@@ -1,6 +1,6 @@
 # Repo Consolidation Plan
 
-Reduces the overlapping PR/doc strands to one source of truth per topic for the first playable vertical slice. Scope: documentation and schema only; no gameplay, systems or new content.
+Reduces the overlapping PR/doc strands to one source of truth per topic for the first playable vertical slice. The original consolidation establishes documentation and schema; this PR integration carries over schema-compatible PR #5 content without adding runtime systems or gameplay code.
 
 ## Decisions
 
@@ -76,3 +76,9 @@ These files live on other PR branches, not on this base, so they are listed rath
 3. **Progression and reward tables**: #8 expects career `progression[]` and reward tables; #5 has neither (inline `rewards`, `stat_growth`). Schema follows #5; Track 1 must either accept this or extend the schema first.
 4. **Item `effects` keys** (e.g. `magic_damage_taken_multiplier` on `ward_talisman`) are not enumerated; the schema documents the shape only.
 5. **PR #4 docs** are not yet aligned to milestones/board.
+
+## Current integration follow-up
+
+The above table records the original consolidation decision. The subsequent per-PR review and adopted/deferred content are tracked in [`pr-integration-review.md`](pr-integration-review.md). The current art-planning branch consolidates compatible PR #5 content, corrected PR #7–#10 planning, the PR #15 HUD/icon pack, and selected architecture/vision principles from PR #1–#4.
+
+The data files merged from PR #12 must conform to this file's schema. The original PR #6 dataset remains excluded because it duplicates and conflicts with the selected PR #5 content; its useful referential-integrity test pattern is reused against the unified dataset.

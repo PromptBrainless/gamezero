@@ -1,0 +1,18 @@
+{
+  "id": "first_blood",
+  "name": "Erstes Blut",
+  "type": "tutorial",
+  "order": 1,
+  "enemies": [
+    "alley_cutthroat"
+  ],
+  "difficulty": 1,
+  "arena": "alley_dusk",
+  "rewards": {
+    "xp": 22,
+    "items": [
+      "bandage_roll"
+    ]
+  },
+  "description": "Einführung: Zugablauf, Schaden und Blutung."
+}

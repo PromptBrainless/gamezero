@@ -1,0 +1,45 @@
+{
+  "id": "alley_cutthroat",
+  "name": "Gassenmesser",
+  "role": "glass_cannon",
+  "tier": 1,
+  "base_stats": {
+    "hp": 32,
+    "attack": 8,
+    "defense": 2,
+    "magic": 0,
+    "speed": 8,
+    "crit_chance": 0.05
+  },
+  "skills": [
+    "precise_thrust",
+    "rending_cut"
+  ],
+  "weaknesses": [
+    "physical"
+  ],
+  "resistances": [],
+  "ai": {
+    "pattern": "weighted_random",
+    "weights": {
+      "precise_thrust": 1,
+      "rending_cut": 1
+    }
+  },
+  "loot_table": [
+    {
+      "item": "whetstone",
+      "chance": 0.35
+    },
+    {
+      "item": "leather_jerkin",
+      "chance": 0.1
+    }
+  ],
+  "xp_reward": 22,
+  "description": "Flinker Straßenkämpfer mit Blutungsmessern.",
+  "visual": {
+    "silhouette": "glass_cannon",
+    "accent_color": "#b33a3a"
+  }
+}

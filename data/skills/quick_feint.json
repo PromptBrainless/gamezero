@@ -1,16 +1,27 @@
 {
   "id": "quick_feint",
-  "type": "skill",
   "name": "Flinke Finte",
-  "description": "Entgeht Kälte und bereitet mit einem Fokusbonus den nächsten präzisen Treffer vor.",
   "career": "duelist",
-  "action_type": "utility",
-  "cost": { "stamina": 5, "focus": 2 },
+  "type": "control",
+  "cost": {
+    "stamina": 5,
+    "focus": 2
+  },
   "cooldown": 2,
-  "range": "self",
   "target": "self",
-  "hit_stat": "speed",
-  "applies": [{ "status": "focused", "chance": 100, "duration": 1 }],
-  "removes": ["chilled"],
-  "tags": ["setup", "cleanse", "self"]
+  "applies_statuses": [
+    {
+      "status": "focused",
+      "duration": 1
+    }
+  ],
+  "removes_statuses": [
+    "chilled"
+  ],
+  "tags": [
+    "setup",
+    "cleanse",
+    "self"
+  ],
+  "description": "Entgeht Kälte und bereitet mit einem Fokusbonus den nächsten präzisen Treffer vor."
 }

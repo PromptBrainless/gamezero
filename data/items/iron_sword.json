@@ -1,0 +1,14 @@
+{
+  "id": "iron_sword",
+  "name": "Eisenschwert",
+  "slot": "weapon",
+  "rarity": "common",
+  "stat_modifiers": {
+    "attack": 3
+  },
+  "description": "Solide Klinge.",
+  "career_tags": [
+    "mercenary"
+  ],
+  "value": 40
+}

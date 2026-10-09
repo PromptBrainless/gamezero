@@ -29,31 +29,23 @@ Intended content/schema rules:
 
 These principles must be checked against the actual schema and content files; this log does not create a parallel schema.
 
-## 3. Historical consolidation and PR context
+## 3. PR consolidation and review ordering
 
-The conversation supplied more than one historical PR map. Preserve the ordering and intent, but do not treat old PR dispositions as verified current status.
+PRs #12, #13, and #14 are on the current `main` baseline. This branch is PR #15. Live review of PRs #1–#11 confirmed that several remain open, with multiple drafts overlapping or contradicting the merged schema. The full per-PR adoption/defer record is [`pr-integration-review.md`](pr-integration-review.md); a PR is not considered useful merely because it is included in the review.
 
-### Earlier keep/drop recommendations
+The resulting integration order is:
 
-- Keep: PR #1 (Godot technical foundation), PR #8 (slice implementation plan), PR #9 (milestones), PR #10 (implementation board), PR #13 (docs/schema consolidation).
-- Keep selectively: PR #4 (optional high-level docs), PR #5 (actual JSON content shape), PR #7 (UI/HUD/visual/authoring rules).
-- Do not treat as canonical: PR #2, PR #3, PR #6.
+1. Keep **PR #13** as the merged schema/docs baseline.
+2. Keep **PR #12** player content, normalizing its fields and values to that baseline.
+3. Add compatible encounter-side records from **PR #5**; this also resolves the subject of empty/blocked **PR #11**.
+4. Add schema-aligned plans from **PR #7–#10**, plus selected architecture/vision guidance from **PR #1–#4**.
+5. Preserve **PR #15**'s bounded HUD and 36-icon art plan; update the canonical docs index/history.
 
-### Later consolidation notes
+PR #6's competing dataset is excluded; its useful integrity-test structure is reapplied to the selected content. PR #2–#4's duplicate content lists, new mechanics, and unsupported balancing numbers are not commitments.
 
-The consolidated plan also warns that older schema/content strands—including PR #8 and PR #10—may overlap with the canonical schema and should be reused only when consistent. Treat this as a reminder to review the actual PR contents, not as a reason to blindly keep or drop a number.
+## 4. Consolidated documentation and content structure
 
-### Recommended review and merge order for content work
-
-1. **PR #13 — schema/docs consolidation:** establish the vocabulary and baseline.
-2. **PR #12 — core player content:** verify against the merged schema, stable IDs, omitted optional fields, and valid references.
-3. **PR #11 — encounter content:** update against the baseline and verify enemy, boss, item, encounter, and reward references.
-
-The PR numbers, states, and relationships are historical conversation context. Check GitHub before merging or assuming any agent work is still active.
-
-## 4. Intended documentation and content structure
-
-The canonical documentation set proposed in the consolidation work includes:
+The canonical documentation set now includes:
 
 - `docs/README.md`
 - `docs/data-schema.md`
@@ -65,18 +57,25 @@ The canonical documentation set proposed in the consolidation work includes:
 - `docs/implementation-board.md`
 - `docs/repo-consolidation-plan.md`
 - `docs/project-history-and-execution-log.md`
+- `docs/pr-integration-review.md`
+- `docs/combat-architecture.md`
+- `docs/vision.md`
+- `docs/hud-spec.md`
+- `docs/ui-style-guide.md`
+- `docs/visual-reference-brief.md`
+- the three `docs/art-sprint-1-*` documents
 
-Content is organized under `data/` by type: careers, skills, statuses, enemies, bosses, items, encounters, and rewards. Optional high-level/visual documents may support the slice but should not create a competing operational source of truth.
+Content is organized under `data/` by type: careers, skills, statuses, enemies, bosses, items, and encounters. Rewards are inline in encounters and enemy/boss loot tables. Optional high-level/visual documents may support the slice but should not create a competing operational source of truth.
 
 ## 5. Agent workstreams described in the conversation
 
-Three coordinated workstreams were described as started; their present status is unknown unless verified against their task/PR:
+Three coordinated workstreams were described as started in the earlier conversation:
 
 1. **Core player content:** careers, skills, statuses; expected output was three careers, eight to nine skills, a core status set, and schema-valid references.
 2. **Encounter content:** enemies, optional boss, items, encounters, and rewards; expected output was three enemies, an optional schema-supported boss, one to four encounters, and consistent references.
 3. **Schema/docs consolidation:** documentation index, data schema, consolidation plan, and focused terminology fixes.
 
-The earlier request to create this project log also produced a cloud-agent task link in the conversation. Its completion and merge status were not verified in that context.
+The player-content and schema/docs tracks landed as PRs #12 and #13; this project log landed as PR #14. PR #11 was still empty when reviewed and blocked on the missing schema; PR #5 now provides the selected encounter-side source for this consolidated branch. Check live GitHub for any later changes to these PRs.
 
 ## 6. Post-content implementation sequence
 
@@ -108,12 +107,13 @@ These documents are plans; they do not claim that assets have been created or ap
 ## 8. Open tensions and risks
 
 - Slice scope may grow beyond the minimum playable loop.
-- Older docs may conflict on field names, types, or chance formats.
-- Actual content shape must be reconciled with abstract schema descriptions.
-- Reward representation (inline versus separate structures) needs one canonical decision.
+- Older docs and authored data have conflicted on field names, types, and chance formats; this integration normalizes current content against `docs/data-schema.md`.
+- Reward representation is resolved for the slice: inline encounter `rewards` plus enemy/boss `loot_table`; separate reward collections remain out of scope.
 - Optional high-level docs should not displace operational slice docs.
 - Prototype `ECHO//BRUCH` details should not silently define the planned Godot slice.
 - Icon labels and HUD semantics must be confirmed against the canonical gameplay model before integration.
+- Final target device orientation remains unresolved between earlier portrait and landscape proposals; plan responsive references without claiming it is settled.
+- The PR #1 Godot scaffold contains unverified stubs and is deferred rather than copied as functioning runtime code.
 - Milestones and implementation status can drift from the actual repository.
 
 ## 9. Intended source-of-truth map
@@ -129,8 +129,9 @@ These documents are plans; they do not claim that assets have been created or ap
 | Slice execution | `docs/vertical-slice-implementation-plan.md` |
 | Milestones and current status | `docs/milestones.md`, `docs/implementation-board.md` |
 | Gameplay content | `data/` |
-| Engine foundation | `godot/` |
+| Engine foundation | Godot is the intended target; PR #1 scaffold remains deferred pending code review |
 | Sprint 1 visual production | `docs/art-sprint-1-production-pack.md` and its checklist/prompt sheet |
+| PR-by-PR adoption decisions | `docs/pr-integration-review.md` |
 
 ## 10. Consolidation completion criteria
 
@@ -140,7 +141,7 @@ Consolidation is complete when:
 - `docs/README.md` is a reliable entry point and its links resolve.
 - `docs/data-schema.md` matches the real JSON under `data/`.
 - IDs, references, optional fields, and value ranges agree across content and schema.
-- The historical PR order and any outstanding agent work are checked against live GitHub state.
+- The per-PR adoption decisions and any outstanding agent work are checked against live GitHub state.
 - The next implementation block starts from a stable content, runtime, and UI contract.
 
 Sprint 1 art planning is complete only when the separate art checklist's review gates and done criteria are satisfied.
