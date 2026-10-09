@@ -1,0 +1,27 @@
+{
+  "id": "scholar_mage",
+  "type": "career",
+  "name": "Gelehrtenmagier",
+  "description": "Ein fokussierter Zauberwirker, der Gegner mit arkanem Schaden und Frost kontrolliert.",
+  "role": "control_caster",
+  "tags": ["ranged", "magic"],
+  "base_stats": {
+    "hp": 38,
+    "stamina": 22,
+    "focus": 50,
+    "guard": 2,
+    "power": 9,
+    "speed": 5,
+    "crit_chance": 6
+  },
+  "skills": ["arcane_bolt", "frost_sigil", "focused_mind"],
+  "starting_skills": ["arcane_bolt", "frost_sigil"],
+  "progression": [
+    {
+      "level": 2,
+      "xp_required": 100,
+      "unlocks": ["focused_mind"],
+      "stat_bonus": { "power": 1 }
+    }
+  ]
+}
