@@ -1,0 +1,19 @@
+{
+  "id": "cult_in_the_hedges",
+  "name": "Kult in den Hecken",
+  "type": "standard",
+  "order": 3,
+  "enemies": [
+    "hedge_cultist",
+    "alley_cutthroat"
+  ],
+  "difficulty": 3,
+  "arena": "hedge_clearing",
+  "rewards": {
+    "xp": 46,
+    "items": [
+      "focus_draught"
+    ]
+  },
+  "description": "Zwei verschiedene Gegnertypen: Ziele priorisieren."
+}

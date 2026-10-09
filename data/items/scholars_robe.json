@@ -1,0 +1,12 @@
+{
+  "id": "scholars_robe",
+  "name": "Gelehrtenrobe",
+  "slot": "armor",
+  "rarity": "common",
+  "stat_modifiers": {
+    "defense": 1,
+    "focus": 6
+  },
+  "description": "Stoffrobe mit Siegelstickerei.",
+  "value": 35
+}

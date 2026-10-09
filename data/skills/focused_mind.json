@@ -1,15 +1,23 @@
 {
   "id": "focused_mind",
-  "type": "skill",
   "name": "Klarer Fokus",
-  "description": "Stärkt die eigene Magie und Kritchance für zwei Runden.",
   "career": "scholar_mage",
-  "action_type": "utility",
-  "cost": { "focus": 6 },
+  "type": "control",
+  "cost": {
+    "focus": 6
+  },
   "cooldown": 3,
-  "range": "self",
   "target": "self",
-  "hit_stat": "power",
-  "applies": [{ "status": "focused", "chance": 100, "duration": 2 }],
-  "tags": ["setup", "spell", "self"]
+  "applies_statuses": [
+    {
+      "status": "focused",
+      "duration": 2
+    }
+  ],
+  "tags": [
+    "setup",
+    "spell",
+    "self"
+  ],
+  "description": "Stärkt die eigene Magie und Kritchance für zwei Runden."
 }

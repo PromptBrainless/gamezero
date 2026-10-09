@@ -1,27 +1,44 @@
 {
   "id": "mercenary",
-  "type": "career",
   "name": "Söldner",
-  "description": "Ein standhafter Frontkämpfer, der Gegner mit Schild und Klinge unter Druck setzt.",
   "role": "frontline_bruiser",
-  "tags": ["melee", "defense"],
+  "description": "Ein standhafter Frontkämpfer, der Gegner mit Schild und Klinge unter Druck setzt.",
   "base_stats": {
     "hp": 60,
     "stamina": 30,
     "focus": 20,
-    "guard": 6,
-    "power": 7,
+    "attack": 7,
+    "defense": 6,
+    "magic": 0,
     "speed": 4,
-    "crit_chance": 5
+    "crit_chance": 0.05
   },
-  "skills": ["shield_bash", "hold_the_line", "rending_cut"],
-  "starting_skills": ["shield_bash", "hold_the_line"],
-  "progression": [
-    {
-      "level": 2,
-      "xp_required": 100,
-      "unlocks": ["rending_cut"],
-      "stat_bonus": { "guard": 1 }
-    }
-  ]
+  "stat_growth": {
+    "hp": 7,
+    "stamina": 3,
+    "focus": 1,
+    "attack": 1,
+    "defense": 1,
+    "magic": 0,
+    "speed": 0
+  },
+  "starting_skills": [
+    "shield_bash",
+    "hold_the_line"
+  ],
+  "skill_pool": [
+    "shield_bash",
+    "hold_the_line",
+    "rending_cut"
+  ],
+  "starting_items": [
+    "iron_sword",
+    "buckler",
+    "leather_jerkin"
+  ],
+  "reaction": "brace",
+  "visual": {
+    "silhouette": "broad_shield_forward",
+    "accent_color": "#8c5a3c"
+  }
 }

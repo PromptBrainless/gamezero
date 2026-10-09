@@ -1,0 +1,17 @@
+{
+  "id": "bandage_roll",
+  "name": "Verbandsrolle",
+  "slot": "consumable",
+  "rarity": "common",
+  "stat_modifiers": {},
+  "description": "Heilt 15 HP und entfernt Blutung.",
+  "value": 15,
+  "use": {
+    "heal_hp": 15,
+    "removes_statuses": [
+      "bleeding"
+    ],
+    "stackable": true,
+    "max_stack": 5
+  }
+}

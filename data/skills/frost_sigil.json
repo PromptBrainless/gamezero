@@ -1,20 +1,30 @@
 {
   "id": "frost_sigil",
-  "type": "skill",
   "name": "Frostsiegel",
-  "description": "Verursacht Frostschaden und senkt mit hoher Chance das Tempo des Ziels.",
   "career": "scholar_mage",
-  "action_type": "control",
-  "cost": { "focus": 14 },
-  "cooldown": 3,
-  "range": "ranged",
-  "target": "enemy",
-  "hit_stat": "speed",
-  "damage": {
-    "base": 3,
-    "type": "frost",
-    "scaling": { "stat": "power", "multiplier": 0.8 }
+  "type": "control",
+  "cost": {
+    "focus": 14
   },
-  "applies": [{ "status": "chilled", "chance": 80, "duration": 3 }],
-  "tags": ["spell", "control", "ranged"]
+  "cooldown": 3,
+  "target": "enemy",
+  "damage": {
+    "damage_type": "frost",
+    "scaling_stat": "magic",
+    "multiplier": 0.8,
+    "flat": 3
+  },
+  "applies_statuses": [
+    {
+      "status": "chilled",
+      "chance": 0.8,
+      "duration": 3
+    }
+  ],
+  "tags": [
+    "spell",
+    "control",
+    "ranged"
+  ],
+  "description": "Verursacht Frostschaden und senkt mit hoher Chance das Tempo des Ziels."
 }

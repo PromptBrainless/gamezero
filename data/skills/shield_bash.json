@@ -1,20 +1,30 @@
 {
   "id": "shield_bash",
-  "type": "skill",
   "name": "Schildstoß",
-  "description": "Fügt körperlichen Schaden zu und betäubt das Ziel mit geringer Chance für eine Runde.",
   "career": "mercenary",
-  "action_type": "attack",
-  "cost": { "stamina": 8, "focus": 0 },
-  "cooldown": 2,
-  "range": "melee",
-  "target": "enemy",
-  "hit_stat": "power",
-  "damage": {
-    "base": 3,
-    "type": "physical",
-    "scaling": { "stat": "power", "multiplier": 1.0 }
+  "type": "attack",
+  "cost": {
+    "stamina": 8
   },
-  "applies": [{ "status": "stunned", "chance": 35, "duration": 1 }],
-  "tags": ["melee", "control", "setup"]
+  "cooldown": 2,
+  "target": "enemy",
+  "damage": {
+    "damage_type": "physical",
+    "scaling_stat": "attack",
+    "multiplier": 1.0,
+    "flat": 3
+  },
+  "applies_statuses": [
+    {
+      "status": "stunned",
+      "chance": 0.35,
+      "duration": 1
+    }
+  ],
+  "tags": [
+    "melee",
+    "control",
+    "setup"
+  ],
+  "description": "Fügt körperlichen Schaden zu und betäubt das Ziel mit geringer Chance für eine Runde."
 }

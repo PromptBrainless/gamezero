@@ -1,20 +1,24 @@
 {
   "id": "riposte",
-  "type": "skill",
   "name": "Riposte",
-  "description": "Kontert einen eingehenden Nahkampfangriff mit einem präzisen Gegenstoß.",
   "career": "duelist",
-  "action_type": "reaction",
+  "type": "reaction",
   "trigger": "after_melee_hit",
-  "cost": { "stamina": 6, "focus": 0 },
-  "cooldown": 1,
-  "range": "melee",
-  "target": "enemy",
-  "hit_stat": "speed",
-  "damage": {
-    "base": 3,
-    "type": "physical",
-    "scaling": { "stat": "power", "multiplier": 1.2 }
+  "cost": {
+    "stamina": 6
   },
-  "tags": ["melee", "reaction", "utility"]
+  "cooldown": 1,
+  "target": "enemy",
+  "damage": {
+    "damage_type": "physical",
+    "scaling_stat": "attack",
+    "multiplier": 1.2,
+    "flat": 3
+  },
+  "tags": [
+    "melee",
+    "reaction",
+    "utility"
+  ],
+  "description": "Kontert einen eingehenden Nahkampfangriff mit einem präzisen Gegenstoß."
 }

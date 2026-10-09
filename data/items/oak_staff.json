@@ -1,0 +1,15 @@
+{
+  "id": "oak_staff",
+  "name": "Eichenstab",
+  "slot": "weapon",
+  "rarity": "common",
+  "stat_modifiers": {
+    "magic": 3,
+    "focus": 5
+  },
+  "description": "Fokusstab eines Gelehrten.",
+  "career_tags": [
+    "scholar_mage"
+  ],
+  "value": 45
+}

@@ -1,0 +1,18 @@
+{
+  "id": "deserters_toll",
+  "name": "Der Wegzoll des Deserteurs",
+  "type": "standard",
+  "order": 2,
+  "enemies": [
+    "rusted_deserter"
+  ],
+  "difficulty": 2,
+  "arena": "ruined_road",
+  "rewards": {
+    "xp": 20,
+    "items": [
+      "whetstone"
+    ]
+  },
+  "description": "Lernen: Verteidigung und Betäubung."
+}

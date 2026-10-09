@@ -1,12 +1,12 @@
 # Repo Consolidation Plan
 
-Reduces the overlapping PR/doc strands to one source of truth per topic for the first playable vertical slice. Scope: documentation and schema only; no gameplay, systems or new content.
+Reduces the overlapping PR/doc strands to one source of truth per topic for the first playable vertical slice. The original consolidation establishes documentation and schema; this PR integration carries over schema-compatible PR #5 content without adding runtime systems or gameplay code.
 
 ## Decisions
 
 | PR | Decision | Role |
 |---|---|---|
-| #1 | Keep | Godot technical foundation only; its early docs are not authoritative |
+| #1 | Keep selectively | Retain resolver/event/presentation architecture; defer the unverified Godot scaffold |
 | #2, #3 | Drop | Superseded early design drafts |
 | #4 | Keep selectively | Source for optional high-level docs |
 | #5 | Keep, leading | Reality check for the JSON content shape and slice content |
@@ -26,16 +26,16 @@ Slice content is **JSON-first under `data/`**. `.tres` / `godot/data/` is not a 
 | `docs/README.md` | New (material: #7, #8, #9, #10, #4) | Rewritten as canonical index |
 | `docs/repo-consolidation-plan.md` | This PR | New |
 | `docs/data-schema.md` | New (leading: #5; conventions: #7; runtime: #8) | Rewritten |
-| `docs/milestones.md` | #9 | Take as is |
-| `docs/implementation-board.md` | #10 | Take; fix references to non-existing docs |
-| `docs/vertical-slice-implementation-plan.md` | #8 | Take as is |
-| `docs/runtime-data-plan.md` | #8 | Take; sync record fields to `data-schema.md` |
-| `docs/first-playable-ui-plan.md` | #8 | Take as is |
-| `docs/ui-style-guide.md` | #7 | Take as is |
-| `docs/hud-spec.md` | #7 | Take as is |
-| `docs/visual-reference-brief.md` | #7 | Take as is |
-| `docs/data-authoring-rules.md` | #7 | Take; align with schema (see below) |
-| `docs/vision.md`, `combat-design.md`, `system-scaling.md`, `implementation-roadmap.md` | #4 | Optional, post-alignment |
+| `docs/milestones.md` | #9 | Adopt sequential gates and align with current slice |
+| `docs/implementation-board.md` | #10 | Adopt; fix missing-document reference and schema/runtime assumptions |
+| `docs/vertical-slice-implementation-plan.md` | #8 | Adopt and sync scope/counts to selected content |
+| `docs/runtime-data-plan.md` | #8 | Adopt and sync fields/required behaviors to `data-schema.md` |
+| `docs/first-playable-ui-plan.md` | #8 | Adopt and align screens/content to selected slice |
+| `docs/ui-style-guide.md` | #7 | Adopt useful principles, align language to canonical schema |
+| `docs/hud-spec.md` | #7 | Adopt module/interaction direction, align to canonical runtime data |
+| `docs/visual-reference-brief.md` | #7 | Adopt stable visual principles; link to Sprint 1 art docs |
+| `docs/data-authoring-rules.md` | #7 | Adopt and align with schema |
+| `docs/vision.md` | #4 | Keep the slice-level vision; defer the duplicate high-level doc suite |
 | `data/<type>/<id>.json` | #5 | Content base; follow `data-schema.md` |
 
 ## What replaces what
@@ -71,8 +71,14 @@ These files live on other PR branches, not on this base, so they are listed rath
 
 ## Unresolved tensions
 
-1. **Slice size**: #8 plans 3 normal encounters + 1 boss; #5 content has 3 careers, 8 skills, 6 statuses, 3 enemies, 1 boss, 11 items, 4 encounters; the preferred minimal core is smaller. Not decided here; content PRs may trim.
-2. **#5 content vs schema**: `hold_the_line.damage` and `iron_command.career` are `null` in #5 and must be omitted.
-3. **Progression and reward tables**: #8 expects career `progression[]` and reward tables; #5 has neither (inline `rewards`, `stat_growth`). Schema follows #5; Track 1 must either accept this or extend the schema first.
-4. **Item `effects` keys** (e.g. `magic_damage_taken_multiplier` on `ward_talisman`) are not enumerated; the schema documents the shape only.
-5. **PR #4 docs** are not yet aligned to milestones/board.
+1. **Slice size** is set by `vertical-slice-implementation-plan.md`: three careers, nine player skills, six statuses, three normal enemies, one boss, eleven items, and four ordered encounters. Keep that target bounded.
+2. **Historical source optionals** included `null` fields and an empty boss `on_enter` list; normalized content omits those optional values.
+3. **Progression and reward tables**: `progression[]` and separate reward tables are deferred; the schema uses `stat_growth`, inline encounter `rewards`, and enemy/boss `loot_table`.
+4. **Item `effects` modifiers** use the documented single-key-object shape. Runtime consumers and validation must support each adopted modifier; do not treat shape acceptance as behavior implementation.
+5. **PR #4's full doc suite** is intentionally deferred; only slice-level vision and architecture principles are retained.
+
+## Current integration follow-up
+
+The above table records the original consolidation decision. The subsequent per-PR review and adopted/deferred content are tracked in [`pr-integration-review.md`](pr-integration-review.md). The current art-planning branch consolidates compatible PR #5 content, corrected PR #7–#10 planning, the PR #15 HUD/icon pack, and selected architecture/vision principles from PR #1–#4.
+
+The data files merged from PR #12 must conform to this file's schema. The original PR #6 dataset remains excluded because it duplicates and conflicts with the selected PR #5 content; its useful referential-integrity test pattern is reused against the unified dataset.

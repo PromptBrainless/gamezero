@@ -1,6 +1,6 @@
 # Data Schema (first playable slice, v1.0)
 
-Canonical definition of the JSON content used by the first playable vertical slice. It documents the **shape actually used by the slice content under `data/`** (PR #5), takes conventions and validation strictness from `data-authoring-rules.md` (PR #7) and is shaped so the Loader → Validator → Registry → Resolver pipeline in `runtime-data-plan.md` (PR #8) can consume it. Where those sources disagreed, this file decides (see [Normalized names](#normalized-names)).
+Canonical definition of the JSON content used by the first playable vertical slice. It documents the **shape actually used by the selected and normalized content under `data/`**, takes conventions and validation strictness from `data-authoring-rules.md` (PR #7), and is shaped so the Loader → Validator → Registry → Resolver pipeline in `runtime-data-plan.md` (PR #8) can consume it. Where source proposals disagreed, this file decides (see [Normalized names](#normalized-names)).
 
 ## Conventions
 
@@ -50,7 +50,7 @@ Optional: `visual`.
 ## skills
 
 Required: `id`, `name`, `type` (`attack` | `defense` | `control` | `reaction`), `cost` (object with optional `stamina` / `focus` ints; `{}` means free), `cooldown` (turns ≥ 0), `target` (`enemy` | `self`), `description`.
-Optional: `career` (career id; **omit for enemy/boss-only skills**), `damage`, `applies_statuses`, `tags` (strings).
+Optional: `career` (career id; **omit for enemy/boss-only skills**), `damage`, `applies_statuses`, `tags` (strings), `trigger` (`after_melee_hit` for the current reaction skill), `removes_statuses` (status ids removed by the skill).
 Rule: a skill has at least a `damage` or an `applies_statuses` entry.
 
 ## statuses
@@ -63,7 +63,7 @@ Optional: `tick` (`turn_start` default | `turn_end`), `icon_shape` (HUD icons us
 ## items
 
 Required: `id`, `name`, `slot` (`weapon` | `offhand` | `armor` | `trinket` | `consumable`), `rarity` (`common` | `uncommon` | `rare`), `stat_modifiers` (object keyed by stat name; `{}` allowed), `description`.
-Optional: `value` (int), `career_tags` (career ids allowed to use it; omitted = anyone), `effects` (list of single-key modifier objects, e.g. `{"magic_damage_taken_multiplier": 0.9}`), `use` (consumables only): `heal_hp`, `restore_focus`, `removes_statuses` (status ids), `applies_statuses` (entries as above, `chance` optional), `stackable`, `max_stack`.
+Optional: `value` (int), `career_tags` (career ids allowed to use it; omitted = anyone), `effects` (list of single-key modifier objects, e.g. `{"magic_damage_taken_multiplier": 0.9}`), `use` (consumables only): `heal_hp`, `restore_focus`, `next_attack_bonus`, `removes_statuses` (status ids), `applies_statuses` (entries as above, `chance` optional), `stackable`, `max_stack`.
 
 ## enemies
 
@@ -88,7 +88,8 @@ Required: `id`, `name`, `type` (`tutorial` | `standard` | `boss`), `order` (int,
 | career | `starting_items` | items (`career_tags` absent or containing the career) |
 | skill | `career` | careers |
 | skill | `applies_statuses[].status` | statuses |
-| status / item | `removes_statuses`, `use.applies_statuses[].status` | statuses |
+| skill | `removes_statuses` | statuses |
+| item | `use.removes_statuses`, `use.applies_statuses[].status` | statuses |
 | enemy | `skills`, `ai.weights` keys | skills |
 | boss | `phases[].skills`, `telegraphs[].skill`, `on_enter[].apply_status` | skills / statuses |
 | enemy / boss | `loot_table[].item` | items |
@@ -122,7 +123,7 @@ Competing names from earlier drafts and their canonical form:
 | `reward_table_id`, `rewards/` (PR #8) | inline `rewards` on encounter, `loot_table` on enemy/boss |
 | percentages 0–100 (PR #7/#8) | floats 0.0–1.0 |
 | `type: "career"` etc. inside records (PR #7) | removed; collection = directory |
-| `damage: null`, `career: null` (PR #5 data) | omit the field |
+| null-valued optional fields in earlier source data | omit the field |
 | `type` on skill / encounter | kept as *category* (not the collection) |
 | `skill.range`, `skills[].target: ally` (PR #7) | not in slice |
 
