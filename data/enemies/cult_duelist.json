@@ -1,0 +1,32 @@
+{
+  "id": "cult_duelist",
+  "name": "Cult Duelist",
+  "archetype": "mobile skirmisher",
+  "description": "A masked initiate trained to draw attention with a feint and make the opening count with a precise lunge.",
+  "stats": {
+    "health": 23,
+    "resource": 5,
+    "might": 4,
+    "finesse": 8,
+    "intellect": 3,
+    "resolve": 4,
+    "evasion": 15
+  },
+  "skills": ["feinting_cut", "precise_lunge"],
+  "ai_profile": {
+    "preferred_range": 1,
+    "behavior": "Use Feinting Cut to mark an unmarked target; use Precise Lunge when a target is marked or beyond adjacent reach.",
+    "telegraph": "Turns the blade flat and traces a quick silver arc before lunging."
+  },
+  "rewards": {
+    "experience": 30,
+    "item_drops": [
+      {
+        "item_id": "duelist_whetstone",
+        "quantity": 1,
+        "chance": 0.3
+      }
+    ]
+  },
+  "tags": ["human", "cult", "mobile", "melee"]
+}

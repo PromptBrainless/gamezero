@@ -1,0 +1,25 @@
+{
+  "id": "measured_strike",
+  "name": "Measured Strike",
+  "career_id": "mercenary",
+  "category": "attack",
+  "resource_cost": 1,
+  "cooldown_turns": 0,
+  "target_type": "enemy",
+  "range": 1,
+  "hit_check": {
+    "attribute": "might",
+    "target_stat": "evasion",
+    "modifier": 0
+  },
+  "damage": {
+    "type": "physical",
+    "base": 4,
+    "scaling_stat": "might",
+    "scaling": 0.6
+  },
+  "effects": [],
+  "animation_key": "mercenary_measured_strike",
+  "ai_tags": ["close_range", "reliable_damage"],
+  "tooltip": "A dependable melee attack dealing 4 plus 60% of your Might."
+}

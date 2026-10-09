@@ -1,0 +1,32 @@
+{
+  "id": "ember_bolt",
+  "name": "Ember Bolt",
+  "career_id": "scholar_mage",
+  "category": "spell",
+  "resource_cost": 2,
+  "cooldown_turns": 0,
+  "target_type": "enemy",
+  "range": 4,
+  "hit_check": {
+    "attribute": "intellect",
+    "target_stat": "evasion",
+    "modifier": 0
+  },
+  "damage": {
+    "type": "fire",
+    "base": 3,
+    "scaling_stat": "intellect",
+    "scaling": 0.6
+  },
+  "effects": [
+    {
+      "status_id": "burning",
+      "chance": 0.75,
+      "duration_turns": 2,
+      "stacks": 1
+    }
+  ],
+  "animation_key": "scholar_mage_ember_bolt",
+  "ai_tags": ["ranged", "fire", "damage_over_time"],
+  "tooltip": "Launch a fire bolt up to four tiles away for 3 plus 60% of your Intellect. A hit has a 75% chance to inflict Burning."
+}

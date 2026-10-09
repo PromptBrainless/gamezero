@@ -1,0 +1,32 @@
+{
+  "id": "ash_hexer",
+  "name": "Ash Hexer",
+  "archetype": "ranged controller",
+  "description": "A chapel apostate with soot-black hands who keeps foes at a distance while cinders eat through their defenses.",
+  "stats": {
+    "health": 21,
+    "resource": 7,
+    "might": 2,
+    "finesse": 4,
+    "intellect": 8,
+    "resolve": 5,
+    "evasion": 11
+  },
+  "skills": ["ember_bolt", "cinder_binding"],
+  "ai_profile": {
+    "preferred_range": 3,
+    "behavior": "Apply Cinder Binding to a dangerous attacker, then use Ember Bolt while a target is weakened.",
+    "telegraph": "Whispers into a burning palm; the target's shadow glows before the spell resolves."
+  },
+  "rewards": {
+    "experience": 34,
+    "item_drops": [
+      {
+        "item_id": "ember_vial",
+        "quantity": 1,
+        "chance": 0.3
+      }
+    ]
+  },
+  "tags": ["human", "cult", "ranged", "fire", "controller"]
+}

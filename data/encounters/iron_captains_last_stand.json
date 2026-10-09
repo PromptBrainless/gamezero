@@ -1,0 +1,43 @@
+{
+  "id": "iron_captains_last_stand",
+  "name": "The Captain's Last Stand",
+  "region": "Blackgate Keep",
+  "description": "The inner gate opens on a rain-soaked yard. The Iron Captain waits beneath his ruined standard, still holding the line alone.",
+  "difficulty": 5,
+  "recommended_careers": ["mercenary", "duelist", "scholar_mage"],
+  "waves": [
+    {
+      "enemies": [
+        {
+          "enemy_id": "road_bruiser",
+          "quantity": 1
+        },
+        {
+          "enemy_id": "cult_duelist",
+          "quantity": 1
+        }
+      ],
+      "boss_id": null
+    },
+    {
+      "enemies": [],
+      "boss_id": "iron_captain"
+    }
+  ],
+  "rewards": {
+    "experience": 180,
+    "item_drops": [
+      {
+        "item_id": "captains_seal",
+        "quantity": 1,
+        "chance": 1
+      },
+      {
+        "item_id": "shock_trap",
+        "quantity": 1,
+        "chance": 0.5
+      }
+    ]
+  },
+  "tags": ["story", "boss", "fortress", "finale"]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "roadside_toll",
+  "name": "The Roadside Toll",
+  "region": "Old King's Road",
+  "description": "A collapsed toll gate blocks the road. The men demanding payment have already taken the village's winter grain.",
+  "difficulty": 1,
+  "recommended_careers": ["mercenary", "duelist"],
+  "waves": [
+    {
+      "enemies": [
+        {
+          "enemy_id": "road_bruiser",
+          "quantity": 2
+        }
+      ],
+      "boss_id": null
+    }
+  ],
+  "rewards": {
+    "experience": 35,
+    "item_drops": [
+      {
+        "item_id": "field_dressing",
+        "quantity": 1,
+        "chance": 1
+      },
+      {
+        "item_id": "focus_draught",
+        "quantity": 1,
+        "chance": 0.4
+      }
+    ]
+  },
+  "tags": ["story", "road", "introductory"]
+}

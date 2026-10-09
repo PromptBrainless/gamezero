@@ -1,0 +1,48 @@
+{
+  "id": "silent_courtyard",
+  "name": "The Silent Courtyard",
+  "region": "Cinder Chapel",
+  "description": "The chapel's outer court is empty except for fresh footprints circling a blood-dark bell. The cultists wait just beyond its sound.",
+  "difficulty": 2,
+  "recommended_careers": ["duelist", "scholar_mage"],
+  "waves": [
+    {
+      "enemies": [
+        {
+          "enemy_id": "cult_duelist",
+          "quantity": 2
+        }
+      ],
+      "boss_id": null
+    },
+    {
+      "enemies": [
+        {
+          "enemy_id": "cult_duelist",
+          "quantity": 1
+        },
+        {
+          "enemy_id": "road_bruiser",
+          "quantity": 1
+        }
+      ],
+      "boss_id": null
+    }
+  ],
+  "rewards": {
+    "experience": 70,
+    "item_drops": [
+      {
+        "item_id": "duelist_whetstone",
+        "quantity": 1,
+        "chance": 0.5
+      },
+      {
+        "item_id": "focus_draught",
+        "quantity": 1,
+        "chance": 0.35
+      }
+    ]
+  },
+  "tags": ["story", "cult", "multi_wave"]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "rallying_guard",
+  "name": "Rallying Guard",
+  "career_id": "mercenary",
+  "category": "defense",
+  "resource_cost": 1,
+  "cooldown_turns": 1,
+  "target_type": "self",
+  "range": 0,
+  "hit_check": null,
+  "damage": null,
+  "effects": [
+    {
+      "status_id": "guarded",
+      "chance": 1,
+      "duration_turns": 2,
+      "stacks": 1
+    }
+  ],
+  "animation_key": "mercenary_rallying_guard",
+  "ai_tags": ["defensive", "self_preservation"],
+  "tooltip": "Brace for two turns, reducing each incoming hit by 3."
+}

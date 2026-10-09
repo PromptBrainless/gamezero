@@ -1,0 +1,21 @@
+{
+  "id": "marked",
+  "name": "Marked",
+  "category": "harmful",
+  "duration_turns": 2,
+  "stacking": {
+    "policy": "refresh",
+    "max_stacks": 1
+  },
+  "effects": [
+    {
+      "trigger": "on_damage_received",
+      "operation": "multiply_incoming_damage",
+      "value": 1.2,
+      "damage_type": null
+    }
+  ],
+  "cleanse_tags": ["curse"],
+  "icon_key": "status_marked",
+  "description": "Take 20% more damage from all sources."
+}

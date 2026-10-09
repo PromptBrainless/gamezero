@@ -1,0 +1,21 @@
+{
+  "id": "bleed",
+  "name": "Bleed",
+  "category": "harmful",
+  "duration_turns": 3,
+  "stacking": {
+    "policy": "stack",
+    "max_stacks": 3
+  },
+  "effects": [
+    {
+      "trigger": "turn_start",
+      "operation": "damage",
+      "value": 2,
+      "damage_type": "physical"
+    }
+  ],
+  "cleanse_tags": ["wound"],
+  "icon_key": "status_bleed",
+  "description": "Take 2 physical damage per stack at the start of your turn."
+}
