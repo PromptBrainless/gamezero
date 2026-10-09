@@ -1,0 +1,14 @@
+{
+  "id": "chilled",
+  "name": "Unterkühlt",
+  "kind": "debuff",
+  "default_duration": 3,
+  "max_stacks": 1,
+  "effect": {
+    "speed_modifier": -3,
+    "stamina_regen_multiplier": 0.75
+  },
+  "description": "Senkt Initiative und Ausdauer-Regeneration.",
+  "icon_shape": "snowflake",
+  "tick": "turn_start"
+}

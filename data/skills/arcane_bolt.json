@@ -1,0 +1,23 @@
+{
+  "id": "arcane_bolt",
+  "name": "Arkanes Geschoss",
+  "career": "scholar_mage",
+  "type": "attack",
+  "cost": {
+    "focus": 8
+  },
+  "cooldown": 0,
+  "target": "enemy",
+  "damage": {
+    "damage_type": "arcane",
+    "scaling_stat": "magic",
+    "multiplier": 1.1,
+    "flat": 0,
+    "formula": "flat + scaling_stat * multiplier - target_defense"
+  },
+  "applies_statuses": [],
+  "tags": [
+    "spell"
+  ],
+  "description": "Zuverlässiger magischer Schaden, ignoriert 50 % Verteidigung."
+}

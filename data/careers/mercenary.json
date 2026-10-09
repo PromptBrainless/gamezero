@@ -1,0 +1,44 @@
+{
+  "id": "mercenary",
+  "name": "Söldner",
+  "role": "frontline_bruiser",
+  "description": "Kompakter Frontkämpfer mit Schild und Schwert; hält Treffer aus und bestraft Fehler.",
+  "base_stats": {
+    "hp": 60,
+    "focus": 20,
+    "stamina": 30,
+    "attack": 7,
+    "defense": 6,
+    "magic": 1,
+    "speed": 4,
+    "crit_chance": 0.05
+  },
+  "stat_growth": {
+    "hp": 8,
+    "focus": 1,
+    "stamina": 2,
+    "attack": 1,
+    "defense": 1,
+    "magic": 0,
+    "speed": 0
+  },
+  "starting_skills": [
+    "shield_bash",
+    "hold_the_line"
+  ],
+  "skill_pool": [
+    "shield_bash",
+    "hold_the_line",
+    "rending_cut"
+  ],
+  "starting_items": [
+    "iron_sword",
+    "buckler",
+    "bandage_roll"
+  ],
+  "reaction": "brace",
+  "visual": {
+    "silhouette": "compact_plate",
+    "accent_color": "#8a8f98"
+  }
+}

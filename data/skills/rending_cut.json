@@ -1,0 +1,29 @@
+{
+  "id": "rending_cut",
+  "name": "Reißender Schnitt",
+  "career": "mercenary",
+  "type": "attack",
+  "cost": {
+    "stamina": 9
+  },
+  "cooldown": 2,
+  "target": "enemy",
+  "damage": {
+    "damage_type": "physical",
+    "scaling_stat": "attack",
+    "multiplier": 0.9,
+    "flat": 1,
+    "formula": "flat + scaling_stat * multiplier - target_defense"
+  },
+  "applies_statuses": [
+    {
+      "status": "bleeding",
+      "chance": 0.6,
+      "duration": 3
+    }
+  ],
+  "tags": [
+    "melee"
+  ],
+  "description": "Tiefer Schnitt, der Blutung verursacht."
+}

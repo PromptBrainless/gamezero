@@ -1,0 +1,15 @@
+{
+  "id": "bleeding",
+  "name": "Blutung",
+  "kind": "debuff",
+  "default_duration": 3,
+  "max_stacks": 3,
+  "effect": {
+    "damage_per_turn_per_stack": 3,
+    "damage_type": "bleed",
+    "ignores_defense": true
+  },
+  "description": "Verursacht Schaden zu Beginn jedes Zuges.",
+  "icon_shape": "drop",
+  "tick": "turn_start"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "exposed",
+  "name": "Entblößt",
+  "kind": "debuff",
+  "default_duration": 2,
+  "max_stacks": 1,
+  "effect": {
+    "defense_modifier": -3,
+    "crit_chance_taken_bonus": 0.15
+  },
+  "description": "Senkt Verteidigung, erhöht Krit-Anfälligkeit.",
+  "icon_shape": "crack",
+  "tick": "turn_start"
+}

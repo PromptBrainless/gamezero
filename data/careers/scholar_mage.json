@@ -1,0 +1,44 @@
+{
+  "id": "scholar_mage",
+  "name": "Gelehrter-Magier",
+  "role": "control_caster",
+  "description": "Kontrollierter Zauberwirker in Stoff; schwach im Nahkampf, stark durch Status und Fokus.",
+  "base_stats": {
+    "hp": 38,
+    "focus": 50,
+    "stamina": 22,
+    "attack": 3,
+    "defense": 2,
+    "magic": 9,
+    "speed": 5,
+    "crit_chance": 0.06
+  },
+  "stat_growth": {
+    "hp": 4,
+    "focus": 4,
+    "stamina": 1,
+    "attack": 0,
+    "defense": 0,
+    "magic": 2,
+    "speed": 0
+  },
+  "starting_skills": [
+    "arcane_bolt",
+    "frost_sigil"
+  ],
+  "skill_pool": [
+    "arcane_bolt",
+    "frost_sigil",
+    "hold_the_line"
+  ],
+  "starting_items": [
+    "oak_staff",
+    "scholars_robe",
+    "focus_draught"
+  ],
+  "reaction": "ward",
+  "visual": {
+    "silhouette": "robed_staff",
+    "accent_color": "#7a5cc9"
+  }
+}

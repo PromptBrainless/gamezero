@@ -1,0 +1,14 @@
+{
+  "id": "focused",
+  "name": "Fokussiert",
+  "kind": "buff",
+  "default_duration": 2,
+  "max_stacks": 1,
+  "effect": {
+    "crit_chance_bonus": 0.15,
+    "magic_modifier": 2
+  },
+  "description": "Erhöht Kritchance und Magie.",
+  "icon_shape": "eye",
+  "tick": "turn_start"
+}

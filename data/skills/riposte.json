@@ -1,0 +1,24 @@
+{
+  "id": "riposte",
+  "name": "Riposte",
+  "career": "duelist",
+  "type": "reaction",
+  "cost": {
+    "stamina": 6
+  },
+  "cooldown": 1,
+  "target": "enemy",
+  "damage": {
+    "damage_type": "physical",
+    "scaling_stat": "attack",
+    "multiplier": 1.2,
+    "flat": 0,
+    "formula": "flat + scaling_stat * multiplier - target_defense"
+  },
+  "applies_statuses": [],
+  "tags": [
+    "melee",
+    "reaction"
+  ],
+  "description": "Reaktion: pariert und kontert, wenn der Gegner im Nahkampf angreift."
+}

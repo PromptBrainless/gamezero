@@ -1,0 +1,13 @@
+{
+  "id": "stunned",
+  "name": "Betäubt",
+  "kind": "debuff",
+  "default_duration": 1,
+  "max_stacks": 1,
+  "effect": {
+    "skip_turn": true
+  },
+  "description": "Überspringt den nächsten Zug.",
+  "icon_shape": "star",
+  "tick": "turn_start"
+}

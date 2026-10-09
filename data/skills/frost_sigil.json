@@ -1,0 +1,30 @@
+{
+  "id": "frost_sigil",
+  "name": "Frostsiegel",
+  "career": "scholar_mage",
+  "type": "control",
+  "cost": {
+    "focus": 14
+  },
+  "cooldown": 3,
+  "target": "enemy",
+  "damage": {
+    "damage_type": "frost",
+    "scaling_stat": "magic",
+    "multiplier": 0.8,
+    "flat": 0,
+    "formula": "flat + scaling_stat * multiplier - target_defense"
+  },
+  "applies_statuses": [
+    {
+      "status": "chilled",
+      "chance": 0.8,
+      "duration": 3
+    }
+  ],
+  "tags": [
+    "spell",
+    "control"
+  ],
+  "description": "Verlangsamt den Gegner und senkt seine Initiative."
+}

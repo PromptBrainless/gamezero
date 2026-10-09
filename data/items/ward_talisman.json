@@ -1,0 +1,17 @@
+{
+  "id": "ward_talisman",
+  "name": "Schutztalisman",
+  "slot": "trinket",
+  "rarity": "uncommon",
+  "stat_modifiers": {
+    "defense": 1,
+    "magic": 1
+  },
+  "description": "Verringert Magieschaden um 10 %.",
+  "value": 80,
+  "effects": [
+    {
+      "magic_damage_taken_multiplier": 0.9
+    }
+  ]
+}

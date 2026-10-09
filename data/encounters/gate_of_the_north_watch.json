@@ -1,0 +1,18 @@
+{
+  "id": "gate_of_the_north_watch",
+  "name": "Tor der Nordwacht",
+  "type": "boss",
+  "order": 4,
+  "enemies": [
+    "iron_captain"
+  ],
+  "difficulty": 5,
+  "arena": "fortress_gate",
+  "rewards": {
+    "xp": 150,
+    "items": [
+      "captains_greatshield"
+    ]
+  },
+  "description": "Bosskampf in zwei Phasen mit Telegraphen."
+}

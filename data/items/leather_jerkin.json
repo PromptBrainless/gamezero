@@ -1,0 +1,12 @@
+{
+  "id": "leather_jerkin",
+  "name": "Lederwams",
+  "slot": "armor",
+  "rarity": "common",
+  "stat_modifiers": {
+    "defense": 2,
+    "speed": 1
+  },
+  "description": "Leichte Rüstung.",
+  "value": 35
+}

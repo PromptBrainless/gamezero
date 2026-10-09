@@ -1,0 +1,29 @@
+{
+  "id": "shield_bash",
+  "name": "Schildstoß",
+  "career": "mercenary",
+  "type": "attack",
+  "cost": {
+    "stamina": 8
+  },
+  "cooldown": 2,
+  "target": "enemy",
+  "damage": {
+    "damage_type": "physical",
+    "scaling_stat": "attack",
+    "multiplier": 1.0,
+    "flat": 2,
+    "formula": "flat + scaling_stat * multiplier - target_defense"
+  },
+  "applies_statuses": [
+    {
+      "status": "stunned",
+      "chance": 0.35,
+      "duration": 1
+    }
+  ],
+  "tags": [
+    "melee"
+  ],
+  "description": "Schlag mit dem Schild; kann den Gegner betäuben."
+}

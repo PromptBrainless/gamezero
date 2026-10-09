@@ -1,0 +1,23 @@
+{
+  "id": "hold_the_line",
+  "name": "Stellung halten",
+  "career": "mercenary",
+  "type": "defense",
+  "cost": {
+    "stamina": 10
+  },
+  "cooldown": 3,
+  "target": "self",
+  "damage": null,
+  "applies_statuses": [
+    {
+      "status": "guarded",
+      "chance": 1.0,
+      "duration": 2
+    }
+  ],
+  "tags": [
+    "stance"
+  ],
+  "description": "Nimmt eine feste Haltung ein und reduziert eingehenden Schaden."
+}

@@ -1,0 +1,13 @@
+{
+  "id": "guarded",
+  "name": "Gedeckt",
+  "kind": "buff",
+  "default_duration": 2,
+  "max_stacks": 1,
+  "effect": {
+    "damage_taken_multiplier": 0.6
+  },
+  "description": "Reduziert eingehenden Schaden um 40 %.",
+  "icon_shape": "shield",
+  "tick": "turn_start"
+}

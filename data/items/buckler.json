@@ -1,0 +1,11 @@
+{
+  "id": "buckler",
+  "name": "Faustschild",
+  "slot": "offhand",
+  "rarity": "common",
+  "stat_modifiers": {
+    "defense": 2
+  },
+  "description": "Kleiner Schild.",
+  "value": 30
+}

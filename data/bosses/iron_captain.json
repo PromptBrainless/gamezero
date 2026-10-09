@@ -1,0 +1,78 @@
+{
+  "id": "iron_captain",
+  "name": "Der Eiserne Hauptmann",
+  "title": "Letzter Kommandant der Nordwacht",
+  "tier": 1,
+  "base_stats": {
+    "hp": 220,
+    "attack": 10,
+    "defense": 8,
+    "magic": 0,
+    "speed": 4,
+    "crit_chance": 0.05
+  },
+  "description": "Massiver Plattenträger mit schwerem Schild; diszipliniert, langsam, erbarmungslos.",
+  "visual": {
+    "silhouette": "oversized_plate",
+    "accent_color": "#a32626",
+    "art_quality": "hd_dark_fantasy"
+  },
+  "phases": [
+    {
+      "id": "phase_1_formation",
+      "name": "Formation",
+      "hp_threshold": 1.0,
+      "skills": [
+        "shield_bash",
+        "iron_command"
+      ],
+      "telegraphs": [
+        {
+          "skill": "iron_command",
+          "warning_turns": 1,
+          "icon": "amber_sword"
+        }
+      ],
+      "on_enter": []
+    },
+    {
+      "id": "phase_2_last_stand",
+      "name": "Letztes Gefecht",
+      "hp_threshold": 0.5,
+      "skills": [
+        "rending_cut",
+        "iron_command"
+      ],
+      "on_enter": [
+        {
+          "apply_status": "guarded",
+          "duration": 2,
+          "target": "self"
+        },
+        {
+          "stat_modifier": {
+            "attack": 3
+          }
+        }
+      ],
+      "telegraphs": [
+        {
+          "skill": "iron_command",
+          "warning_turns": 1,
+          "icon": "amber_sword"
+        }
+      ]
+    }
+  ],
+  "loot_table": [
+    {
+      "item": "captains_greatshield",
+      "chance": 1.0
+    },
+    {
+      "item": "whetstone",
+      "chance": 0.5
+    }
+  ],
+  "xp_reward": 150
+}

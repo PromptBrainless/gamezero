@@ -1,0 +1,44 @@
+{
+  "id": "duelist",
+  "name": "Duellant",
+  "role": "fast_precision",
+  "description": "Schlanker Klingenkämpfer: hohe Initiative, Präzision und Konter.",
+  "base_stats": {
+    "hp": 44,
+    "focus": 26,
+    "stamina": 34,
+    "attack": 8,
+    "defense": 3,
+    "magic": 1,
+    "speed": 9,
+    "crit_chance": 0.12
+  },
+  "stat_growth": {
+    "hp": 5,
+    "focus": 2,
+    "stamina": 2,
+    "attack": 1,
+    "defense": 0,
+    "magic": 0,
+    "speed": 1
+  },
+  "starting_skills": [
+    "riposte",
+    "precise_thrust"
+  ],
+  "skill_pool": [
+    "riposte",
+    "precise_thrust",
+    "rending_cut"
+  ],
+  "starting_items": [
+    "rapier",
+    "leather_jerkin",
+    "bandage_roll"
+  ],
+  "reaction": "parry",
+  "visual": {
+    "silhouette": "slim_sideways",
+    "accent_color": "#d9b44a"
+  }
+}

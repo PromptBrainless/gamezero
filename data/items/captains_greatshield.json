@@ -1,0 +1,15 @@
+{
+  "id": "captains_greatshield",
+  "name": "Großschild des Hauptmanns",
+  "slot": "offhand",
+  "rarity": "rare",
+  "stat_modifiers": {
+    "defense": 5,
+    "speed": -1
+  },
+  "description": "Beute des Eisernen Hauptmanns.",
+  "career_tags": [
+    "mercenary"
+  ],
+  "value": 250
+}
