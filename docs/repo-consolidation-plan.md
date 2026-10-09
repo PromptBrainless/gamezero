@@ -74,5 +74,5 @@ These files live on other PR branches, not on this base, so they are listed rath
 1. **Slice size**: #8 plans 3 normal encounters + 1 boss; #5 content has 3 careers, 8 skills, 6 statuses, 3 enemies, 1 boss, 11 items, 4 encounters; the preferred minimal core is smaller. Not decided here; content PRs may trim.
 2. **#5 content vs schema**: `hold_the_line.damage` and `iron_command.career` are `null` in #5 and must be omitted.
 3. **Progression and reward tables**: #8 expects career `progression[]` and reward tables; #5 has neither (inline `rewards`, `stat_growth`). Schema follows #5; Track 1 must either accept this or extend the schema first.
-4. **Boss item `captains_greatshield`** etc. rely on #5 `effects` objects whose keys are not enumerated; the schema leaves them open for items.
+4. **Item `effects` keys** (e.g. `magic_damage_taken_multiplier` on `ward_talisman`) are not enumerated; the schema documents the shape only.
 5. **PR #4 docs** are not yet aligned to milestones/board.
