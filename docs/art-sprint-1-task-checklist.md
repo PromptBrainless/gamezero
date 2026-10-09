@@ -45,7 +45,7 @@ Execution checklist for the HUD visual kit and 36-icon set. Read the [production
 - [ ] Use shared templates and construction rules; do not introduce unique illustration styles per category.
 - [ ] Produce a monochrome contact sheet and a set shown in the HUD context.
 
-**Review gate B2 — Icon language:** approve the four representatives before batch production.  
+**Review gate B2 — Icon language:** approve the four representatives before batch production.
 **Review gate C — Production batch:** approve the complete 36-icon sheet for meaning, small-size legibility, and consistency.
 
 ## Phase 4 — Export and handoff
