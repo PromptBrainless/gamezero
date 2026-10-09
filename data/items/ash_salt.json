@@ -1,0 +1,17 @@
+{
+  "id": "ash_salt",
+  "name": "Ash Salt",
+  "category": "consumable",
+  "rarity": "common",
+  "target_type": "self",
+  "effect": {
+    "operation": "remove_status",
+    "value": 1,
+    "status_id": "burning",
+    "damage_type": null
+  },
+  "uses": 1,
+  "value": 16,
+  "description": "A cooling mineral paste that removes Burning from you.",
+  "tags": ["cleanse", "elemental"]
+}

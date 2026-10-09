@@ -1,0 +1,17 @@
+{
+  "id": "ironbark_phial",
+  "name": "Ironbark Phial",
+  "category": "consumable",
+  "rarity": "uncommon",
+  "target_type": "self",
+  "effect": {
+    "operation": "apply_status",
+    "value": 1,
+    "status_id": "guarded",
+    "damage_type": null
+  },
+  "uses": 1,
+  "value": 36,
+  "description": "Drink the bitter resin to gain Guarded for two turns, reducing each hit by 3.",
+  "tags": ["defense", "resin"]
+}

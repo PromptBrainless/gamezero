@@ -1,0 +1,21 @@
+{
+  "id": "stunned",
+  "name": "Stunned",
+  "category": "harmful",
+  "duration_turns": 1,
+  "stacking": {
+    "policy": "refresh",
+    "max_stacks": 1
+  },
+  "effects": [
+    {
+      "trigger": "turn_start",
+      "operation": "skip_action",
+      "value": 1,
+      "damage_type": null
+    }
+  ],
+  "cleanse_tags": ["control"],
+  "icon_key": "status_stunned",
+  "description": "Lose your next action. Stun does not prevent passive effects or status ticks."
+}

@@ -1,0 +1,17 @@
+{
+  "id": "duelist_whetstone",
+  "name": "Duelist's Whetstone",
+  "category": "combat_tool",
+  "rarity": "uncommon",
+  "target_type": "self",
+  "effect": {
+    "operation": "bonus_damage_next_attack",
+    "value": 3,
+    "status_id": null,
+    "damage_type": null
+  },
+  "uses": 1,
+  "value": 30,
+  "description": "Sharpen a weapon before the next exchange; your next attack deals 3 additional damage.",
+  "tags": ["weapon", "damage"]
+}

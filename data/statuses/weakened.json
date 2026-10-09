@@ -1,0 +1,21 @@
+{
+  "id": "weakened",
+  "name": "Weakened",
+  "category": "harmful",
+  "duration_turns": 2,
+  "stacking": {
+    "policy": "refresh",
+    "max_stacks": 1
+  },
+  "effects": [
+    {
+      "trigger": "on_damage_dealt",
+      "operation": "multiply_outgoing_damage",
+      "value": 0.75,
+      "damage_type": null
+    }
+  ],
+  "cleanse_tags": ["curse"],
+  "icon_key": "status_weakened",
+  "description": "Deal 25% less damage."
+}

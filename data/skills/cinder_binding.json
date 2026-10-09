@@ -1,0 +1,32 @@
+{
+  "id": "cinder_binding",
+  "name": "Cinder Binding",
+  "career_id": "scholar_mage",
+  "category": "spell",
+  "resource_cost": 3,
+  "cooldown_turns": 2,
+  "target_type": "enemy",
+  "range": 3,
+  "hit_check": {
+    "attribute": "intellect",
+    "target_stat": "evasion",
+    "modifier": 1
+  },
+  "damage": {
+    "type": "fire",
+    "base": 2,
+    "scaling_stat": "intellect",
+    "scaling": 0.35
+  },
+  "effects": [
+    {
+      "status_id": "weakened",
+      "chance": 1,
+      "duration_turns": 2,
+      "stacks": 1
+    }
+  ],
+  "animation_key": "scholar_mage_cinder_binding",
+  "ai_tags": ["ranged", "control", "debuff"],
+  "tooltip": "Bind a target within three tiles for 2 plus 35% of your Intellect, weakening its damage by 25% for two turns."
+}

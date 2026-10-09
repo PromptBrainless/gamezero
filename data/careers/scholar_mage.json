@@ -1,0 +1,25 @@
+{
+  "id": "scholar_mage",
+  "name": "Scholar-Mage",
+  "role": "Status tactician",
+  "description": "A battlefield scholar who turns annotated formulae into fire, restraint, and exploitable weaknesses.",
+  "base_stats": {
+    "health": 25,
+    "resource": 8,
+    "might": 2,
+    "finesse": 4,
+    "intellect": 9,
+    "resolve": 5
+  },
+  "passive": {
+    "id": "field_notes",
+    "name": "Field Notes",
+    "trigger": "When a skill applies a status successfully",
+    "effect": {
+      "operation": "restore_resource_once_per_turn_on_status",
+      "amount": 1
+    }
+  },
+  "starting_skills": ["ember_bolt", "cinder_binding"],
+  "weapon_tags": ["focus", "staff", "dagger"]
+}

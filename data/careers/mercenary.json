@@ -1,0 +1,26 @@
+{
+  "id": "mercenary",
+  "name": "Mercenary",
+  "role": "Front-line breaker",
+  "description": "A hired blade who trades finesse for reliable pressure and a shield that can turn aside a decisive blow.",
+  "base_stats": {
+    "health": 34,
+    "resource": 5,
+    "might": 7,
+    "finesse": 4,
+    "intellect": 3,
+    "resolve": 6
+  },
+  "passive": {
+    "id": "paid_in_blood",
+    "name": "Paid in Blood",
+    "trigger": "When a skill deals at least 6 damage after mitigation",
+    "effect": {
+      "operation": "restore_resource_once_per_turn_on_damage_threshold",
+      "threshold": 6,
+      "amount": 1
+    }
+  },
+  "starting_skills": ["shield_bash", "measured_strike", "rallying_guard"],
+  "weapon_tags": ["sword", "mace", "shield"]
+}

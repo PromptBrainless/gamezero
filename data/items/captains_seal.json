@@ -1,0 +1,17 @@
+{
+  "id": "captains_seal",
+  "name": "Captain's Seal",
+  "category": "combat_tool",
+  "rarity": "rare",
+  "target_type": "enemy",
+  "effect": {
+    "operation": "apply_status",
+    "value": 1,
+    "status_id": "marked",
+    "damage_type": null
+  },
+  "uses": 1,
+  "value": 58,
+  "description": "The garrison seal still carries the Captain's authority. Mark one enemy for two turns.",
+  "tags": ["mark", "captain", "trophy"]
+}

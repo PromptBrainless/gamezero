@@ -1,0 +1,17 @@
+{
+  "id": "focus_draught",
+  "name": "Focus Draught",
+  "category": "consumable",
+  "rarity": "common",
+  "target_type": "self",
+  "effect": {
+    "operation": "restore_resource",
+    "value": 3,
+    "status_id": null,
+    "damage_type": null
+  },
+  "uses": 1,
+  "value": 22,
+  "description": "A sharp, astringent tea that restores 3 resource.",
+  "tags": ["resource", "consumable"]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "shock_trap",
+  "name": "Shock Trap",
+  "category": "combat_tool",
+  "rarity": "rare",
+  "target_type": "enemy",
+  "effect": {
+    "operation": "apply_status",
+    "value": 1,
+    "status_id": "stunned",
+    "damage_type": null
+  },
+  "uses": 1,
+  "value": 44,
+  "description": "A sprung wire snaps with stored force and Stuns one enemy for its next action.",
+  "tags": ["control", "trap"]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "road_bruiser",
+  "name": "Road Bruiser",
+  "archetype": "armored brawler",
+  "description": "A toll-road enforcer in scavenged mail who closes distance and relies on blunt force rather than finesse.",
+  "stats": {
+    "health": 30,
+    "resource": 4,
+    "might": 7,
+    "finesse": 3,
+    "intellect": 2,
+    "resolve": 6,
+    "evasion": 10
+  },
+  "skills": ["measured_strike", "shield_bash"],
+  "ai_profile": {
+    "preferred_range": 1,
+    "behavior": "Close on the nearest target, use Shield Bash when the target is not stunned, and use Measured Strike otherwise.",
+    "telegraph": "Raises a rusted shield before committing to the bash."
+  },
+  "rewards": {
+    "experience": 24,
+    "item_drops": [
+      {
+        "item_id": "field_dressing",
+        "quantity": 1,
+        "chance": 0.35
+      }
+    ]
+  },
+  "tags": ["human", "roadside", "armored", "melee"]
+}

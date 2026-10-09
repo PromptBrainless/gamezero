@@ -1,0 +1,73 @@
+{
+  "id": "iron_captain",
+  "name": "The Iron Captain",
+  "archetype": "armored commander",
+  "description": "The last officer of a ruined border garrison, sealed inside blackened plate and still enforcing orders no one remembers.",
+  "stats": {
+    "health": 96,
+    "resource": 8,
+    "might": 9,
+    "finesse": 5,
+    "intellect": 4,
+    "resolve": 9,
+    "evasion": 13
+  },
+  "skills": ["measured_strike", "shield_bash", "riposte"],
+  "ai_profile": {
+    "preferred_range": 1,
+    "behavior": "Press the nearest target with Measured Strike. Use Shield Bash to interrupt a target that has a ready skill; use Riposte after a marked target attacks.",
+    "telegraph": "His standard drops, then the armor's furnace seams flare before each heavy strike."
+  },
+  "rewards": {
+    "experience": 160,
+    "item_drops": [
+      {
+        "item_id": "captains_seal",
+        "quantity": 1,
+        "chance": 1
+      },
+      {
+        "item_id": "ironbark_phial",
+        "quantity": 1,
+        "chance": 0.5
+      }
+    ]
+  },
+  "tags": ["boss", "human", "fortress", "armored", "commander"],
+  "phases": [
+    {
+      "id": "hold_the_line",
+      "health_threshold": 100,
+      "description": "The Captain fights by the book, using measured blows to test the party's defenses.",
+      "skill_weights": [
+        {
+          "skill_id": "measured_strike",
+          "weight": 5
+        },
+        {
+          "skill_id": "shield_bash",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "id": "iron_last_order",
+      "health_threshold": 50,
+      "description": "With the garrison standard broken, he abandons formation and counters anyone who dares press him.",
+      "skill_weights": [
+        {
+          "skill_id": "measured_strike",
+          "weight": 3
+        },
+        {
+          "skill_id": "shield_bash",
+          "weight": 2
+        },
+        {
+          "skill_id": "riposte",
+          "weight": 4
+        }
+      ]
+    }
+  ]
+}

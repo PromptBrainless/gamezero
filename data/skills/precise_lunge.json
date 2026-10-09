@@ -1,0 +1,32 @@
+{
+  "id": "precise_lunge",
+  "name": "Precise Lunge",
+  "career_id": "duelist",
+  "category": "attack",
+  "resource_cost": 2,
+  "cooldown_turns": 1,
+  "target_type": "enemy",
+  "range": 2,
+  "hit_check": {
+    "attribute": "finesse",
+    "target_stat": "evasion",
+    "modifier": 2
+  },
+  "damage": {
+    "type": "physical",
+    "base": 3,
+    "scaling_stat": "finesse",
+    "scaling": 0.55
+  },
+  "effects": [
+    {
+      "status_id": "bleed",
+      "chance": 0.5,
+      "duration_turns": 3,
+      "stacks": 1
+    }
+  ],
+  "animation_key": "duelist_precise_lunge",
+  "ai_tags": ["gap_close", "precision"],
+  "tooltip": "Lunge up to two tiles for 3 plus 55% of your Finesse. A hit has a 50% chance to cause Bleed."
+}

@@ -1,0 +1,17 @@
+{
+  "id": "ember_vial",
+  "name": "Ember Vial",
+  "category": "consumable",
+  "rarity": "uncommon",
+  "target_type": "enemy",
+  "effect": {
+    "operation": "deal_damage",
+    "value": 5,
+    "status_id": null,
+    "damage_type": "fire"
+  },
+  "uses": 1,
+  "value": 32,
+  "description": "A stoppered clay vial of chapel oil that bursts on impact, dealing 5 fire damage.",
+  "tags": ["fire", "damage_over_time"]
+}

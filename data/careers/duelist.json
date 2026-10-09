@@ -1,0 +1,25 @@
+{
+  "id": "duelist",
+  "name": "Duelist",
+  "role": "Precision striker",
+  "description": "A patient blade-fighter who marks openings, draws blood, and punishes a foe that commits too early.",
+  "base_stats": {
+    "health": 28,
+    "resource": 6,
+    "might": 4,
+    "finesse": 8,
+    "intellect": 4,
+    "resolve": 4
+  },
+  "passive": {
+    "id": "measured_rhythm",
+    "name": "Measured Rhythm",
+    "trigger": "When an attack misses",
+    "effect": {
+      "operation": "restore_resource_once_per_turn_on_miss",
+      "amount": 1
+    }
+  },
+  "starting_skills": ["precise_lunge", "riposte", "feinting_cut"],
+  "weapon_tags": ["rapier", "saber", "dagger"]
+}

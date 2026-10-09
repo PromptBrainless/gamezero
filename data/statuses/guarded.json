@@ -1,0 +1,21 @@
+{
+  "id": "guarded",
+  "name": "Guarded",
+  "category": "beneficial",
+  "duration_turns": 2,
+  "stacking": {
+    "policy": "refresh",
+    "max_stacks": 1
+  },
+  "effects": [
+    {
+      "trigger": "on_damage",
+      "operation": "reduce_incoming_damage",
+      "value": 3,
+      "damage_type": null
+    }
+  ],
+  "cleanse_tags": [],
+  "icon_key": "status_guarded",
+  "description": "Reduce each incoming hit by 3, to a minimum of 1 damage."
+}

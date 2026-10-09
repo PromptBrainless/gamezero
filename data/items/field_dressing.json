@@ -1,0 +1,17 @@
+{
+  "id": "field_dressing",
+  "name": "Field Dressing",
+  "category": "consumable",
+  "rarity": "common",
+  "target_type": "self",
+  "effect": {
+    "operation": "heal",
+    "value": 8,
+    "status_id": null,
+    "damage_type": null
+  },
+  "uses": 1,
+  "value": 18,
+  "description": "A clean linen roll and bitter antiseptic. Restore 8 health.",
+  "tags": ["healing", "medical"]
+}

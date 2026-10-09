@@ -1,0 +1,32 @@
+{
+  "id": "shield_bash",
+  "name": "Shield Bash",
+  "career_id": "mercenary",
+  "category": "attack",
+  "resource_cost": 2,
+  "cooldown_turns": 2,
+  "target_type": "enemy",
+  "range": 1,
+  "hit_check": {
+    "attribute": "might",
+    "target_stat": "evasion",
+    "modifier": 1
+  },
+  "damage": {
+    "type": "physical",
+    "base": 3,
+    "scaling_stat": "might",
+    "scaling": 0.5
+  },
+  "effects": [
+    {
+      "status_id": "stunned",
+      "chance": 0.25,
+      "duration_turns": 1,
+      "stacks": 1
+    }
+  ],
+  "animation_key": "mercenary_shield_bash",
+  "ai_tags": ["close_range", "interrupt"],
+  "tooltip": "Strike for 3 plus half your Might. Has a 25% chance to stun the target for its next action."
+}

@@ -1,0 +1,52 @@
+{
+  "id": "ashen_sanctum",
+  "name": "The Ashen Sanctum",
+  "region": "Cinder Chapel",
+  "description": "Beneath the chapel, ash falls upward around an altar of scorched iron. A hexer guards the rite while the last duelist keeps intruders from interrupting it.",
+  "difficulty": 3,
+  "recommended_careers": ["mercenary", "scholar_mage"],
+  "waves": [
+    {
+      "enemies": [
+        {
+          "enemy_id": "ash_hexer",
+          "quantity": 1
+        },
+        {
+          "enemy_id": "cult_duelist",
+          "quantity": 1
+        }
+      ],
+      "boss_id": null
+    },
+    {
+      "enemies": [
+        {
+          "enemy_id": "ash_hexer",
+          "quantity": 1
+        },
+        {
+          "enemy_id": "road_bruiser",
+          "quantity": 1
+        }
+      ],
+      "boss_id": null
+    }
+  ],
+  "rewards": {
+    "experience": 95,
+    "item_drops": [
+      {
+        "item_id": "ember_vial",
+        "quantity": 1,
+        "chance": 0.6
+      },
+      {
+        "item_id": "ash_salt",
+        "quantity": 1,
+        "chance": 0.75
+      }
+    ]
+  },
+  "tags": ["story", "cult", "fire", "multi_wave"]
+}

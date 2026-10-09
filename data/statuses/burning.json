@@ -1,0 +1,21 @@
+{
+  "id": "burning",
+  "name": "Burning",
+  "category": "harmful",
+  "duration_turns": 2,
+  "stacking": {
+    "policy": "strongest",
+    "max_stacks": 1
+  },
+  "effects": [
+    {
+      "trigger": "turn_start",
+      "operation": "damage",
+      "value": 3,
+      "damage_type": "fire"
+    }
+  ],
+  "cleanse_tags": ["elemental"],
+  "icon_key": "status_burning",
+  "description": "Take 3 fire damage at the start of your turn."
+}

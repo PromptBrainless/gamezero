@@ -1,0 +1,32 @@
+{
+  "id": "riposte",
+  "name": "Riposte",
+  "career_id": "duelist",
+  "category": "attack",
+  "resource_cost": 2,
+  "cooldown_turns": 2,
+  "target_type": "enemy",
+  "range": 1,
+  "hit_check": {
+    "attribute": "finesse",
+    "target_stat": "evasion",
+    "modifier": 1
+  },
+  "damage": {
+    "type": "physical",
+    "base": 5,
+    "scaling_stat": "finesse",
+    "scaling": 0.45
+  },
+  "effects": [
+    {
+      "status_id": "marked",
+      "chance": 1,
+      "duration_turns": 2,
+      "stacks": 1
+    }
+  ],
+  "animation_key": "duelist_riposte",
+  "ai_tags": ["counter", "close_range"],
+  "tooltip": "Punish an adjacent foe for 5 plus 45% of your Finesse and mark it for two turns, increasing its damage taken by 20%."
+}
