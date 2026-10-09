@@ -1,0 +1,19 @@
+{
+  "id": "focused",
+  "type": "status",
+  "name": "Fokussiert",
+  "description": "Erhöht die Kritchance um 15 Prozentpunkte und die Kraft um zwei.",
+  "kind": "buff",
+  "duration_default": 2,
+  "expires_on_combat_end": true,
+  "max_stacks": 1,
+  "stacking": "refresh",
+  "tick": "turn_start",
+  "effects": [
+    { "stat": "crit_chance", "op": "add", "value": 15 },
+    { "stat": "power", "op": "add", "value": 2 }
+  ],
+  "countered_by_statuses": ["stunned"],
+  "icon_shape": "eye",
+  "tags": ["buff", "setup"]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "stunned",
+  "type": "status",
+  "name": "Betäubt",
+  "description": "Überspringt den nächsten Zug und endet nach einer Runde.",
+  "kind": "control",
+  "duration_default": 1,
+  "expires_on_combat_end": true,
+  "max_stacks": 1,
+  "stacking": "refresh",
+  "tick": "turn_start",
+  "skip_turn": true,
+  "effects": [{ "stat": "actions_per_turn", "op": "add", "value": -1 }],
+  "removed_by": ["hold_the_line"],
+  "icon_shape": "star",
+  "tags": ["debuff", "control"]
+}

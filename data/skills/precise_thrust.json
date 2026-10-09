@@ -1,0 +1,22 @@
+{
+  "id": "precise_thrust",
+  "type": "skill",
+  "name": "Präziser Stich",
+  "description": "Fügt präzisen körperlichen Schaden zu und legt Schwachstellen des Ziels frei.",
+  "career": "duelist",
+  "action_type": "attack",
+  "cost": { "stamina": 8, "focus": 4 },
+  "cooldown": 2,
+  "range": "melee",
+  "target": "enemy",
+  "hit_stat": "speed",
+  "damage": {
+    "base": 4,
+    "type": "physical",
+    "scaling": { "stat": "power", "multiplier": 1.1 }
+  },
+  "applies": [{ "status": "exposed", "chance": 50, "duration": 2 }],
+  "removes": ["guarded"],
+  "conditional_bonuses": [{ "tag": "focused", "value": 2 }],
+  "tags": ["melee", "precision", "payoff"]
+}

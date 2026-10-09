@@ -1,0 +1,16 @@
+{
+  "id": "hold_the_line",
+  "type": "skill",
+  "name": "Stellung halten",
+  "description": "Verringert zwei Runden lang eingehenden Schaden und entfernt Blutung, Entblößung oder Betäubung.",
+  "career": "mercenary",
+  "action_type": "defense",
+  "cost": { "stamina": 10, "focus": 0 },
+  "cooldown": 3,
+  "range": "self",
+  "target": "self",
+  "hit_stat": "guard",
+  "applies": [{ "status": "guarded", "chance": 100, "duration": 2 }],
+  "removes": ["bleeding", "exposed", "stunned"],
+  "tags": ["defense", "cleanse", "self"]
+}
