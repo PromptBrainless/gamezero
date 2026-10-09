@@ -114,6 +114,7 @@ These documents are plans; they do not claim that assets have been created or ap
 - Icon labels and HUD semantics must be confirmed against the canonical gameplay model before integration.
 - Final target device orientation remains unresolved between earlier portrait and landscape proposals; plan responsive references without claiming it is settled.
 - The PR #1 Godot scaffold contains unverified stubs and is deferred rather than copied as functioning runtime code.
+- Optional content behaviors (`trigger`, `removes_statuses`, and consumable `next_attack_bonus`) are explicit schema fields; runtime implementation must exercise them before the data/runtime track is done.
 - Milestones and implementation status can drift from the actual repository.
 
 ## 9. Intended source-of-truth map

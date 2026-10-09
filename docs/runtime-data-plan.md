@@ -46,6 +46,16 @@ Do not add separate `regions/` or `rewards/` directories, localization keys, or 
 6. Verify boss phase thresholds are descending and begin at `1.0`; verify encounter order is unique.
 7. Report all discovered errors in a stable, source-locatable format.
 
+## Adopted content behaviors
+
+The selected slice records use several optional fields that require explicit runtime consumers, not only structural validation:
+
+- `skills.trigger` dispatches the `riposte` reaction after a melee hit.
+- `skills.removes_statuses` clears listed statuses when `hold_the_line` or `quick_feint` resolves.
+- Consumable `use.next_attack_bonus` applies the whetstone's bonus to the next attack.
+
+These behaviors are part of the current content contract. The runtime track is not complete until each is validated and exercised; do not silently accept the fields while ignoring their effects.
+
 ## Delivery sequence
 
 1. Lock the schema and a representative valid record per collection.
