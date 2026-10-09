@@ -1,0 +1,16 @@
+{
+  "id": "guarded",
+  "type": "status",
+  "name": "Gedeckt",
+  "description": "Verringert erlittenen Schaden um 40 Prozent.",
+  "kind": "buff",
+  "duration_default": 2,
+  "expires_on_combat_end": true,
+  "max_stacks": 1,
+  "stacking": "refresh",
+  "tick": "turn_start",
+  "effects": [{ "stat": "damage_taken", "op": "mul", "value": 0.6 }],
+  "countered_by_skills": ["precise_thrust"],
+  "icon_shape": "shield",
+  "tags": ["buff", "defense"]
+}

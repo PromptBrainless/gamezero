@@ -1,0 +1,20 @@
+{
+  "id": "rending_cut",
+  "type": "skill",
+  "name": "Reißender Schnitt",
+  "description": "Verursacht körperlichen Schaden und lässt das Ziel mit hoher Chance drei Runden bluten.",
+  "career": "mercenary",
+  "action_type": "attack",
+  "cost": { "stamina": 9, "focus": 0 },
+  "cooldown": 2,
+  "range": "melee",
+  "target": "enemy",
+  "hit_stat": "power",
+  "damage": {
+    "base": 2,
+    "type": "physical",
+    "scaling": { "stat": "power", "multiplier": 0.9 }
+  },
+  "applies": [{ "status": "bleeding", "chance": 60, "duration": 3 }],
+  "tags": ["melee", "damage_over_time", "payoff"]
+}

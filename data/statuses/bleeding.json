@@ -1,0 +1,17 @@
+{
+  "id": "bleeding",
+  "type": "status",
+  "name": "Blutung",
+  "description": "Verursacht zu Beginn des Zuges drei Schaden pro Stapel.",
+  "kind": "dot",
+  "duration_default": 3,
+  "expires_on_combat_end": true,
+  "max_stacks": 3,
+  "stacking": "stack",
+  "tick": "turn_start",
+  "tick_damage": 3,
+  "effects": [{ "stat": "hp", "op": "add", "value": -3 }],
+  "countered_by_skills": ["hold_the_line"],
+  "icon_shape": "drop",
+  "tags": ["debuff", "damage_over_time"]
+}
