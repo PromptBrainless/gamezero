@@ -141,13 +141,17 @@ export async function executePlan(
       return path;
     }
     const holder = claimed.get(path.toLowerCase());
-    record.conflict = holder ? `claimed by Drive entry ${holder}` : "existing repository file";
+    // Raw-mirror and sorted conflicts are recorded separately on the same output.
+    const [conflictKey, resolutionKey] = checkRepo
+      ? ["conflict", "conflictResolution"]
+      : ["rawConflict", "rawConflictResolution"];
+    record[conflictKey] = holder ? `claimed by Drive entry ${holder}` : "existing repository file";
     if (checkRepo && conflictPolicy === "skip") {
-      record.conflictResolution = "skipped";
+      record[resolutionKey] = "skipped";
       return null;
     }
     if (checkRepo && conflictPolicy === "overwrite" && !holder) {
-      record.conflictResolution = "overwrite";
+      record[resolutionKey] = "overwrite";
       claimed.set(path.toLowerCase(), entry.id);
       return path;
     }
@@ -155,7 +159,7 @@ export async function executePlan(
     let candidate = withSuffix(path, base);
     for (let n = 2; isTaken(candidate); n += 1) candidate = withSuffix(path, `${base}_${n}`);
     claimed.set(candidate.toLowerCase(), entry.id);
-    record.conflictResolution = "renamed";
+    record[resolutionKey] = "renamed";
     return candidate;
   }
 

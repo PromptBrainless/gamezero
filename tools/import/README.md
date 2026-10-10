@@ -147,9 +147,11 @@ npm run drive:import -- --concurrency 8 --max-file-size-mb 2000 --verbose
 
 What happens:
 
-1. Each file is downloaded (`alt=media`) or exported into a per-run staging
-   folder under `imports/drive/.staging/` using atomic `.part-*` temp files;
-   downloads are verified against Drive's MD5 checksum and hashed with SHA-256.
+1. Each file is downloaded (`alt=media`) or exported straight to its raw-mirror
+   path, or — with `--no-raw` — into a per-run staging folder under
+   `imports/drive/.staging/` that is removed afterwards. Every write goes
+   through an atomic `.part-*` temp file; downloads are verified against
+   Drive's MD5 checksum and hashed with SHA-256.
 2. **Raw mirror** — the file is placed under
    `imports/drive/raw/<folderId>/<original Drive path>` (names made filesystem
    safe). This area is git-ignored: it is the untouched local source of truth.
@@ -296,7 +298,7 @@ entry, handy in a spreadsheet; disable with `--no-csv` or `output.manifestCsv`).
         },
       ],
       // spreadsheets with perSheet: { "rawDir": "….tabs", "sortedDir": "…", "tabs": [{ "title", "sheetId", "rawPath", "sortedPath", "sha256", "bytes" }] }
-      // export fallbacks are recorded as "usedFallback"; per-output conflicts as "conflict" + "conflictResolution"
+      // export fallbacks are recorded as "usedFallback"; sorted-path conflicts as "conflict" + "conflictResolution", raw-mirror ones as "rawConflict" + "rawConflictResolution"
     },
   ],
   "removedSinceLastImport": [],
