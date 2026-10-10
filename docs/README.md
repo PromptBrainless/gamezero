@@ -35,6 +35,17 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 | [`art-sprint-1-task-checklist.md`](art-sprint-1-task-checklist.md) | Actionable phases and review gates |
 | [`art-sprint-1-prompt-sheet.md`](art-sprint-1-prompt-sheet.md) | Generator-ready HUD and per-icon prompts |
 
+## Post-slice data model planning
+
+Planned next layer; does not change the slice contract above. Staged types and examples live in [`../game/runtime_data/`](../game/runtime_data/README.md).
+
+| Document | Owns |
+|---|---|
+| [`final-data-entities/README.md`](final-data-entities/README.md) | Staging rules and promotion path into `data-schema.md` |
+| [`final-data-entities/classes-and-progression.md`](final-data-entities/classes-and-progression.md) | Classes, progression tracks, run progression state |
+| [`final-data-entities/enemies-and-encounters.md`](final-data-entities/enemies-and-encounters.md) | Enemies, bosses, stages, encounters and waves |
+| [`ui/hud-combat-event-integration-plan.md`](ui/hud-combat-event-integration-plan.md) | HUD and Reward/Progression consumption of combat and run events |
+
 ## Project context
 
 | Document | Owns |

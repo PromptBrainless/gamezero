@@ -1,0 +1,41 @@
+{
+  "id": "scholar_mage_track",
+  "name": "Laufbahn des Gelehrtenmagiers",
+  "class": "scholar_mage",
+  "max_level": 5,
+  "levels": [
+    {
+      "level": 1,
+      "xp_required": 0
+    },
+    {
+      "level": 2,
+      "xp_required": 40,
+      "unlock_skills": ["focused_mind"]
+    },
+    {
+      "level": 3,
+      "xp_required": 100,
+      "stat_bonus": {
+        "focus": 3
+      }
+    },
+    {
+      "level": 4,
+      "xp_required": 220,
+      "stat_bonus": {
+        "hp": 3,
+        "magic": 1
+      }
+    },
+    {
+      "level": 5,
+      "xp_required": 400,
+      "stat_bonus": {
+        "magic": 1,
+        "focus": 3
+      }
+    }
+  ],
+  "description": "Zauber-Laufbahn: früh Konzentration, danach Fokusvorrat und Zauberkraft."
+}

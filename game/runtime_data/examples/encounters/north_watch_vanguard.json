@@ -1,0 +1,42 @@
+{
+  "id": "north_watch_vanguard",
+  "name": "Vorhut der Nordwacht",
+  "type": "standard",
+  "difficulty": 3,
+  "stage": "ruined_road",
+  "waves": [
+    {
+      "id": "wave_1",
+      "trigger": "encounter_start",
+      "spawns": [
+        {
+          "kind": "enemy",
+          "actor": "rusted_deserter",
+          "slot": 0
+        }
+      ]
+    },
+    {
+      "id": "wave_2",
+      "trigger": "previous_wave_cleared",
+      "spawns": [
+        {
+          "kind": "enemy",
+          "actor": "rusted_deserter",
+          "slot": 0
+        },
+        {
+          "kind": "enemy",
+          "actor": "hedge_cultist",
+          "slot": 2
+        }
+      ]
+    }
+  ],
+  "victory": "defeat_all_waves",
+  "rewards": {
+    "xp": 60,
+    "items": ["bandage_roll"]
+  },
+  "description": "Post-Slice-Beispiel für Wellen: erst ein Deserteur, danach Nahkämpfer mit Kultisten-Unterstützung."
+}

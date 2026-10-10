@@ -1,0 +1,11 @@
+{
+  "id": "fortress_gate",
+  "name": "Festungstor der Nordwacht",
+  "layout": {
+    "player_slots": 1,
+    "enemy_slots": 3
+  },
+  "background": "bg_fortress_gate",
+  "music_cue": "combat_boss",
+  "description": "Eingestürztes Torhaus; Bossbühne mit freiem Vordergrund für Telegraphen."
+}

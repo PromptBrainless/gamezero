@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "class_def.schema.json",
+  "title": "class_def",
+  "description": "Playable class (career). Strict superset of the canonical slice `careers` record; adds role tags and the progression track reference. See docs/final-data-entities/classes-and-progression.md.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "role",
+    "role_tags",
+    "description",
+    "base_stats",
+    "stat_growth",
+    "starting_skills",
+    "skill_pool",
+    "starting_items",
+    "reaction",
+    "progression_track"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/id" },
+    "name": { "$ref": "common.schema.json#/$defs/text" },
+    "role": { "$ref": "common.schema.json#/$defs/id" },
+    "role_tags": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["striker", "tank", "skirmisher", "controller", "support"] }
+    },
+    "description": { "$ref": "common.schema.json#/$defs/text" },
+    "base_stats": { "$ref": "common.schema.json#/$defs/base_stats" },
+    "stat_growth": { "$ref": "common.schema.json#/$defs/stat_delta" },
+    "starting_skills": {
+      "allOf": [{ "$ref": "common.schema.json#/$defs/id_list" }, { "minItems": 1 }]
+    },
+    "skill_pool": {
+      "allOf": [{ "$ref": "common.schema.json#/$defs/id_list" }, { "minItems": 1 }]
+    },
+    "starting_items": { "$ref": "common.schema.json#/$defs/id_list" },
+    "reaction": { "enum": ["brace", "parry", "ward"] },
+    "progression_track": { "$ref": "common.schema.json#/$defs/id" },
+    "visual": { "$ref": "common.schema.json#/$defs/visual" }
+  }
+}

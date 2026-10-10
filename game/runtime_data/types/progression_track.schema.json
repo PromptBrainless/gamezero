@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "progression_track.schema.json",
+  "title": "progression_track",
+  "description": "Level curve and unlocks for exactly one class. Per-level stat gains come from class_def.stat_growth; levels only add unlocks and explicit bonuses. See docs/final-data-entities/classes-and-progression.md.",
+  "type": "object",
+  "required": ["id", "name", "class", "max_level", "levels", "description"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/id" },
+    "name": { "$ref": "common.schema.json#/$defs/text" },
+    "class": { "$ref": "common.schema.json#/$defs/id" },
+    "max_level": { "type": "integer", "minimum": 2, "maximum": 20 },
+    "levels": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["level", "xp_required"],
+        "additionalProperties": false,
+        "properties": {
+          "level": { "type": "integer", "minimum": 1 },
+          "xp_required": { "type": "integer", "minimum": 0 },
+          "unlock_skills": {
+            "allOf": [{ "$ref": "common.schema.json#/$defs/id_list" }, { "minItems": 1 }]
+          },
+          "stat_bonus": { "$ref": "common.schema.json#/$defs/stat_delta" },
+          "grant_items": {
+            "allOf": [{ "$ref": "common.schema.json#/$defs/id_list" }, { "minItems": 1 }]
+          }
+        }
+      }
+    },
+    "description": { "$ref": "common.schema.json#/$defs/text" }
+  }
+}

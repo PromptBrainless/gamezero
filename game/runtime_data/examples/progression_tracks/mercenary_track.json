@@ -1,0 +1,41 @@
+{
+  "id": "mercenary_track",
+  "name": "Laufbahn des Söldners",
+  "class": "mercenary",
+  "max_level": 5,
+  "levels": [
+    {
+      "level": 1,
+      "xp_required": 0
+    },
+    {
+      "level": 2,
+      "xp_required": 40,
+      "unlock_skills": ["rending_cut"]
+    },
+    {
+      "level": 3,
+      "xp_required": 100,
+      "stat_bonus": {
+        "defense": 1
+      }
+    },
+    {
+      "level": 4,
+      "xp_required": 220,
+      "stat_bonus": {
+        "hp": 5,
+        "stamina": 2
+      }
+    },
+    {
+      "level": 5,
+      "xp_required": 400,
+      "stat_bonus": {
+        "attack": 1,
+        "defense": 1
+      }
+    }
+  ],
+  "description": "Frontkämpfer-Laufbahn: früh Blutungsdruck, danach Zähigkeit und Rüstung."
+}
