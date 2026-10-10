@@ -24,6 +24,9 @@ This table routes the first-playable, data/combat, UI, and project-context sourc
 | `project-history-and-execution-log.md` | Source-of-truth map, PR-history verification, selected content, shared contracts before parallel writes, optional behavior exercise, orientation/terminology risks, consolidation and art completion gates | WS06 audit, WS02/WS04 decisions, WS05 art gates |
 | `repo-consolidation-plan.md` | Selected JSON baseline, one source/topic, stable player content normalization, unresolved item modifiers exercised, link/name consistency, exclude competing dataset/stubs/full drafts | WS01 + WS06; historical cleanup addressed below |
 | `pr-integration-review.md` | Adopt compatible selected content/architecture/plans, preserve player IDs, rerun references/docs links; explicitly defer incomplete scaffold and expanded/conflicting proposals | WS06; do not merge/open historical PRs automatically |
+| `workstreams/README.md` | Six workstream briefs, sequencing, shared interfaces, ownership, gates, and blocked decisions | WS01–WS06 |
+| `../tools/import/README.md` | Drive import setup, dry-run/write safety, credential handling, classification, and data-sources boundary | WS05 + WS06 |
+| `../imports/drive/README.md` | Import output area, raw mirror, manifest, and unsorted review-queue ownership | WS05 + WS06 |
 
 ## Historical cleanup versus live work
 

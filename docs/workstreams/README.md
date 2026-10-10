@@ -57,7 +57,7 @@ All repository paths in this document are repository-relative ownership coordina
 
 ## Source coverage and orchestration
 
-- [Source coverage](source-coverage.md) accounts for all 18 canonical documents, duplicate commitments, historical cleanup and exclusions.
+- [Source coverage](source-coverage.md) accounts for canonical documents, duplicate commitments, historical cleanup and exclusions.
 - [Agent orchestration](orchestration.md) explains launch scope, operational limitations, ownership and status evidence.
 - [Machine-readable ledger](orchestration.json) records the same six briefs, dependency graph and actual agent IDs.
 
