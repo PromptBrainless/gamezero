@@ -12,6 +12,7 @@ Career Select → Encounter Preview → Combat → Reward → Progression
 - [`docs/data-schema.md`](docs/data-schema.md) — source of truth for first-slice JSON content.
 - [`docs/implementation-board.md`](docs/implementation-board.md) — ordered first-playable work.
 - [`docs/art-sprint-1-production-pack.md`](docs/art-sprint-1-production-pack.md) — HUD and core combat icon production brief.
+- [`tools/import/README.md`](tools/import/README.md) — Google Drive importer: pulls the design/asset Drive folder into the repo structure (`npm run drive:plan`, `npm run drive:import`).
 
 ## Browser prototype
 
