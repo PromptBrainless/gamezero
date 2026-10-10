@@ -143,6 +143,27 @@ test("handoff convention names stable decision, evidence, and resume destination
   assert.match(handoff, /only for outcomes of its recorded dispatches/);
 });
 
+test("connector guidance anchors existing implementations and safe credential storage", () => {
+  const guidance = readFileSync(resolve(repository, ".github/copilot-instructions.md"), "utf8");
+  const tooling = readFileSync(resolve(repository, "scripts/README.md"), "utf8");
+  const ignored = readFileSync(resolve(repository, ".gitignore"), "utf8");
+  const { scripts } = JSON.parse(readFileSync(resolve(repository, "package.json"), "utf8"));
+  assert.match(guidance, /Never invent credentials/);
+  assert.match(guidance, /request-scoped gate token/);
+  assert.match(guidance, /external blockers/);
+  assert.match(tooling, /Existing connectors and credential boundaries/);
+  assert.match(tooling, /mocked tests do not establish live authentication/);
+  assert.ok(ignored.split(/\r?\n/).includes("tools/import/.secrets/"));
+  for (const command of ["drive:status", "drive:plan", "drive:import", "test:import"]) {
+    assert.ok(scripts[command], command);
+    assert.ok(tooling.includes(`npm run ${command}`), command);
+  }
+  for (const path of ["tools/import/drive-import.config.json", "tools/import/mapping-rules.json",
+    "src/lib/app-data/client.server.ts", "src/lib/app-data/errors.ts"]) {
+    assert.ok(existsSync(resolve(repository, path)), path);
+  }
+});
+
 test("art brief preserves all 36 canonical production identifiers", () => {
   const pack = readFileSync(resolve(root, "../art-sprint-1-production-pack.md"), "utf8");
   const ids = [...pack.matchAll(/\|\s*\d{2}\s*\|[^|]+\|\s*`([^`]+)`/g)].map((match) => match[1]);

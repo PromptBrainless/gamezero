@@ -213,3 +213,8 @@ absent-tooling/resume statements without rewriting the original evidence.
   source PRs; PR check-run reads return HTTP 403. Maintainer must review required
   checks, merge the integration branch with history preserved, verify all recorded
   heads on `main`, and reconcile the original PR states, especially stacked #23.
+- **Additional requirement:** strengthen existing agent/connector guidance without
+  creating credentials or new services. The [tooling map](../scripts/README.md#existing-connectors-and-credential-boundaries)
+  distinguishes repository Drive intake from viewer request-scoped connectors,
+  anchors existing code/configuration, and records safe secret/blocker handling.
+  No external authentication, grants, or credential provisioning is claimed.

@@ -34,3 +34,27 @@ Keep generated bundles/build outputs and transient diagnostics out of authored
 source. Record exact commands/results and next work through the
 [handoff convention](../docs/workstreams/orchestration.md#repository-handoff-convention),
 not a new tool-specific status log.
+
+## Existing connectors and credential boundaries
+
+| Connection | Existing implementation | Safe operating boundary |
+|---|---|---|
+| Repository Drive intake | [`tools/import`](../tools/import/README.md), [`drive-import.config.json`](../tools/import/drive-import.config.json), [`mapping-rules.json`](../tools/import/mapping-rules.json) | `npm run drive:status`, then `npm run drive:plan`; use `npm run drive:import` only for a reviewed plan. Read-only Drive scope; tables go to `data-sources/`. |
+| Viewer Google Drive/Calendar tools | [`app-data`](../src/lib/app-data/index.ts), [`server client`](../src/lib/app-data/client.server.ts), [`tool types`](../src/lib/app-data/types.ts) | Server-handler calls with request-scoped gate identity/token and granted tools; no browser-side credential access or separate OAuth replacement. |
+| Viewer readiness and failures | [`readiness`](../src/lib/app-data/readiness.ts), [`error classification`](../src/lib/app-data/errors.ts) | Distinguish pending, login, not-connected, scope-denied and access-denied; absence is not a successful or empty-data response. |
+
+These are existing capabilities, not a claim that this session has authenticated
+external accounts or activated a new gameplay dependency. GameZero's slice does
+not require viewer connectors, accounts, or a database.
+
+The importer resolves provisioned credentials using its documented auth methods.
+OAuth tokens are stored outside the checkout with owner-only permissions;
+`tools/import/.secrets/` is ignored. CI credentials belong in the CI secret
+manager and runtime temporary files, never committed configuration.
+Do not print credential values or persist gate tokens in application state.
+No credentials or consent are created by an agent instruction update.
+
+Use `npm run test:import` and the existing app-data/auth suites for regression
+evidence; mocked tests do not establish live authentication. Record unavailable
+credentials/grants as blockers without copying tokens or private connector data
+into handoffs.
