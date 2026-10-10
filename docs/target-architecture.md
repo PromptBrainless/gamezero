@@ -9,12 +9,14 @@ It does not replace the [canonical schema](data-schema.md) or
 [first-playable scope](vertical-slice-implementation-plan.md).
 
 **Current:** canonical JSON and browser slice reference code/tests exist under
-`data/` and `src/game/slice/`. Godot has a scaffold, not an accepted playable runtime.
-**Target:** a reviewed runtime supplement, deterministic export bundle, defensive
-Godot loading, independently testable native rules, and integrated screen flow.
-`docs/final-runtime-data-design.md`, `data/runtime/slice.json`, and
-`data:check` / `data:export:godot` scripts are not present in this baseline.
-Their names from earlier proposals do not establish a contract or available command.
+`data/` and `src/game/slice/`. The Godot slice host loads the generated canonical
+`runtime_pack.json` and connects combat/run screens. Native acceptance still
+requires engine execution. The [runtime supplement design](final-runtime-data-design.md),
+`data/runtime/slice.json`, validator, and `data:check` / `data:export:godot`
+scripts now exist as an isolated versioned bundle path. Its `ContentRegistry`
+bridge is not wired into the slice host and does not establish full runtime validation.
+**Target:** reviewed supplement policy/consumers, independently tested native rules,
+defensive loading, and exported-game acceptance.
 
 ## Layer model
 
@@ -70,9 +72,10 @@ It references canonical IDs and must not override base stats, skill costs, encou
 order, or inline rewards. Existing canonical targeting/effect fields remain in place.
 Lifecycle metadata parameterizes reviewed rules; it is not arbitrary executable code.
 
-A final runtime-data design must approve shape, file location, version compatibility,
-reference validation, and consumers before authoring production supplement records.
-Until then, do not add fields to canonical records or invent UI defaults to fill gaps.
+The [runtime-data design](final-runtime-data-design.md) specifies the supplement's
+shape, location, version and build-time reference validation. Integration still
+requires gameplay-owner review of policy and coordinated consumers. Do not add
+fields to canonical records or invent UI defaults to fill gaps.
 
 ### 3. Validation, export, and registry bridge
 
@@ -189,7 +192,17 @@ to the gameplay owner. Vision documents describe intent, not approval or complet
 
 Use existing Node checks: `npm run test:slice` for reference combat/validation and
 content checks, `node --test scripts/workstream-docs.test.mjs` for documentation,
-and `npm test` for repository regressions. No supplement/export check exists yet.
+and `npm test` for repository regressions. `npm run data:check` validates the
+supplement bundle; `npm run data:godot:check` verifies the canonical native pack.
+These are separate contracts, not proof of native acceptance.
+
+## Placement and continuity
+
+The [output map](README.md#where-outputs-belong) and [Godot guide](../godot/README.md)
+route writes to existing owners. Follow the [content pipeline](content-pipeline.md)
+and [handoff convention](workstreams/orchestration.md#repository-handoff-convention);
+generated bundles are not authored sources, and an exported game must not depend
+on parent-directory access.
 
 The target test strategy adds malformed/unsupported bundle tests, unresolved-reference
 and instance-isolation tests, seed/action reproducibility, non-mutating previews,

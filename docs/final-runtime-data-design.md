@@ -17,7 +17,9 @@ Authority order: base schema for base records; this contract for the supplement;
 [`first-playable-rules.md`](first-playable-rules.md) and observed, tested slice
 behavior for implemented rules. Early W100 and resource drafts are not alternate
 sources of runtime content. The new metadata is consumed by the export pipeline;
-the web combat/UI have **not** been switched to consuming it.
+the web combat/UI and native slice host have **not** been switched to consuming it.
+Implemented reference behavior is not approval of unspecified gameplay policy;
+native adoption remains subject to the workstream decision/acceptance gates.
 
 ## Definition, instance, and presentation boundaries
 
@@ -219,13 +221,17 @@ The envelope illustration is documentation, not a fixture. The real fixture is
 `data/runtime/slice.json` together with every canonical base file.
 Export is deterministic and atomically replaces the destination only after
 validation. Generated output and Godot's `.godot/` cache are ignored, not
-manually edited. Run the export before opening the Godot project or exporting.
+manually edited. Run this export when testing the optional bundle bridge;
+the current slice host instead uses the canonical `runtime_pack.json` generated
+by `npm run data:godot`. The two envelopes are not interchangeable.
 Include `*.json` in Godot's non-resource export filter; export templates and
 mobile signing remain environment setup, not content.
 
 Godot `ContentRegistry` checks the bundle envelope before readiness and returns
-copied definitions/runtime metadata; boot fails visibly when the bundle is
-absent/invalid. Full authoring validation lives in the build pipeline. This
+copied definitions/runtime metadata; `load_bundle()` fails when the bundle is
+absent/invalid. This bridge is not wired into the native slice boot.
+Full authoring validation lives in the build pipeline; full defensive native
+supplement validation still requires integration work. This
 bridge is **not** a complete Godot combat port or independently verified mobile
 export.
 

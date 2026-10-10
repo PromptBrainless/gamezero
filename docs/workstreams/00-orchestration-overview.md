@@ -2,6 +2,11 @@
 
 ## Outcome and authority
 
+This is supporting runtime-design material from PR #18, not a second execution
+ledger. The [current workstream index](README.md), its WS01–WS06 briefs and
+`orchestration.json` govern write ownership and acceptance. The checkpoint below
+is historical; newer native runtime work must not be replaced by the old boot scaffold.
+
 Deliver one reproducible, data-driven Godot run:
 
 `Career Select → Encounter Preview → Combat → Reward → Progression → next encounter/finish`

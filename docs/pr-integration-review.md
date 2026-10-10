@@ -20,7 +20,58 @@ This review assembles the useful, compatible work from the first planning PR ser
 | #14 | Project history and execution log | Already merged. Preserve the structured history and update its status/order to reflect the current consolidation. |
 | #15 | Sprint 1 HUD and 36-icon art planning | Current branch work. Keep as the bounded art-production pack and link it from the canonical docs index. |
 
+## Dependency-ordered integration (2026-10-10)
+
+The requested integration order supersedes the historical triage below:
+**#18 → #23 → #20 → #26**, on the task branch
+`copilot/merge-open-prs-into-main`, starting from main commit
+`510040e0048668229b21024ab9246e63ab346ea7`.
+
+| PR | Integrated head | Reconciliation |
+|---:|---|---|
+| #18 | `9e655e6e6a418505351787959ee2769a44249f6c` | Preserve supplement, validator/export and optional registry bridge; keep newer mainline native boot and canonical `runtime_pack.json` consumer. |
+| #23 | `37d23b3c8fc4ffc82b17896fc0f75f73e3f1b40d` | Preserve stacked history and coverage additions; retain the current six execution briefs/ledger, with runtime-design packages as supporting material. |
+| #20 | `0538b8686ef05cda2b729593c584c6b99285f97c` | Preserve isolated next-runtime schemas/fixtures without replacing browser/native slice events; retain importer tests in the combined test command. |
+| #26 | `847635a3ab88131b99adce2404313ed84a3eb645` | Preserve authority/output maps, local guides, instruction routing and handoffs; reconcile implemented tooling with pending native integration. |
+
+Both export paths remain intentional: `data:godot` produces the canonical pack
+used by the native slice; `data:export:godot` produces the optional supplement
+bundle. Neither generated output is an authored catalog. The next-runtime v1
+skill/event fixtures are not loaded by the slice registries; integrating them
+requires reviewed migration, not a second competing live event stream.
+
+### Validation and exact blockers
+
+- Passed: `npm run build`, `npm run typecheck`, `npm run test:slice`,
+  `npm run data:check`, `npm run data:godot:check`, and all eight documentation checks.
+- `npm test`: 293/301 Node tests passed; eight unchanged
+  `scripts/grok-pwa-plugin.test.mjs` share-card/title failures remain. The command
+  stops before its separate app-data/auth suites; running those separately passed
+  all 55 tests. `npm run test:import` also passed all 51 importer tests.
+- `npm run lint`: 18 errors and 16 warnings, all in unchanged baseline files.
+- `npm run test:godot`: canonical pack check passed, then `sh: 1: godot: not found`
+  (exit 127). Native acceptance is unverified, not passed.
+- Reading PR check runs for all four heads returned HTTP 403,
+  `Resource not accessible by integration`. Required-check and branch-protection
+  eligibility cannot be certified by this session.
+- Publication is restricted to the task branch. No available tool can merge the
+  source PRs, change their bases, or update remote `main`; original PRs remain open.
+
+### Remaining maintainer actions
+
+1. Review the integration diff and obtain required CI/reviews. Resolve or explicitly
+   approve baseline test/lint blockers according to repository rules; run native
+   checks with Godot 4.4+ before claiming native acceptance.
+2. Merge the integration branch into `main` using a **merge commit**, not squash
+   or rebase, to retain the four PR heads and dependency-ordered merge history.
+3. Verify all four recorded heads are ancestors of `main`. Check the original PR
+   states; #23 targets #18's branch, so retarget it to `main` if needed to recognize
+   indirect integration, or close it with a link to the integration commit.
+   Close any remaining source PR only after verifying its work is incorporated.
+
 ## Open-PR triage snapshot (2026-10-10)
+
+Historical snapshot, superseded by the dependency-ordered integration above.
 
 Dispositions below were taken against `main` at the audit date. Open branches change independently; re-verify PR files and validation before merging. Decisions, not merges — the owner performs merges.
 
@@ -32,7 +83,7 @@ Dispositions below were taken against `main` at the audit date. Open branches ch
 | #18 (+ #23 merge-fix, same stack) | Versioned runtime supplement, `data:check` / `data:export:godot`, Godot registry/bootstrap, six workstream packages | **Defer.** Conflicts with `AGENTS.md`/`README.md`/`runtime-data-plan.md`: supplement contract, version, consumers and failure behaviour must be approved by WS01/WS02 in `runtime-data-plan.md` before `data/runtime/*` or export scripts exist. #23 inherits this disposition; it only resolves #18's merge conflicts. Its workstream packages duplicate `docs/workstreams/README.md` and are not adopted. | 3 (decision only), merge blocked |
 | #19 | "[WIP] complete Godot-first vertical slice": export pack, Godot combat, HUD, rewards, progression | **Exclude until re-submitted.** Claims a complete native slice with no recorded native evidence; depends on an export pipeline (#18) that is not approved. Must be rebased on post-#26 `main`, split per workstream (WS01/WS02/WS03/WS04/WS06), and report blocked/unverified native gates per the handoff convention. | 5 |
 
-### Integration order (open PRs)
+### Historical integration order (superseded above)
 
 1. Merge #26.
 2. Rebase #22 on `main`; drop `docs/operations/` and the Operations index row; keep code, tests, and the `combat-architecture.md` section; merge.
@@ -50,6 +101,9 @@ Dispositions below were taken against `main` at the audit date. Open branches ch
 6. Re-run data reference and documentation link checks before the combined PR is considered ready.
 
 ## Explicitly deferred or excluded
+
+These are historical triage decisions. For #18/#23/#20/#26, the integrated
+disposition and isolation boundaries above supersede the earlier exclusions.
 
 - The complete Godot stub scaffold from PR #1 is not part of this integration until its code is reviewed and runnable.
 - PR #2–#4 expanded mechanics, large rosters, regions, and numeric balance proposals are not first-playable commitments.

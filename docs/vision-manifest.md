@@ -104,6 +104,10 @@ rules, understandable feedback on narrow and wide screens, and recorded native
 acceptance. Passing browser tests or preparing an art manifest is not a passed
 Godot playable or a visual approval.
 
+Every increment needs a resumable [handoff](workstreams/orchestration.md#repository-handoff-convention)
+with traceable decisions and actual evidence. The [content pipeline](content-pipeline.md)
+governs readiness; the presence of a file alone is not acceptance.
+
 ## Long-term scaling vision
 
 After the first-playable gate, grow through curated careers, encounter chains, and

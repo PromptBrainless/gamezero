@@ -1,5 +1,12 @@
 # Systemskalierung
 
+> Historischer, nicht verabschiedeter Ausbauentwurf. Die `.tres`-Struktur,
+> zusätzlichen Felder, sechs Karrieren und Mechaniken unten sind **keine**
+> aktuelle Authoring-Anweisung. Maßgeblich sind [data-schema.md](data-schema.md),
+> [content-pipeline.md](content-pipeline.md) und die
+> [Zielarchitektur](target-architecture.md). Kanonische Definitionen liegen in
+> `data/`; Ausbau benötigt eine explizite Scope-/Contract-Entscheidung.
+
 Teil der [Dokumentation](README.md). Beschreibt, wie das [Mini-GDD](mini-gdd.md) und der
 [Content-Plan](initial-content-plan.md) wachsen können, ohne die Struktur zu brechen.
 Regeln des Kampfs: [combat-design.md](combat-design.md). Alle Zahlen sind Startwerte.

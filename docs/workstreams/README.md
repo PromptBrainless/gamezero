@@ -96,7 +96,7 @@ The six packages refine the board's three tracks; they do not replace its exit c
 - **Accepted:** reproducible evidence satisfies a named gate.
 - **Deferred:** excluded from this slice, not secretly promised.
 
-The repository contains connected browser slice code, validated metadata/export tooling and Godot loading scaffolding. Foundation checks passed at the documentation checkpoint; a bridge that loads a bundle is still not a playable Godot build. Existing PR #16 (Drive import) and #17 (documentation orchestration) are open with no files at the reported checkpoint; neither establishes remote delivery.
+At the original runtime-design checkpoint, the repository contained connected browser slice code, validated metadata/export tooling and Godot loading scaffolding. Those historical foundation checks and PR #16/#17 states are not current acceptance evidence. The newer native slice host remains intact; the supplement bridge is separate and not wired into it.
 
 ## Fixed budget and guardrails
 

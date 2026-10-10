@@ -2,6 +2,11 @@
 
 GameZero is a mobile-first, 2D side-view, turn-based combat RPG. The near-term goal is a complete **First Playable Vertical Slice**, not a broad catalog of unfinished systems.
 
+This file owns the slice promise. The [Vision Manifest](vision-manifest.md) owns
+long-term intent, the [Target Architecture](target-architecture.md) maps layers,
+and the [Game Director Pitch](game-director-pitch.md) develops creative tone.
+None replaces the approved schema or slice acceptance gates.
+
 ## First playable promise
 
 The player selects a career, previews an encounter, makes readable combat decisions, receives a reward, and carries the run into progression:
