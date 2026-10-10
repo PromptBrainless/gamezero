@@ -3,11 +3,11 @@
   "pull_request": 17,
   "execution_mode": "session-subagents-shared-checkout",
   "workstreams": [
-    { "id": "WS01", "brief": "01-data-runtime.md", "dependencies": [], "agent_id": "ws01-data", "status": "started" },
-    { "id": "WS02", "brief": "02-combat-contract.md", "dependencies": ["WS01"], "agent_id": "ws02-combat", "status": "started" },
-    { "id": "WS03", "brief": "03-combat-hud.md", "dependencies": ["WS01", "WS02"], "agent_id": "ws03-hud", "status": "started" },
-    { "id": "WS04", "brief": "04-screen-flow.md", "dependencies": ["WS01", "WS02", "WS03"], "agent_id": "ws04-flow", "status": "started" },
-    { "id": "WS05", "brief": "05-art-production.md", "dependencies": [], "agent_id": "ws05-art", "status": "started" },
-    { "id": "WS06", "brief": "06-integration-acceptance.md", "dependencies": ["WS01", "WS02", "WS03", "WS04"], "agent_id": "ws06-acceptance", "status": "started" }
+    { "id": "WS01", "brief": "01-data-runtime.md", "dependencies": [], "agent_id": "ws01-data", "status": "increment-complete", "outcome": "Loader/identity/registry boundary and native tests delivered; full validators/resolver pending. Content tests 4 passed; test:slice 8 passed then missing zod blocked validation suite. Godot unavailable: native unverified." },
+    { "id": "WS02", "brief": "02-combat-contract.md", "dependencies": ["WS01"], "agent_id": "ws02-combat", "status": "increment-complete", "outcome": "Detached event/action/preview/result validators and native tests delivered. Reference combat 8 passed and content 4 passed; test:slice validation blocked by missing zod. Godot unavailable: native unverified. Policy/signature review and resolver integration pending." },
+    { "id": "WS03", "brief": "03-combat-hud.md", "dependencies": ["WS01", "WS02"], "agent_id": "ws03-hud", "status": "increment-complete", "outcome": "Numeric meter, status chip, focus/tap help scenes/scripts and static/native checks delivered. Static links/targets/wrapping/contrast checks passed. Godot unavailable: execution/render/input unverified. Full HUD interaction, runtime integration and device/art acceptance pending." },
+    { "id": "WS04", "brief": "04-screen-flow.md", "dependencies": ["WS01", "WS02", "WS03"], "agent_id": "ws04-flow", "status": "increment-complete", "outcome": "In-memory run context and native tests delivered; identity-bound results/reward-once/navigation/reset boundaries. Reviewer-found cyclic-input recursion fixed with depth bound and focused cases. Content tests 4 passed. Godot unavailable: native unverified. Actual screens/adapters, defeat/carryover/loot policy and end-to-end gate pending." },
+    { "id": "WS05", "brief": "05-art-production.md", "dependencies": [], "agent_id": "ws05-art", "status": "increment-complete", "outcome": "Complete 36-asset manifest, all icon/HUD/shared prompts and semantic-gap report delivered. Agent Node validation passed. 13 candidate mappings need approval; 23 IDs have no canonical equivalent. Production, licensing and all six approval gates remain pending." },
+    { "id": "WS06", "brief": "06-integration-acceptance.md", "dependencies": ["WS01", "WS02", "WS03", "WS04"], "agent_id": "ws06-acceptance", "status": "increment-complete", "outcome": "Development-only canonical inventory runner and evidence contract delivered. Content tests 4 passed and Node inventory assertions passed; Godot command exit 127, native gate blocked/unverified. Integration/export acceptance pending." }
   ]
 }

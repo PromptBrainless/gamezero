@@ -22,3 +22,9 @@ Status vocabulary: `started` means dispatch succeeded; `increment-complete` mean
 4. Review WS01/WS02 signatures and gameplay decisions before requesting integration increments. WS06 coordinates boot/export only then.
 5. Re-dispatch from the same full brief plus accepted signatures and latest evidence; a launch record alone is not an unattended dependency scheduler.
 6. If separate GitHub tasks/PRs become available later, transfer each brief with its ownership, dependencies and acceptance unchanged. Until then, the session tasks are the actual implementation efforts started here.
+
+## This dispatch's validation limits
+
+All six initial increments were delivered; see their individual ledger outcomes. Godot is absent, so native scripts, rendering, input and exported-build acceptance remain unverified. Agents reported passing content/reference checks where available; missing `zod` blocked the browser reference validation suite. No dependencies were added to work around these limits.
+
+The automated review backend was unavailable; a separate read-only reviewer found no significant planning issues and identified a cyclic-input robustness issue in run-context validation. Its owning agent corrected it with a depth bound and focused native cases; those cases remain unexecuted without Godot. Automated security validation must still be assessed for the final code increment; GDScript is not a CodeQL-supported language.

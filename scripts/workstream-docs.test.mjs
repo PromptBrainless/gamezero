@@ -12,6 +12,7 @@ test("execution ledger covers six distinct briefs with an acyclic dependency gra
   const entries = new Map(ledger.workstreams.map((entry) => [entry.id, entry]));
   assert.equal(entries.size, 6);
   assert.equal(new Set(ledger.workstreams.map((entry) => entry.brief)).size, 6);
+  assert.equal(new Set(ledger.workstreams.map((entry) => entry.agent_id)).size, 6);
   const visit = (id, ancestors = []) => {
     assert.ok(entries.has(id), `Unknown dependency ${id}`);
     assert.ok(!ancestors.includes(id), `Dependency cycle at ${id}`);
@@ -26,8 +27,10 @@ test("execution ledger covers six distinct briefs with an acyclic dependency gra
     assert.match(text, /Sources:/);
     assert.match(text, /Dependencies:/);
     assert.match(text, /Excluded:/);
-    assert.ok(["pending-dispatch", "started", "increment-complete", "blocked", "failed"].includes(entry.status));
-    if (entry.status !== "pending-dispatch") assert.ok(entry.agent_id);
+    assert.ok(["started", "increment-complete", "blocked", "failed"].includes(entry.status));
+    assert.equal(typeof entry.agent_id, "string");
+    assert.ok(entry.agent_id.length > 0);
+    if (entry.status === "increment-complete") assert.ok(entry.outcome);
   }
 });
 
