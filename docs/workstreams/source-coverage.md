@@ -1,6 +1,10 @@
 # Canonical source coverage and deduplication
 
-All 18 documents named by `docs/README.md` were read in full. This table routes their concrete commitments to the six [workstreams](README.md); repeated requirements have one implementation owner and shared acceptance, not duplicate tickets.
+The 18 baseline plan documents in `docs/README.md` were read in full for this
+extraction. This table routes their concrete commitments to the six
+[workstreams](README.md); repeated requirements have one implementation owner
+and shared acceptance, not duplicate tickets. The index's later authority/output
+map, vision artifacts, and local guidance route work without adding slice scope.
 
 | Canonical source | Concrete actions / disposition | Execution owner |
 |---|---|---|

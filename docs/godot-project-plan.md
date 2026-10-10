@@ -1,5 +1,12 @@
 # Godot project plan
 
+> Historical expansion draft, not current scope or authoring guidance. The
+> `.tres` content layout and expanded feature roadmap below are superseded for
+> the slice by [`data-schema.md`](data-schema.md),
+> [`target-architecture.md`](target-architecture.md), and
+> [`../godot/README.md`](../godot/README.md). Root `data/` is canonical;
+> Godot consumes validated, packaged input.
+
 The project pivots to **Godot 4.4+** (Mobile renderer, GDScript) for a mobile-first 2D side-view, turn-based 1v1 combat game. The Godot project lives in `godot/`; the existing JS/TS web prototype (`src/`) is kept as a rules reference and is not being ported wholesale.
 
 ## Pillars

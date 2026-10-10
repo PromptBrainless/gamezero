@@ -25,6 +25,29 @@ Status vocabulary: `started` means dispatch succeeded; `increment-complete` mean
 
 ## This dispatch's validation limits
 
+This section and the ledger describe the recorded dispatch, not a live environment probe.
+
 All six initial increments were delivered; see their individual ledger outcomes. Godot is absent, so native scripts, rendering, input and exported-build acceptance remain unverified. Agents reported passing content/reference checks where available; missing `zod` blocked the browser reference validation suite. No dependencies were added to work around these limits.
 
 The automated review backend was unavailable; a separate read-only reviewer found no significant planning issues and identified a cyclic-input robustness issue in run-context validation. Its owning agent corrected it with a depth bound and focused native cases; those cases remain unexecuted without Godot. Automated security validation must still be assessed for the final code increment; GDScript is not a CodeQL-supported language.
+
+## Repository handoff convention
+
+Use this convention for every subsequent increment, including work outside the
+recorded dispatch above. Do not create per-agent status files or raw chat transcripts.
+
+1. Update the owning brief's pending criteria and the shared [decision queue](README.md#decisions-and-blocked-work) when a dependency/policy changes. Every unresolved item needs an accountable role, affected gate, and next action; do not resolve it by guessing.
+2. Record accepted decisions in the owning canonical doc. Append a dated entry to [`../project-history-and-execution-log.md`](../project-history-and-execution-log.md) for cross-stream decisions or a resumable handoff, linking back to the owner rather than copying its contract.
+3. Update `orchestration.json` only for outcomes of its recorded dispatches. Preserve historical agent IDs and PR references; later work uses dated history entries and actual issue/PR links, not fabricated ledger launches.
+4. Keep [`../README.md`](../README.md) and affected local links current when a destination or authority changes. State which prior decision is superseded; do not leave two active owners.
+
+A dated handoff entry must contain:
+
+- **Scope/evidence:** workstream or issue/PR, source revision and working-tree caveats, owned changed paths, implemented increment versus remaining criteria.
+- **Decisions:** links to updated canonical sections; unresolved question, accountable role, blocking dependency/gate.
+- **Validation:** exact commands, actual pass/fail/blocked results, environment limits, and stable links to any retained evidence. Browser/static success must not be reported as native/export acceptance.
+- **Resume:** the next bounded action, its destination paths, required input/approval, and check to run. Enough context to resume without the previous chat.
+
+Keep transient diagnostics out of source control. Retained screenshots go in
+`screenshots/`; sprint art evidence stays in `artifacts/art/sprint-1/`. Link only
+files that exist or explicitly mark missing evidence as unverified.

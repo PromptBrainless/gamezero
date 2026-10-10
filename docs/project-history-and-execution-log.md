@@ -146,3 +146,36 @@ Consolidation is complete when:
 - The next implementation block starts from a stable content, runtime, and UI contract.
 
 Sprint 1 art planning is complete only when the separate art checklist's review gates and done criteria are satisfied.
+
+## 11. 2026-10-10 — Repository instruction alignment handoff
+
+- **Scope:** repository guidance only, plus documentation regression tests;
+  PR #26 (`copilot/add-repository-instructions`). No gameplay data, runtime code,
+  dependencies, or historical dispatch IDs changed.
+- **Decisions:** [`README.md`](README.md#authority-and-orientation) routes subject
+  authorities and output locations. The [Vision Manifest](vision-manifest.md),
+  [Target Architecture](target-architecture.md), and
+  [Game Director Pitch](game-director-pitch.md) separate strategic, technical,
+  and creative direction without replacing schema/slice gates.
+- **Placement:** `.github/copilot-instructions.md` is the operational agent guide;
+  `AGENTS.project.md` routes to it. Local `data/`, `godot/`, and `scripts/` READMEs
+  map destinations. The [handoff convention](workstreams/orchestration.md#repository-handoff-convention)
+  reuses workstream blockers and this log rather than creating per-agent documents.
+- **Corrected conflict:** [`content-pipeline.md`](content-pipeline.md) replaces
+  `.tres`-first instructions; older Godot/scaling proposals are explicitly historical.
+  [`runtime-data-plan.md`](runtime-data-plan.md#runtime-supplement-direction-planned-not-implemented)
+  records the supplement as a proposal, not implemented/export-ready content.
+- **Resume:** WS01/WS02 and affected consumers must review supplement version,
+  schema, scope, and failure behavior before adding `data/runtime/slice.json`.
+  WS06 then owns packaging/output contract and native/export evidence. Existing
+  gameplay-policy blockers remain in the [decision queue](workstreams/README.md#decisions-and-blocked-work).
+  Do not create `final-runtime-data-design.md` as a shadow owner or prescribe
+  absent `data:check` / `data:export:godot` commands.
+- **Validation:** `node --test scripts/workstream-docs.test.mjs`: 7 passed
+  (links, anchors, authority coverage, handoff fields, planned-contract wording);
+  `git diff --check`: passed. `npm test`: 251 passed, 8 failed in unchanged
+  `scripts/grok-pwa-plugin.test.mjs` share-card/title expectations. Running that
+  suite on an isolated archive of baseline `55596f6` reproduced the same eight
+  failures (41 passed, 8 failed). Follow-up belongs to platform/PWA tooling,
+  not the gameplay workstreams. Final revision/review results remain in this PR;
+  these documentation checks do not certify any Godot/native/export gate.

@@ -56,6 +56,28 @@ The selected slice records use several optional fields that require explicit run
 
 These behaviors are part of the current content contract. The runtime track is not complete until each is validated and exercised; do not silently accept the fields while ignoring their effects.
 
+## Runtime supplement direction (planned, not implemented)
+
+Canonical records define what exists; a runtime supplement would describe
+execution linkage not already owned by those records. Keep targeting, lifecycle,
+unlock, stage/wave, or dialogue policy explicit only where approved scope needs it.
+Do not duplicate existing skill targets, encounter order, rewards, or boss phases.
+
+The proposed destination is `data/runtime/slice.json`. It is absent in this
+baseline and is not covered by the current seven-collection schema/loader.
+Before creating it, WS01/WS02 and affected consumers must review:
+
+- Contract version, content revision, allowed fields, and stable ID references.
+- Which metadata is approved for this slice versus deferred expansion.
+- Structural/reference validation and rejection of unsupported versions.
+- Read-only registry access, deterministic interpretation, and failure tests.
+- Packaging/output contract with WS06; no UI- or engine-inferred defaults.
+
+Record approval here and update validators/consumers together. Unknown gameplay
+policies stay in the [workstream decision queue](workstreams/README.md#decisions-and-blocked-work),
+not in speculative metadata or mutable combat/run state.
+See [`content-pipeline.md`](content-pipeline.md) for readiness/export gates.
+
 ## Delivery sequence
 
 1. Lock the schema and a representative valid record per collection.
