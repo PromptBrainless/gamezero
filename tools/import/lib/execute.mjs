@@ -194,11 +194,12 @@ export async function executePlan(
   async function writeSingle(entry, output, index) {
     const staging = `${stagingRoot}/${entry.id}-${index}-${randomBytes(3).toString("hex")}`;
     const keepRaw = Boolean(output.rawPath);
-    const fetchTarget = keepRaw ? abs(output.rawPath) : staging;
+    // Exports with fallbacks may change extension, so their final paths are only
+    // known after the fetch: stage them first instead of writing a planned path.
+    const fetchTarget = keepRaw && !output.fallbacks?.length ? abs(output.rawPath) : staging;
     let result;
     try {
       result = await fetchToFile(entry, output, fetchTarget);
-      let landed = fetchTarget;
       if (result.extension !== output.extension) {
         output.usedFallback = { mimeType: result.mimeType, extension: result.extension };
         if (output.rawPath)
@@ -215,17 +216,18 @@ export async function executePlan(
             output,
             { checkRepo: true },
           );
-        if (keepRaw) {
-          await atomicMove(fetchTarget, abs(output.rawPath));
-          landed = abs(output.rawPath);
-        }
+      }
+      let landed = fetchTarget;
+      if (keepRaw && fetchTarget === staging) {
+        await atomicMove(staging, abs(output.rawPath));
+        landed = abs(output.rawPath);
       }
       if (output.sortedPath) {
         if (keepRaw) await atomicCopy(landed, abs(output.sortedPath));
         else await atomicMove(landed, abs(output.sortedPath));
       }
     } finally {
-      if (!keepRaw) await rm(staging, { force: true });
+      await rm(staging, { force: true });
     }
     output.bytes = result.bytes;
     output.sha256 = result.sha256;

@@ -332,7 +332,7 @@ export class DriveClient {
   }
 }
 
-/** RFC 4180 CSV with CRLF-free "\n" line endings and padded rows. */
+/** RFC 4180-style quoting with LF line endings; rows are padded to equal width. */
 export function toCsv(rows) {
   const width = rows.reduce((max, row) => Math.max(max, row.length), 0);
   const cell = (value) => {
