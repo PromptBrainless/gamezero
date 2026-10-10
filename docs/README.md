@@ -2,6 +2,22 @@
 
 Canonical entry point for the first playable vertical slice. Each subject has one source of truth; [`repo-consolidation-plan.md`](repo-consolidation-plan.md) explains the selected baseline and [`pr-integration-review.md`](pr-integration-review.md) records how the PR strands were reviewed.
 
+## Actionable execution backlog
+
+[`workstreams/README.md`](workstreams/README.md) consolidates the canonical plans into six implementation briefs with dependencies, sequencing, acceptance criteria, complete source coverage, and recorded agent dispatches. These briefs route execution; the canonical documents below remain authoritative for scope and contracts.
+
+## Vision and target direction
+
+- [Vision Manifest](vision-manifest.md) — mission, product pillars, authoring philosophy, non-goals, and scaling vision.
+- [Technical Target Architecture](target-architecture.md) — layers, ownership, runtime/state boundaries, and the target validation/export pipeline.
+- [Game Director Pitch](game-director-pitch.md) — emotional player promise, world framing, and creative guardrails.
+
+Read these together for strategic, technical, and creative intent. They extend the
+[slice vision](vision.md), not the approved content budget or mechanics. The runtime
+supplement/export direction is proposed work; schema, slice plans, and workstream
+acceptance evidence still govern implementation. Historical Resource-based pipeline
+and scaling drafts are not permission to replace canonical JSON.
+
 ## First-playable execution
 
 | Document | Owns |
@@ -31,6 +47,17 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 | [`art-sprint-1-task-checklist.md`](art-sprint-1-task-checklist.md) | Actionable phases and review gates |
 | [`art-sprint-1-prompt-sheet.md`](art-sprint-1-prompt-sheet.md) | Generator-ready HUD and per-icon prompts |
 
+## Post-slice data model planning
+
+Planned next layer; does not change the slice contract above. Staged types and examples live in [`../game/runtime_data/`](../game/runtime_data/README.md).
+
+| Document | Owns |
+|---|---|
+| [`final-data-entities/README.md`](final-data-entities/README.md) | Staging rules and promotion path into `data-schema.md` |
+| [`final-data-entities/classes-and-progression.md`](final-data-entities/classes-and-progression.md) | Classes, progression tracks, run progression state |
+| [`final-data-entities/enemies-and-encounters.md`](final-data-entities/enemies-and-encounters.md) | Enemies, bosses, stages, encounters and waves |
+| [`ui/hud-combat-event-integration-plan.md`](ui/hud-combat-event-integration-plan.md) | HUD and Reward/Progression consumption of combat and run events |
+
 ## Project context
 
 | Document | Owns |
@@ -40,7 +67,16 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 | [`repo-consolidation-plan.md`](repo-consolidation-plan.md) | Baseline choices and source replacement rules |
 | [`pr-integration-review.md`](pr-integration-review.md) | Per-PR adoption/defer/exclusion decisions |
 
+## Tooling
+
+| Document | Owns |
+|---|---|
+| [`../tools/import/README.md`](../tools/import/README.md) | Google Drive importer: setup, dry run, import, mapping rules, manifest, safety |
+| [`../imports/drive/README.md`](../imports/drive/README.md) | Import output area (manifest, raw mirror, unsorted review queue) |
+
 ## Reading order
+
+For product orientation, start with the three artifacts above. For implementation:
 
 1. `milestones.md` and `implementation-board.md`
 2. `vertical-slice-implementation-plan.md`

@@ -1,0 +1,27 @@
+{
+  "id": "deserters_toll",
+  "name": "Der Wegzoll des Deserteurs",
+  "type": "standard",
+  "order": 2,
+  "difficulty": 2,
+  "stage": "ruined_road",
+  "waves": [
+    {
+      "id": "wave_1",
+      "trigger": "encounter_start",
+      "spawns": [
+        {
+          "kind": "enemy",
+          "actor": "rusted_deserter",
+          "slot": 0
+        }
+      ]
+    }
+  ],
+  "victory": "defeat_all_waves",
+  "rewards": {
+    "xp": 20,
+    "items": ["whetstone"]
+  },
+  "description": "Lernen: Verteidigung und Betäubung."
+}

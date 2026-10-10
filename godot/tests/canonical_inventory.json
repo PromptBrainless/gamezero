@@ -1,0 +1,53 @@
+{
+  "contract_version": 1,
+  "scope": "development-only canonical inventory; not runtime validation, gameplay or exported packaging acceptance",
+  "sources": [
+    "docs/data-schema.md",
+    "docs/vertical-slice-implementation-plan.md",
+    "docs/milestones.md",
+    "docs/workstreams/README.md",
+    "docs/workstreams/06-integration-acceptance.md"
+  ],
+  "data_root": "../data",
+  "collections": {
+    "careers": ["duelist", "mercenary", "scholar_mage"],
+    "skills": ["arcane_bolt", "focused_mind", "frost_sigil", "hold_the_line", "iron_command", "precise_thrust", "quick_feint", "rending_cut", "riposte", "shield_bash"],
+    "statuses": ["bleeding", "chilled", "exposed", "focused", "guarded", "stunned"],
+    "items": ["bandage_roll", "buckler", "captains_greatshield", "focus_draught", "iron_sword", "leather_jerkin", "oak_staff", "rapier", "scholars_robe", "ward_talisman", "whetstone"],
+    "enemies": ["alley_cutthroat", "hedge_cultist", "rusted_deserter"],
+    "bosses": ["iron_captain"],
+    "encounters": ["cult_in_the_hedges", "deserters_toll", "first_blood", "gate_of_the_north_watch"]
+  },
+  "skill_owners": {
+    "duelist": ["precise_thrust", "quick_feint", "riposte"],
+    "mercenary": ["hold_the_line", "rending_cut", "shield_bash"],
+    "scholar_mage": ["arcane_bolt", "focused_mind", "frost_sigil"]
+  },
+  "enemy_only_skills": ["iron_command"],
+  "encounter_order": ["first_blood", "deserters_toll", "cult_in_the_hedges", "gate_of_the_north_watch"],
+  "execution": {
+    "working_directory": "repository root",
+    "requires": "Godot 4.4+ on PATH as godot (substitute godot4 if that is the installed executable)",
+    "command": "godot --headless --path godot --script res://tests/canonical_inventory.gd -- --source-revision=\"$(git rev-parse HEAD)\"",
+    "evidence_marker": "WS06_INVENTORY_JSON=",
+    "evidence": "Retain stdout/stderr and process exit status, the marked JSON report (UTC time, OS, engine version, command arguments, supplied source revision, absolute dev data root, counts, issues), and git status/diff for uncommitted sources. Capture logs under godot/tests/ or another repository-relative evidence directory; do not commit generated logs as proof of a later revision.",
+    "exit_codes": {
+      "0": "Only initial native inventory checks passed; requires a marked passed report and no engine/script errors",
+      "1": "Inventory or evidence-argument failure; marked failed report lists issues",
+      "2": "Unsupported Godot version; native acceptance blocked",
+      "missing_engine": "Native acceptance blocked/unverified; do not substitute Node or browser results for native evidence"
+    },
+    "parent_data_access": "res://../data is read only in this dev acceptance script. It is not an export input or a runtime loading contract."
+  },
+  "remaining_gates": [
+    "Docs Final consistency and explicit owners/decisions",
+    "Full schema, references, numeric/formula/quality validation and loader failure matrix",
+    "Integrated normal/boss encounter resolution and clear boot errors",
+    "Approved combat behaviors, non-mutating previews, deterministic events and terminal results",
+    "Five-screen native flow; four encounters for all three careers; rewards once, progression, defeat/exit/retry/reset and repeat-run isolation",
+    "Native narrow/wide HUD screenshots, touch/keyboard help, numeric/non-color states, 48 dp targets, contrast, device/orientation review",
+    "Single canonical export input, JSON inclusion and ID-based loads in an exported build without parent/host dependencies",
+    "Independent WS05 art approvals and complete production handoff",
+    "Recorded environment, command, revision and evidence for every full gate before milestone advancement"
+  ]
+}

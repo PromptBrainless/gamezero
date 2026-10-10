@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hud_event_binding.schema.json",
+  "title": "hud_event_binding",
+  "description": "Routes ordered combat/run events to HUD modules. Presentation only: bindings never change combat state. See docs/ui/hud-combat-event-integration-plan.md.",
+  "type": "object",
+  "required": ["id", "description", "events"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/id" },
+    "description": { "$ref": "common.schema.json#/$defs/text" },
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["event_type", "source", "modules", "payload_fields", "log", "pacing"],
+        "additionalProperties": false,
+        "properties": {
+          "event_type": { "$ref": "common.schema.json#/$defs/id" },
+          "source": { "enum": ["resolver", "run"] },
+          "modules": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "phase_header",
+                "combatant_panel",
+                "resource_meter",
+                "status_rail",
+                "battlefield",
+                "action_selector",
+                "preview_panel",
+                "event_log",
+                "tooltip_layer",
+                "reward_screen",
+                "progression_screen"
+              ]
+            }
+          },
+          "payload_fields": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "$ref": "common.schema.json#/$defs/id" }
+          },
+          "log": { "enum": ["none", "summary", "detail"] },
+          "pacing": { "enum": ["instant", "short", "beat", "hold"] }
+        }
+      }
+    }
+  }
+}

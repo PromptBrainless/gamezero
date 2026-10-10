@@ -1,0 +1,166 @@
+{
+  "id": "combat_hud_event_bindings",
+  "description": "Erste Zuordnung der geordneten Kampf- und Laufereignisse zu den HUD-Modulen aus docs/hud-spec.md. Nur Darstellung; Regeln bleiben beim Resolver.",
+  "events": [
+    {
+      "event_type": "encounter_started",
+      "source": "resolver",
+      "modules": ["phase_header", "battlefield", "combatant_panel", "event_log"],
+      "payload_fields": ["encounter_id", "stage_id"],
+      "log": "summary",
+      "pacing": "beat"
+    },
+    {
+      "event_type": "wave_started",
+      "source": "resolver",
+      "modules": ["phase_header", "battlefield", "combatant_panel", "event_log"],
+      "payload_fields": ["wave_id", "combatant_ids"],
+      "log": "summary",
+      "pacing": "beat"
+    },
+    {
+      "event_type": "round_started",
+      "source": "resolver",
+      "modules": ["phase_header"],
+      "payload_fields": ["round"],
+      "log": "none",
+      "pacing": "short"
+    },
+    {
+      "event_type": "turn_started",
+      "source": "resolver",
+      "modules": ["phase_header", "combatant_panel", "action_selector"],
+      "payload_fields": ["actor_id"],
+      "log": "none",
+      "pacing": "short"
+    },
+    {
+      "event_type": "action_declared",
+      "source": "resolver",
+      "modules": ["battlefield", "event_log"],
+      "payload_fields": ["action_id", "target_ids"],
+      "log": "summary",
+      "pacing": "short"
+    },
+    {
+      "event_type": "resource_spent",
+      "source": "resolver",
+      "modules": ["resource_meter"],
+      "payload_fields": ["resource", "amount", "current", "max"],
+      "log": "none",
+      "pacing": "instant"
+    },
+    {
+      "event_type": "damage_dealt",
+      "source": "resolver",
+      "modules": ["battlefield", "event_log"],
+      "payload_fields": ["amount", "damage_type", "critical"],
+      "log": "summary",
+      "pacing": "beat"
+    },
+    {
+      "event_type": "hp_changed",
+      "source": "resolver",
+      "modules": ["combatant_panel", "resource_meter"],
+      "payload_fields": ["current", "max"],
+      "log": "none",
+      "pacing": "instant"
+    },
+    {
+      "event_type": "status_applied",
+      "source": "resolver",
+      "modules": ["status_rail", "event_log", "tooltip_layer"],
+      "payload_fields": ["status_id", "duration", "stacks"],
+      "log": "summary",
+      "pacing": "short"
+    },
+    {
+      "event_type": "status_ticked",
+      "source": "resolver",
+      "modules": ["status_rail", "event_log"],
+      "payload_fields": ["status_id", "amount", "remaining"],
+      "log": "detail",
+      "pacing": "short"
+    },
+    {
+      "event_type": "status_removed",
+      "source": "resolver",
+      "modules": ["status_rail", "event_log"],
+      "payload_fields": ["status_id", "reason"],
+      "log": "detail",
+      "pacing": "short"
+    },
+    {
+      "event_type": "reaction_triggered",
+      "source": "resolver",
+      "modules": ["battlefield", "event_log"],
+      "payload_fields": ["skill_id", "trigger"],
+      "log": "summary",
+      "pacing": "beat"
+    },
+    {
+      "event_type": "telegraph_announced",
+      "source": "resolver",
+      "modules": ["phase_header", "combatant_panel", "event_log"],
+      "payload_fields": ["skill_id", "warning_turns", "icon"],
+      "log": "summary",
+      "pacing": "hold"
+    },
+    {
+      "event_type": "phase_changed",
+      "source": "resolver",
+      "modules": ["phase_header", "combatant_panel", "event_log"],
+      "payload_fields": ["phase_id", "phase_name"],
+      "log": "summary",
+      "pacing": "hold"
+    },
+    {
+      "event_type": "combatant_defeated",
+      "source": "resolver",
+      "modules": ["battlefield", "combatant_panel", "event_log"],
+      "payload_fields": ["combatant_id"],
+      "log": "summary",
+      "pacing": "beat"
+    },
+    {
+      "event_type": "encounter_ended",
+      "source": "resolver",
+      "modules": ["phase_header", "event_log"],
+      "payload_fields": ["outcome"],
+      "log": "summary",
+      "pacing": "hold"
+    },
+    {
+      "event_type": "xp_awarded",
+      "source": "run",
+      "modules": ["reward_screen", "progression_screen"],
+      "payload_fields": ["amount", "total_xp"],
+      "log": "none",
+      "pacing": "beat"
+    },
+    {
+      "event_type": "item_granted",
+      "source": "run",
+      "modules": ["reward_screen"],
+      "payload_fields": ["item_id"],
+      "log": "none",
+      "pacing": "short"
+    },
+    {
+      "event_type": "level_up",
+      "source": "run",
+      "modules": ["progression_screen"],
+      "payload_fields": ["class_id", "level", "stat_gains"],
+      "log": "none",
+      "pacing": "hold"
+    },
+    {
+      "event_type": "skill_unlocked",
+      "source": "run",
+      "modules": ["progression_screen"],
+      "payload_fields": ["skill_id"],
+      "log": "none",
+      "pacing": "beat"
+    }
+  ]
+}

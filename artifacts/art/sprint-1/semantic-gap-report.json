@@ -1,0 +1,338 @@
+{
+  "report_version": 1,
+  "workstream": "WS05",
+  "manifest": "artifacts/art/sprint-1/manifest.json",
+  "canonical_authority": ["docs/data-schema.md", "data/"],
+  "art_authority": ["docs/art-sprint-1-production-pack.md §5", "docs/art-sprint-1-prompt-sheet.md", "docs/art-sprint-1-task-checklist.md", "docs/workstreams/05-art-production.md"],
+  "review_status": "not_approved",
+  "scope_policy": "Reconcile all 36 production IDs without renaming canonical gameplay IDs, changing content/schema, adding mechanics, or expanding the icon roster.",
+  "summary": {
+    "asset_count": 36,
+    "candidate_requires_gate_0_approval": 13,
+    "no_canonical_equivalent": 23,
+    "approved_mappings": 0,
+    "production_pending": 36,
+    "integration_blocked": 36,
+    "art_sprint_complete": false
+  },
+  "canonical_inventory": {
+    "counts": {"careers": 3, "skills": 10, "statuses": 6, "items": 11, "enemies": 3, "bosses": 1, "encounters": 4},
+    "player_skill_ids": ["arcane_bolt", "focused_mind", "frost_sigil", "hold_the_line", "precise_thrust", "quick_feint", "rending_cut", "riposte", "shield_bash"],
+    "enemy_only_skill_ids": ["iron_command"],
+    "skill_types": ["attack", "defense", "control", "reaction"],
+    "base_stats_required": ["hp", "attack", "defense", "magic", "speed", "crit_chance"],
+    "base_stats_optional_resource_pools": ["focus", "stamina"],
+    "career_reaction_values": ["brace", "parry", "ward"],
+    "status_ids": ["bleeding", "chilled", "exposed", "focused", "guarded", "stunned"],
+    "item_slot_values": ["weapon", "offhand", "armor", "trinket", "consumable"],
+    "absent_systems": ["move_action_and_position", "shared_energy_pool", "break_strain_pool", "protection_capacity_pool", "spendable_tempo_pool", "bound_status", "confused_status", "echo_storage", "field_markers", "tool_slot", "artifact_slot"]
+  },
+  "candidate_reference_policy": {
+    "purpose": "Positive evidence is a resolvable existing record/field value, not an approved binding.",
+    "notation": "collection/id identifies an entity; collection.field=value identifies an existing schema enum; base_stats.field identifies an existing shared stat.",
+    "record_evidence": "Each candidate includes canonical JSON file, RFC 6901 pointer and expected value for standard Node validation.",
+    "alternatives": "Multiple candidate targets are explicitly alternatives or category evidence, never automatic many-to-one mappings.",
+    "no_equivalent_evidence": "Absence is evaluated against the full canonical schema and seven canonical content collections, not keyword similarity or browser reference behavior."
+  },
+  "entries": [
+    {
+      "asset_id": "action-attack", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["skills.type=attack"],
+      "evidence": [{"file": "data/skills/precise_thrust.json", "pointer": "/type", "expected": "attack"}, {"file": "data/skills/shield_bash.json", "pointer": "/type", "expected": "attack"}, {"file": "data/skills/arcane_bolt.json", "pointer": "/type", "expected": "attack"}],
+      "schema_section": "skills",
+      "decision_required": "Approve this as a skill-category visual only, or reject the pack's universal-action implication. Do not create an attack command, free action or costs from artwork."
+    },
+    {
+      "asset_id": "action-guard", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["skills.type=defense", "skills/hold_the_line"],
+      "evidence": [{"file": "data/skills/hold_the_line.json", "pointer": "/type", "expected": "defense"}, {"file": "data/skills/hold_the_line.json", "pointer": "/id", "expected": "hold_the_line"}, {"file": "data/skills/hold_the_line.json", "pointer": "/cost/stamina", "expected": 10}],
+      "schema_section": "skills",
+      "decision_required": "Guard may visually represent the existing defense category/skill only if approved. hold_the_line is career-specific and has a cost; brace and ward do not establish a universal guard action."
+    },
+    {
+      "asset_id": "action-move", "status": "no_canonical_equivalent",
+      "reason": "Canonical skills.type is attack/defense/control/reaction, with self/enemy targets and no movement coordinates, distance or evade action. quick_feint applies focused and removes chilled; it is not repositioning.",
+      "schema_sections": ["skills", "Shared blocks"],
+      "decision_required": "Resolve the unsupported move/evade art term at Gate 0; keep production and integration blocked without inventing movement."
+    },
+    {
+      "asset_id": "action-influence", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["skills.type=control"],
+      "evidence": [{"file": "data/skills/frost_sigil.json", "pointer": "/type", "expected": "control"}, {"file": "data/skills/focused_mind.json", "pointer": "/type", "expected": "control"}, {"file": "data/skills/quick_feint.json", "pointer": "/type", "expected": "control"}],
+      "schema_section": "skills",
+      "decision_required": "Approve or reject influence as a visual label for existing control skills. Its prompt's field/effect manipulation must not imply a field-marker or influence system."
+    },
+    {
+      "asset_id": "resource-body", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["base_stats.hp"],
+      "evidence": [{"file": "data/careers/mercenary.json", "pointer": "/base_stats/hp", "expected": 60}, {"file": "data/enemies/alley_cutthroat.json", "pointer": "/base_stats/hp", "expected": 32}, {"file": "data/bosses/iron_captain.json", "pointer": "/base_stats/hp", "expected": 80}],
+      "schema_section": "Shared blocks",
+      "decision_required": "Approve body-to-HP terminology and meter binding. Current HP must be supplied by runtime; base HP values are reference evidence, not current-state values or regeneration rules."
+    },
+    {
+      "asset_id": "resource-energy", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["base_stats.stamina", "base_stats.focus"],
+      "evidence": [{"file": "data/careers/mercenary.json", "pointer": "/base_stats/stamina", "expected": 30}, {"file": "data/careers/scholar_mage.json", "pointer": "/base_stats/focus", "expected": 50}, {"file": "data/skills/precise_thrust.json", "pointer": "/cost/stamina", "expected": 8}, {"file": "data/skills/precise_thrust.json", "pointer": "/cost/focus", "expected": 4}],
+      "schema_sections": ["Shared blocks", "skills"],
+      "decision_required": "No unique energy pool exists. Decide whether this visual can represent one of the two distinct pools, or whether an explicit approved labeling/shape strategy permits reuse. Do not merge pools, add a third pool, choose a synonym automatically or infer regeneration."
+    },
+    {
+      "asset_id": "resource-break", "status": "no_canonical_equivalent",
+      "reason": "Canonical base_stats and status effects contain no break/strain accumulation, capacity or threshold. exposed has defense/crit modifiers and stunned has skip_turn; neither is a break resource.",
+      "schema_sections": ["Shared blocks", "statuses"],
+      "decision_required": "Resolve the unsupported break/strain term; no new meter or stun threshold may be authored."
+    },
+    {
+      "asset_id": "resource-protection", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["base_stats.defense"],
+      "evidence": [{"file": "data/careers/mercenary.json", "pointer": "/base_stats/defense", "expected": 4}, {"file": "data/statuses/guarded.json", "pointer": "/effect/damage_taken_multiplier", "expected": 0.6}],
+      "schema_sections": ["Shared blocks", "statuses", "Normalized names"],
+      "decision_required": "Defense is a stat, not a depleting protection pool. The schema normalizes old guard stat naming to defense. guarded is separate multiplicative status evidence, not a second candidate pool; reject unsupported maximum/fill capacity in HUD-03."
+    },
+    {
+      "asset_id": "resource-tempo", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["base_stats.speed"],
+      "evidence": [{"file": "data/careers/duelist.json", "pointer": "/base_stats/speed", "expected": 9}, {"file": "data/statuses/chilled.json", "pointer": "/effect/speed_modifier", "expected": -3}],
+      "schema_sections": ["Shared blocks", "Normalized names"],
+      "decision_required": "Approve or reject tempo-to-speed icon terminology. Old initiative stat naming normalizes to speed, but a tempo resource, action points, timing formula or turn-order policy is not approved by that normalization."
+    },
+    {
+      "asset_id": "status-open", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["statuses/exposed"],
+      "evidence": [{"file": "data/statuses/exposed.json", "pointer": "/id", "expected": "exposed"}, {"file": "data/statuses/exposed.json", "pointer": "/icon_shape", "expected": "crack"}, {"file": "data/statuses/exposed.json", "pointer": "/effect/defense_modifier", "expected": -3}],
+      "schema_section": "statuses",
+      "decision_required": "Approve open-to-exposed terminology and split/open silhouette against canonical crack cue. Preserve exposed ID/effects; do not add an open status."
+    },
+    {
+      "asset_id": "status-bound", "status": "no_canonical_equivalent",
+      "reason": "All six canonical statuses are bleeding/chilled/exposed/focused/guarded/stunned; no restraint effect exists. stunned.skip_turn and chilled.speed_modifier do not imply binding.",
+      "schema_section": "statuses",
+      "decision_required": "Resolve unsupported bound/restraint semantics without renaming stunned or adding a status."
+    },
+    {
+      "asset_id": "status-confused", "status": "no_canonical_equivalent",
+      "reason": "No confused status, disrupted-orientation field, target randomization or confusion effect exists among canonical statuses/effect keys.",
+      "schema_section": "statuses",
+      "decision_required": "Resolve unsupported confusion semantics; do not substitute stunned or chilled or invent targeting behavior."
+    },
+    {
+      "asset_id": "status-wounded", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["statuses/bleeding"],
+      "evidence": [{"file": "data/statuses/bleeding.json", "pointer": "/id", "expected": "bleeding"}, {"file": "data/statuses/bleeding.json", "pointer": "/icon_shape", "expected": "drop"}, {"file": "data/statuses/bleeding.json", "pointer": "/effect/damage_per_turn_per_stack", "expected": 3}, {"file": "data/statuses/bleeding.json", "pointer": "/max_stacks", "expected": 3}],
+      "schema_section": "statuses",
+      "decision_required": "A wound is broader than canonical stacking bleed damage. Explicitly approve/reject this candidate and reconcile drop cue with the prompt's blood-free notched body/armor silhouette; do not rename bleeding or invent a general wounded status."
+    },
+    {
+      "asset_id": "status-guarded", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["statuses/guarded"],
+      "evidence": [{"file": "data/statuses/guarded.json", "pointer": "/id", "expected": "guarded"}, {"file": "data/statuses/guarded.json", "pointer": "/icon_shape", "expected": "shield"}, {"file": "data/statuses/guarded.json", "pointer": "/effect/damage_taken_multiplier", "expected": 0.6}],
+      "schema_section": "statuses",
+      "decision_required": "Approve the exact-name visual binding and non-color-only distinction from action-guard/resource-protection/echo-guard/marker-guard. Name match does not confer art approval."
+    },
+    {
+      "asset_id": "reaction-dodge", "status": "no_canonical_equivalent",
+      "reason": "The only canonical reaction-type skill is riposte; careers declare brace/parry/ward, not dodge. No sidestep reaction or evasion chance exists.",
+      "schema_sections": ["careers", "skills"],
+      "decision_required": "Resolve dodge without inventing a reaction or relabeling quick_feint."
+    },
+    {
+      "asset_id": "reaction-riposte", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["skills/riposte"],
+      "evidence": [{"file": "data/skills/riposte.json", "pointer": "/id", "expected": "riposte"}, {"file": "data/skills/riposte.json", "pointer": "/type", "expected": "reaction"}, {"file": "data/skills/riposte.json", "pointer": "/trigger", "expected": "after_melee_hit"}, {"file": "data/careers/duelist.json", "pointer": "/reaction", "expected": "parry"}],
+      "schema_sections": ["skills", "careers"],
+      "decision_required": "Approve skill-specific counter visual. Keep riposte separate from the duelist career reaction parry; after_melee_hit data does not resolve WS02 reaction timing policy or justify literal instantaneous execution."
+    },
+    {
+      "asset_id": "reaction-stabilize", "status": "no_canonical_equivalent",
+      "reason": "No stabilize reaction or regaining-control behavior is defined. brace is only a career reaction enum; hold_the_line and quick_feint are non-reaction cleanse skills, and heal_hp is consumable healing.",
+      "schema_sections": ["careers", "skills", "items"],
+      "decision_required": "Resolve stabilize without inventing brace behavior, a cleanse reaction or healing."
+    },
+    {
+      "asset_id": "reaction-secure", "status": "no_canonical_equivalent",
+      "reason": "No effect preservation, resource locking or secure reaction exists. ward is a career reaction enum, not documented effect-preservation mechanics.",
+      "schema_sections": ["careers", "skills", "statuses"],
+      "decision_required": "Resolve secure/preserve semantics; do not assign behavior to ward from visual similarity."
+    },
+    {
+      "asset_id": "echo-attack", "status": "no_canonical_equivalent",
+      "reason": "No echo collection, stored/resonant effect field or attack-echo content exists; direct attack skills are not echoes.",
+      "schema_sections": ["Slice entity types", "skills"],
+      "decision_required": "Resolve unsupported attack echo at Gate 0; retain tracking ID without implementing an echo system."
+    },
+    {
+      "asset_id": "echo-guard", "status": "no_canonical_equivalent",
+      "reason": "No stored defensive echo exists; guarded is an active buff, not a stored resonance.",
+      "schema_sections": ["Slice entity types", "statuses"],
+      "decision_required": "Resolve unsupported guard echo; do not map it to guarded merely because both use shields."
+    },
+    {
+      "asset_id": "echo-move", "status": "no_canonical_equivalent",
+      "reason": "No movement action or lingering/stored movement echo exists; speed and chilled are stat/status data, not echoes.",
+      "schema_sections": ["Slice entity types", "Shared blocks", "skills"],
+      "decision_required": "Resolve unsupported movement echo without creating movement or echo rules."
+    },
+    {
+      "asset_id": "echo-influence", "status": "no_canonical_equivalent",
+      "reason": "No influence storage or echo system exists; control skill effects are not stored resonant nodes.",
+      "schema_sections": ["Slice entity types", "skills"],
+      "decision_required": "Resolve unsupported influence echo without recasting control skills as stored effects."
+    },
+    {
+      "asset_id": "echo-trap", "status": "no_canonical_equivalent",
+      "reason": "No placed hazard/trap entity, placement coordinates, trigger or trap-echo field exists.",
+      "schema_sections": ["Slice entity types", "skills", "encounters"],
+      "decision_required": "Resolve unsupported trap echo without introducing board hazards."
+    },
+    {
+      "asset_id": "echo-barrier", "status": "no_canonical_equivalent",
+      "reason": "No barrier echo or field-boundary entity/rule exists; defense/guarded concern combatants, not placed barriers.",
+      "schema_sections": ["Slice entity types", "Shared blocks", "statuses"],
+      "decision_required": "Resolve unsupported barrier echo; do not create a wall or barrier capacity."
+    },
+    {
+      "asset_id": "echo-mist", "status": "no_canonical_equivalent",
+      "reason": "No mist effect or stored mist echo exists; frost damage and chilled cannot be silently converted to mist.",
+      "schema_sections": ["Slice entity types", "skills", "statuses"],
+      "decision_required": "Resolve unsupported mist echo without deriving new effects from atmosphere/art wording."
+    },
+    {
+      "asset_id": "echo-rift", "status": "no_canonical_equivalent",
+      "reason": "No rift or stored spatial-tear effect exists; arcane damage has no implied spatial mechanics.",
+      "schema_sections": ["Slice entity types", "skills"],
+      "decision_required": "Resolve unsupported rift echo without inventing rift lore or gameplay."
+    },
+    {
+      "asset_id": "marker-brand", "status": "no_canonical_equivalent",
+      "reason": "No placed brand marker exists. encounters.arena is a string key, not a field-marker state model.",
+      "schema_sections": ["Slice entity types", "encounters"],
+      "decision_required": "Resolve unsupported brand marker without adding placement rules or faction branding."
+    },
+    {
+      "asset_id": "marker-mist", "status": "no_canonical_equivalent",
+      "reason": "No placed mist marker, marker collection or mist field effect exists; chilled is a unit status.",
+      "schema_sections": ["Slice entity types", "statuses", "encounters"],
+      "decision_required": "Resolve unsupported mist marker without conflating it with chilled or echo-mist."
+    },
+    {
+      "asset_id": "marker-mirror", "status": "no_canonical_equivalent",
+      "reason": "No mirror marker or reflection rule exists; riposte counters a melee hit, not reflected field damage.",
+      "schema_sections": ["Slice entity types", "skills"],
+      "decision_required": "Resolve unsupported mirror marker without mapping it to riposte."
+    },
+    {
+      "asset_id": "marker-guard", "status": "no_canonical_equivalent",
+      "reason": "No guard pin/protected tile or location-based defense rule exists; guarded is a combatant buff.",
+      "schema_sections": ["Slice entity types", "statuses", "encounters"],
+      "decision_required": "Resolve unsupported guard marker without inventing field protection."
+    },
+    {
+      "asset_id": "marker-rift", "status": "no_canonical_equivalent",
+      "reason": "No anchored rift marker, spatial location state or spatial-tear mechanic exists.",
+      "schema_sections": ["Slice entity types", "skills", "encounters"],
+      "decision_required": "Resolve unsupported rift marker without adding rift mechanics."
+    },
+    {
+      "asset_id": "marker-bind", "status": "no_canonical_equivalent",
+      "reason": "No binding field marker or restraint-placement effect exists, and status-bound itself has no canonical equivalent.",
+      "schema_sections": ["Slice entity types", "statuses", "encounters"],
+      "decision_required": "Resolve unsupported bind marker without replacing stunned with binding or adding field restraint."
+    },
+    {
+      "asset_id": "gear-weapon", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["items.slot=weapon"],
+      "evidence": [{"file": "data/items/iron_sword.json", "pointer": "/slot", "expected": "weapon"}, {"file": "data/items/rapier.json", "pointer": "/slot", "expected": "weapon"}, {"file": "data/items/oak_staff.json", "pointer": "/slot", "expected": "weapon"}],
+      "schema_section": "items",
+      "decision_required": "Approve generic weapon-slot visual spanning swords, rapier and staff; do not create inventory-management or item-specific art."
+    },
+    {
+      "asset_id": "gear-armor", "status": "candidate_requires_gate_0_approval",
+      "candidate_canonical": ["items.slot=armor"],
+      "evidence": [{"file": "data/items/leather_jerkin.json", "pointer": "/slot", "expected": "armor"}, {"file": "data/items/scholars_robe.json", "pointer": "/slot", "expected": "armor"}],
+      "schema_section": "items",
+      "decision_required": "Approve generic armor-slot visual including leather and robe, despite chest-plate prompt. No character/class art or inventory screen is authorized."
+    },
+    {
+      "asset_id": "gear-tool", "status": "no_canonical_equivalent",
+      "reason": "items.slot permits weapon/offhand/armor/trinket/consumable, not tool. whetstone is consumable and cannot establish a new equipment slot.",
+      "schema_section": "items",
+      "decision_required": "Resolve unsupported tool slot; do not map it to consumable or offhand by appearance."
+    },
+    {
+      "asset_id": "gear-artifact", "status": "no_canonical_equivalent",
+      "reason": "items.slot has no artifact value. ward_talisman.slot is trinket, and rarity does not define an artifact slot.",
+      "schema_section": "items",
+      "decision_required": "Resolve unsupported artifact slot without silently renaming trinket or adding lore/abilities."
+    }
+  ],
+  "reverse_coverage_gaps": [
+    {
+      "canonical": ["statuses/chilled", "statuses/focused", "statuses/stunned"],
+      "evidence": [{"file": "data/statuses/chilled.json", "pointer": "/icon_shape", "expected": "snowflake"}, {"file": "data/statuses/focused.json", "pointer": "/icon_shape", "expected": "eye"}, {"file": "data/statuses/stunned.json", "pointer": "/icon_shape", "expected": "star"}],
+      "reason": "These three actual statuses have no exact or proposed status icon among the fixed five production status IDs. bound/confused are not substitutes.",
+      "decision_required": "Project/art owner resolves fixed-pack coverage at Gate 0 without this increment adding icons, renaming IDs or changing canonical content."
+    },
+    {
+      "canonical": ["base_stats.focus", "base_stats.stamina"],
+      "reason": "Two actual spendable resources have only one ambiguous energy asset candidate. Both need explicit labels and distinguishability; no combined energy meter exists.",
+      "related_asset_ids": ["resource-energy"],
+      "decision_required": "Approve a coverage strategy for both pools before HUD meter art or integration; no new icons are added here."
+    },
+    {
+      "canonical": ["careers.reaction=brace", "careers.reaction=parry", "careers.reaction=ward"],
+      "evidence": [{"file": "data/careers/mercenary.json", "pointer": "/reaction", "expected": "brace"}, {"file": "data/careers/duelist.json", "pointer": "/reaction", "expected": "parry"}, {"file": "data/careers/scholar_mage.json", "pointer": "/reaction", "expected": "ward"}],
+      "reason": "The pack's dodge/riposte/stabilize/secure roster is not the career reaction enum. Only riposte has a skill-specific candidate, separate from career reaction parry.",
+      "decision_required": "Owner resolves semantic/visual coverage after gameplay reaction policy review; do not invent behavior or synonym mappings."
+    },
+    {
+      "canonical": ["items.slot=offhand", "items.slot=trinket", "items.slot=consumable"],
+      "evidence": [{"file": "data/items/buckler.json", "pointer": "/slot", "expected": "offhand"}, {"file": "data/items/ward_talisman.json", "pointer": "/slot", "expected": "trinket"}, {"file": "data/items/whetstone.json", "pointer": "/slot", "expected": "consumable"}],
+      "reason": "These existing item slots are absent from the exact equipment quartet. tool/artifact are not canonical substitutes.",
+      "decision_required": "Resolve generic kit coverage without building an inventory screen or expanding this sprint roster."
+    },
+    {
+      "canonical": ["bosses/iron_captain.phases[].telegraphs[].icon=amber_sword"],
+      "evidence": [{"file": "data/bosses/iron_captain.json", "pointer": "/phases/0/telegraphs/0/icon", "expected": "amber_sword"}, {"file": "data/bosses/iron_captain.json", "pointer": "/phases/1/telegraphs/0/icon", "expected": "amber_sword"}],
+      "reason": "The authored telegraph visual key is not a production pack filename; no approved mapping from amber_sword to one of the 36 assets exists.",
+      "decision_required": "Owner must confirm visual-key handling; do not rename canonical telegraphs or silently bind action-attack based on sword imagery."
+    }
+  ],
+  "hud_prompt_semantic_dependencies": [
+    {"prompt_ids": ["HUD-01"], "dependency": "Encounter identity is canonical; phase/round and active-state values must come from reviewed combat runtime, not invented artwork copy."},
+    {"prompt_ids": ["HUD-02", "HUD-03"], "dependency": "Approve HP terminology, distinguish focus/stamina, and resolve break/protection/tempo meter mismatches. Only runtime-provided current/maximum values may be shown."},
+    {"prompt_ids": ["HUD-04"], "dependency": "Reconcile five pack status IDs with six canonical statuses and icon_shape cues; duration/stack values only where runtime supplies them."},
+    {"prompt_ids": ["HUD-05"], "dependency": "Four art action families are not canonical skill/action enums; move is absent and guard/influence are only candidate mappings."},
+    {"prompt_ids": ["HUD-06"], "dependency": "Reaction roster and career abilities/cost/availability require canonical runtime context and owner-approved policy; no free action or fabricated ability."},
+    {"prompt_ids": ["HUD-07"], "dependency": "Legal/focus/selection treatment may be UI state; occupied/marked board locations and field mechanics are not defined by the canonical data schema."},
+    {"prompt_ids": ["HUD-08"], "dependency": "Use only reviewed runtime event types and supplied values; a movement/effect art treatment does not authorize a new event type."},
+    {"prompt_ids": ["HUD-09"], "dependency": "Help/confirmation text and dismiss behavior need functional WS03 context; no generated copy or fake UI is delivered."}
+  ],
+  "production_blockers": [
+    {
+      "id": "gate-0-terminology-and-scope", "status": "unresolved", "owner": "project/art owner",
+      "blocks": ["all_asset_production", "all_asset_integration", "echo_and_marker_archetype_selection"],
+      "reason": "13 mapping candidates remain unapproved and 23 IDs lack canonical equivalents. Fixed-pack reverse coverage gaps also require decisions. Unsupported echoes/markers prevent safely selecting all four B2 archetypes."
+    },
+    {
+      "id": "gate-0-targets-and-imports", "status": "unresolved", "owner": "project/art owner with WS03/WS06",
+      "blocks": ["layout_production", "final_source_and_export_contract"],
+      "reason": "Confirm icon display sizes, actual narrow/mobile and wide viewports, device orientation review, Godot imports and output formats. Raster master dimensions/extension are unspecified, not invented. Pack PNG sizes remain tracked at 128x128 and 64x64."
+    },
+    {
+      "id": "layout-and-gameplay-context", "status": "pending_dependency", "owner": "WS03 with project/gameplay owner",
+      "blocks": ["HUD_semantic_binding", "realistic_context_review"],
+      "reason": "Realistic layouts and reviewed runtime values/action/target/reaction/event policies are required. Source art prompts are not approval of game mechanics or a functional HUD."
+    },
+    {
+      "id": "human-visual-approvals", "status": "not_approved", "owner": "art reviewer",
+      "blocks": ["direction", "HUD_kit", "icon_language", "batch_production", "integration_handoff"],
+      "reason": "Gate 0, A, B1, B2, C and D have no recorded reviewer/evidence. Automated manifest validation cannot satisfy art approval."
+    },
+    {
+      "id": "actual-assets-and-provenance", "status": "pending_production", "owner": "art production owner and reviewer",
+      "blocks": ["art_sprint_closure", "final_art_integration"],
+      "reason": "No drawing/generation capability is assumed and no art is delivered. Editable masters, both PNG exports, native/small-size visual QA, contact sheets, layout references, licensing/source notes, variants/exceptions and eventual handoff remain outstanding."
+    }
+  ],
+  "closure_policy": "Machine-readable preparation may be complete while production remains pending. Art sprint acceptance requires exactly 36 approved icons and all HUD/delivery/gate evidence; this report explicitly does not claim that outcome."
+}

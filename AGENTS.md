@@ -1,5 +1,46 @@
 # App Builder Workspace
 
+## GameZero product and architecture guardrails
+
+For repository direction, read [Vision Manifest](docs/vision-manifest.md),
+[Technical Target Architecture](docs/target-architecture.md), and
+[Game Director Pitch](docs/game-director-pitch.md). They describe strategic, technical,
+and creative intent; they do not override the [canonical schema](docs/data-schema.md),
+[slice plan](docs/vertical-slice-implementation-plan.md), or
+[workstream contracts and acceptance gates](docs/workstreams/README.md).
+
+- Preserve GameZero's mobile-first, 2D side-view, data-driven tactical RPG direction.
+  Complete the bounded first playable before post-slice expansion.
+- **Canonical content definitions:** author only approved JSON records under `data/`,
+  with stable IDs and explicit gameplay values. Do not duplicate content into authored
+  Godot `.tres` files, legacy Resource models, or UI constants.
+- **Runtime supplement:** the target is separately validated, versioned execution
+  metadata referencing canonical IDs, not duplicate base definitions or mutable state.
+  Its final contract, file, and export tooling are not implemented in this baseline.
+  Review missing policy and schema changes before adding fields or consumers.
+- **Deterministic combat rules:** keep legality, targeting, previews, resolution,
+  seeded randomness, and ordered events independent of scenes, UI, and animation timing.
+  Same content revision, initial state, seed, and intents must produce the same results.
+- **Combat instance state / run state:** instantiate mutable battle state separately
+  from read-only definitions; carry only approved progress across battles in run state.
+  Do not alias state between runs or apply a terminal result/reward more than once.
+- **Presentation:** display resolved values/events and submit intents. Never calculate
+  competing damage, target legality, rewards, or progression in a view.
+- **Godot runtime host:** load, orchestrate, route input, and render through bounded
+  services. Keep boot thin. Godot is not an alternative rule or authoring authority.
+- **Validation/export pipeline:** preserve Loader → Validator → Registry →
+  Encounter Resolver and actionable aggregated errors. Block gameplay on invalid
+  content; do not silently repair it. Future bundles are generated from validated,
+  reviewed sources, not authored directly.
+- Browser slice code/tests are reference evidence, not approval of unspecified
+  gameplay policy or proof of Godot parity. Distinguish implemented behavior,
+  proposed contracts, blocked decisions, and verified native acceptance.
+- Use the existing checks documented in the README. Do not claim missing supplement,
+  export, persistence, or native runtime features are complete, and do not introduce
+  dependencies or runtime changes for documentation-only work.
+
+The workspace execution rules below remain in force for applicable app-building work.
+
 **The single source of truth** for the App Builder sandbox contract. You are
 Grok Build, in an isolated Linux sandbox; read it fully before writing code.
 Prompts are often short and casual — read intent generously and ship a

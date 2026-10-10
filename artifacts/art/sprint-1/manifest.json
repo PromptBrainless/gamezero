@@ -1,0 +1,500 @@
+{
+  "manifest_version": 1,
+  "workstream": "WS05",
+  "purpose": "Initial complete production tracking, not art delivery or gameplay schema.",
+  "production_status": "pending_production",
+  "approval_status": "not_approved",
+  "integration_status": "blocked_pending_gate_0_and_visual_approvals",
+  "asset_count": 36,
+  "category_counts": {
+    "Action": 4,
+    "Combat resource": 5,
+    "Status": 5,
+    "Reaction": 4,
+    "Echo": 8,
+    "Field marker": 6,
+    "Equipment slot": 4
+  },
+  "sources": [
+    "docs/workstreams/README.md",
+    "docs/workstreams/05-art-production.md",
+    "docs/art-sprint-1-production-pack.md",
+    "docs/art-sprint-1-task-checklist.md",
+    "docs/art-sprint-1-prompt-sheet.md",
+    "docs/data-schema.md",
+    "docs/visual-reference-brief.md",
+    "docs/ui-style-guide.md",
+    "data/"
+  ],
+  "semantic_gap_report": "artifacts/art/sprint-1/semantic-gap-report.json",
+  "automation_limits": [
+    "Records describe pending production work; no master, export, draft, drawing or generated image is delivered.",
+    "No image-generation tool, drawing method, licensing clearance or reviewer approval is assumed.",
+    "Candidate mappings are proposals, not approved synonyms or runtime bindings.",
+    "No gameplay/content/document/dependency changes are authorized by this manifest.",
+    "All six gates require actual reviewer identity and evidence before an approved status may be recorded."
+  ],
+  "approval_record_policy": {
+    "initial_status": "not_approved",
+    "reviewer_record_status": "not_recorded",
+    "evidence_record_status": "not_recorded",
+    "required_on_approval": ["reviewer", "evidence", "decision", "approved_at"],
+    "note": "Absent approval fields are intentionally omitted; no fictional identity, evidence, timestamp or approval is supplied."
+  },
+  "delivery_requirements": {
+    "id": "icon-delivery-v1",
+    "source": "docs/art-sprint-1-production-pack.md §§7,9; docs/art-sprint-1-task-checklist.md Phase 4; docs/workstreams/05-art-production.md Phase 4",
+    "master": {
+      "status": "pending_production",
+      "preferred_format": "editable_svg",
+      "alternative_format": "layered_lossless_raster",
+      "square": true,
+      "source_pixel_dimensions_status": "not_specified_by_canonical_pack",
+      "source_pixel_dimensions_reason": "SVG is resolution-independent. The pack does not prescribe a raster master pixel size; project/art owner must confirm it and the layered format at Gate 0 rather than this record inventing one.",
+      "svg_filename_rule": "<exact-asset-id>.svg",
+      "raster_filename_rule": "<exact-asset-id>.<approved-layered-lossless-extension>",
+      "raster_extension_status": "requires_gate_0_confirmation",
+      "flattened_lossy_sole_master_allowed": false
+    },
+    "exports": [
+      {"directory": "exports/128", "format": "png", "width_px": 128, "height_px": 128, "transparent": true, "color_space": "sRGB", "status": "pending_production"},
+      {"directory": "exports/64", "format": "png", "width_px": 64, "height_px": 64, "transparent": true, "color_space": "sRGB", "status": "pending_production"}
+    ],
+    "path_policy": "All row paths are future delivery coordinates relative to artifacts/art/sprint-1/, not existing files. Masters, exports and drafts must remain separate. Raster master path is recorded only after its format is approved.",
+    "reviews_px": [128, 64, 32, 24],
+    "small_size_acceptance": {"recognizable_px": 32, "monochrome_distinguishable_px": 24},
+    "optical_safe_inset_approx_fraction": 0.12,
+    "construction_checks": [
+      "Shared framing, stroke/shape weight, optical centering, negative space and level of detail across all categories.",
+      "Bold open monochrome-first silhouette; UI applies color unless a variant is explicitly approved.",
+      "No baked text, numbers, background, UI frame/tile or avoidable shadow.",
+      "Exact hyphenated filenames without revision/version suffixes.",
+      "Review each icon for meaning, native/small sizes, same-size monochrome contact sheet and realistic HUD context.",
+      "Editable masters and licensing/source notes are required; generated sketches, if any, require manual normalization and are not production exports."
+    ],
+    "state_variant_status": "requires_layout_and_reviewer_confirmation",
+    "source_and_license_review_status": "pending_production_and_review"
+  },
+  "gates": [
+    {
+      "id": "0",
+      "phase": 0,
+      "name": "Scope and source-of-truth",
+      "status": "not_approved",
+      "accountable_role": "project/art owner",
+      "depends_on": [],
+      "required_evidence": [
+        "Approved bounded HUD/36-icon scope and exact identifiers.",
+        "Decision for every canonical mapping and no-equivalent term; no extra mechanics.",
+        "Confirmed display sizes, narrow/mobile and wide viewports, final orientation handling, Godot import constraints and source/output formats."
+      ]
+    },
+    {
+      "id": "A",
+      "phase": 1,
+      "name": "Direction",
+      "status": "not_approved",
+      "accountable_role": "art reviewer with WS03 layout context",
+      "depends_on": ["0"],
+      "required_evidence": [
+        "Approved palette/material board, type hierarchy, borders, elevations, corners and action-family cues.",
+        "Annotated narrow/mobile and wide HUD references with explicit viewport dimensions.",
+        "Spacing, density, contrast, color-independent distinctions and touch-target review."
+      ]
+    },
+    {
+      "id": "B1",
+      "phase": 2,
+      "name": "HUD kit",
+      "status": "not_approved",
+      "accountable_role": "art reviewer with WS03",
+      "depends_on": ["A"],
+      "required_evidence": [
+        "Panel, button, meter, chip, target, tooltip and modal families in realistic mobile and wide layouts.",
+        "Default, selected, focused, disabled and warning examples where used; exact values remain editable text.",
+        "Legal, focused, selected, occupied and marked distinction is not color-only.",
+        "Responsive behavior without new gameplay; no obstruction of combat or chosen action."
+      ]
+    },
+    {
+      "id": "B2",
+      "phase": 3,
+      "name": "Icon language",
+      "status": "not_approved",
+      "accountable_role": "art reviewer",
+      "depends_on": ["B1"],
+      "required_evidence": [
+        "One action, one status, one echo and one field-marker representative; individual representative IDs require reviewer selection after terminology reconciliation.",
+        "Same-size monochrome silhouette, weight, negative space and optical-centering comparisons at 128, 64, 32 and 24 px.",
+        "Approved framing, approximate 12% safe inset, construction/detail and export treatment before batching."
+      ]
+    },
+    {
+      "id": "C",
+      "phase": 3,
+      "name": "Production batch",
+      "status": "not_approved",
+      "accountable_role": "art reviewer",
+      "depends_on": ["B2"],
+      "required_evidence": [
+        "All exact 36 icons produced using shared geometry/style.",
+        "Meaning reconciled against approved list; unresolved terminology explicitly flagged.",
+        "Complete same-size monochrome contact sheet and realistic HUD-context review."
+      ]
+    },
+    {
+      "id": "D",
+      "phase": 4,
+      "name": "Integration handoff",
+      "status": "not_approved",
+      "accountable_role": "art reviewer with implementation team",
+      "depends_on": ["C"],
+      "required_evidence": [
+        "Editable master and transparent square sRGB PNGs at 128x128 and 64x64 for every approved exact ID.",
+        "Naming, dimensions, transparency, small-size readability, no baked text/background/tile/shadow and source editability verified.",
+        "Mobile/wide viewport dimensions, approved palette/sizing, mappings/state variants, licensing/source notes, exceptions, contact sheets and eventual handoff note.",
+        "Drafts/intermediates clearly separated; reviewer can integrate without undocumented verbal guidance."
+      ]
+    }
+  ],
+  "prompt_contract": {
+    "source": "docs/art-sprint-1-prompt-sheet.md",
+    "global_style": "Design a restrained, premium tactical combat interface for GameZero's first playable slice. Dark charcoal-green surfaces, warm ivory information, muted sage support text, a controlled burnt-orange attack/danger accent, pale steel-blue defense accent, olive movement accent, and soft-gold focus accent. Crisp high-contrast shapes, subtle etched construction details, deliberate negative space, compact but readable information hierarchy, calm and precise rather than noisy. Keep all labels and numbers editable and outside artwork. Maintain a consistent silhouette language and practical mobile-first legibility. Do not invent lore, mechanics, characters, stats, or interface copy.",
+    "global_negative": "Avoid photorealism, glossy mobile-game gradients, excessive glow, neon cyberpunk, cluttered ornament, tiny filigree, low contrast, soft blurry silhouettes, faux text, random letters, illegible numbers, logos, watermarks, UI screenshots with invented copy, extra controls, character portraits, gore, and details that imply an unapproved game mechanic. Avoid making meaning depend on color alone.",
+    "single_isolated_symbol_template": "Single isolated square icon, centered by optical mass, bold open silhouette, consistent line/shape weight, clear negative space, readable at 32 px and recognizable at 24 px, transparent background, no frame or tile, no text or number, monochrome-first. Follow the GameZero global style. Produce one symbol only; do not add alternate symbols or a sheet.",
+    "composition": ["global_style", "asset.source_prompt.text", "single_isolated_symbol_template", "global_negative"],
+    "negative_constraints_handling": "Use a negative-prompt field only if supported; otherwise append relevant exclusions to the main prompt.",
+    "use_status": "source_briefs_recorded_not_executed",
+    "mechanic_neutrality": "Source prompts are preserved verbatim for traceability. Unconfirmed meter, action, reaction, echo and marker terms are blocked by the semantic gap report; wording is not permission to produce or integrate them.",
+    "generated_output_policy": "If generation is later selected, output is a sketch requiring manual normalization in an editable master; never ship a generated full UI screenshot or fake copy as functional HUD."
+  },
+  "hud_tracking": {
+    "status": "pending_production",
+    "required_compositions": ["narrow_mobile", "wide_screen"],
+    "viewport_dimensions_status": "requires_gate_0_confirmation",
+    "required_gates": ["0", "A", "B1", "D"],
+    "touch_target_min_dp": 48,
+    "normal_text_contrast_min_ratio": 4.5,
+    "numeric_values": "Only exact available canonical/runtime values, as editable text in addition to fill/ticks.",
+    "interaction_checks": ["non_color_only_side_and_state", "keyboard_focus", "pointer_hover", "mobile_tap_help", "reduced_motion", "critical_combat_and_chosen_action_not_obscured"],
+    "prompts": [
+      {
+        "id": "HUD-01",
+        "name": "Combat frame and phase header",
+        "source_section": "docs/art-sprint-1-prompt-sheet.md#hud-01--combat-frame-and-phase-header",
+        "status": "pending_production",
+        "text": "Create a compact tactical combat frame and phase header. Reserve a clear, shallow header for encounter context and current phase/round; leave the central combat area open. Use strong alignment, restrained borders, dark layered surfaces, warm ivory labels, and one soft-gold focus detail. Include placeholder blocks only, with no generated words, numbers, logos, characters, or new systems. Show mobile and wide-screen arrangements."
+      },
+      {
+        "id": "HUD-02",
+        "name": "Player and target status cards",
+        "source_section": "docs/art-sprint-1-prompt-sheet.md#hud-02--player-and-target-status-cards",
+        "status": "pending_production",
+        "text": "Design a matched pair of player and target status cards for a turn-based combat HUD. Each card should clearly reserve identity, a prominent body/health value, and a compact row for other relevant combat state. Differentiate sides through label placement, framing, and shape as well as accent color. Make the selected/active card clear without a large glow. Use editable empty label areas; do not create character portraits or invent stats."
+      },
+      {
+        "id": "HUD-03",
+        "name": "Resource meter family",
+        "source_section": "docs/art-sprint-1-prompt-sheet.md#hud-03--resource-meter-family",
+        "status": "pending_production",
+        "text": "Design a coherent set of compact resource meters for body/health, energy, break/strain, protection, and tempo. Each meter needs visible ticks or segments and a separate readable value area; show full, partial, low, and changed examples. Use different semantic cues and a restrained palette, but make every value understandable without color. No text or numerals should be baked into the art."
+      },
+      {
+        "id": "HUD-04",
+        "name": "Status and effect rail",
+        "source_section": "docs/art-sprint-1-prompt-sheet.md#hud-04--status-and-effect-rail",
+        "status": "pending_production",
+        "text": "Design a compact status/effect rail that can hold several square icon chips with a small duration/stack cue and a tap/hover explanation affordance. Show normal, selected, and warning examples using simple silhouettes and generous spacing. Leave label/value areas blank and editable; do not invent states beyond the supplied icon list."
+      },
+      {
+        "id": "HUD-05",
+        "name": "Combat action selector",
+        "source_section": "docs/art-sprint-1-prompt-sheet.md#hud-05--combat-action-selector",
+        "status": "pending_production",
+        "text": "Design a touch-friendly combat action selector with four equally legible choices: attack, guard, move, influence. Each choice has an icon area, editable label area, and clear default, focused, selected, pressed, and unavailable states. Attack should feel decisive, guard stable, move directional, and influence deliberate. Do not imply differing costs or invent additional actions."
+      },
+      {
+        "id": "HUD-06",
+        "name": "Reaction and ability controls",
+        "source_section": "docs/art-sprint-1-prompt-sheet.md#hud-06--reaction-and-ability-controls",
+        "status": "pending_production",
+        "text": "Design a secondary control group for optional reactions and a character ability. Make the controls discoverable but visually subordinate to the four main action choices. Reserve a clear editable cost/availability area, with ready, selected, and unavailable examples. Keep the controls compact and touch-friendly; do not invent a reaction, ability, or cost."
+      },
+      {
+        "id": "HUD-07",
+        "name": "Board and target affordances",
+        "source_section": "docs/art-sprint-1-prompt-sheet.md#hud-07--board-and-target-affordances",
+        "status": "pending_production",
+        "text": "Create a small style sheet of tactical board target states: legal, focused, selected, occupied, and marked. Show each as a clean, unobstructive overlay around a target location. Use shape, line pattern, and contrast in addition to color. Keep the combatant/board visible beneath the affordances and do not add new field rules."
+      },
+      {
+        "id": "HUD-08",
+        "name": "Turn and event log",
+        "source_section": "docs/art-sprint-1-prompt-sheet.md#hud-08--turn-and-event-log",
+        "status": "pending_production",
+        "text": "Design a scannable combat event log for a turn-based HUD. Show a compact latest-event row and a more detailed expanded row using a simple icon slot, clear hierarchy, and readable text placeholder lines. Distinguish attack, defense, movement, and effect events through icon/label treatments, not just color. No generated text, fake numbers, or new event types."
+      },
+      {
+        "id": "HUD-09",
+        "name": "Tooltip, help, and confirmation layer",
+        "source_section": "docs/art-sprint-1-prompt-sheet.md#hud-09--tooltip-help-and-confirmation-layer",
+        "status": "pending_production",
+        "text": "Design a concise tooltip/help layer and a confirmation panel treatment that works for pointer hover, keyboard focus, and mobile tap. Keep text on a high-contrast surface, provide a clear dismiss/return affordance, and avoid covering the action or target being explained. Use blank editable text areas; do not generate copy or additional game systems."
+      }
+    ]
+  },
+  "assets": [
+    {
+      "ordinal": 1, "id": "action-attack", "category": "Action", "meaning": "Commit to an attack",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Action icons", "number": 1, "text": "A decisive forward strike represented by two crossing short blades or one clean impact slash; communicate commitment and direction without blood, a specific character, or a damage number."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/action-attack.svg", "required_png_exports": ["exports/128/action-attack.png", "exports/64/action-attack.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["skills.type=attack"], "reason": "Canonical attack skills exist; an icon for a skill category is not approval of a new universal attack action."}
+    },
+    {
+      "ordinal": 2, "id": "action-guard", "category": "Action", "meaning": "Guard or defend",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Action icons", "number": 2, "text": "A compact upright shield with a firm central brace; communicate held defense and stability, not invulnerability."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/action-guard.svg", "required_png_exports": ["exports/128/action-guard.png", "exports/64/action-guard.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["skills.type=defense", "skills/hold_the_line"], "reason": "A defense skill exists; do not imply a free or career-independent guard action."}
+    },
+    {
+      "ordinal": 3, "id": "action-move", "category": "Action", "meaning": "Move or evade",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Action icons", "number": 3, "text": "A clear stepping boot or forward double-chevron with a small evasion arc; communicate repositioning without implying a specific distance."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/action-move.svg", "required_png_exports": ["exports/128/action-move.png", "exports/64/action-move.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No movement/evade action category, position or distance field exists. quick_feint is a self-target control/cleanse skill, not a repositioning action."}
+    },
+    {
+      "ordinal": 4, "id": "action-influence", "category": "Action", "meaning": "Influence or manipulate combat state",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Action icons", "number": 4, "text": "A central point shaping two orbiting rings or connected nodes; communicate deliberate manipulation of a field/effect, not magic of a specific lore type."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/action-influence.svg", "required_png_exports": ["exports/128/action-influence.png", "exports/64/action-influence.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["skills.type=control"], "reason": "Control is a canonical skill category, not influence or field manipulation. Reviewer must resolve the terminology and reject unsupported field implications."}
+    },
+    {
+      "ordinal": 5, "id": "resource-body", "category": "Combat resource", "meaning": "Body/health remaining",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Combat resource icons", "number": 5, "text": "A simple heart-like core protected by a clean outer contour; communicate remaining body/health, with no medical cross or gore."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/resource-body.svg", "required_png_exports": ["exports/128/resource-body.png", "exports/64/resource-body.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["base_stats.hp"], "reason": "HP is canonical; body is an art label needing approval. Current remaining HP must come from runtime state, not static base_stats alone."}
+    },
+    {
+      "ordinal": 6, "id": "resource-energy", "category": "Combat resource", "meaning": "Energy available to spend",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Combat resource icons", "number": 6, "text": "A compact contained spark or angular charge cell; communicate a spendable reserve without a numeric value."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/resource-energy.svg", "required_png_exports": ["exports/128/resource-energy.png", "exports/64/resource-energy.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["base_stats.stamina", "base_stats.focus"], "reason": "Two distinct canonical spendable pools are alternatives, not a combined energy pool. No unique energy equivalent exists; owner must decide whether and how this asset can represent either without conflation."}
+    },
+    {
+      "ordinal": 7, "id": "resource-break", "category": "Combat resource", "meaning": "Accumulated break/strain",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Combat resource icons", "number": 7, "text": "A solid plate or stone marked by one controlled fracture; communicate accumulating break/strain, not a destroyed character."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/resource-break.svg", "required_png_exports": ["exports/128/resource-break.png", "exports/64/resource-break.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No accumulated break/strain pool, counter or threshold exists. exposed and stunned are statuses, not a break meter."}
+    },
+    {
+      "ordinal": 8, "id": "resource-protection", "category": "Combat resource", "meaning": "Guard or protection",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Combat resource icons", "number": 8, "text": "A small shield around a single inset line or dot; communicate active protection with a calm, stable silhouette."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/resource-protection.svg", "required_png_exports": ["exports/128/resource-protection.png", "exports/64/resource-protection.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["base_stats.defense"], "reason": "Defense is a numeric stat, not a spendable protection pool or shield capacity. guarded is separately a status; no maximum protection meter may be invented."}
+    },
+    {
+      "ordinal": 9, "id": "resource-tempo", "category": "Combat resource", "meaning": "Action tempo or initiative",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Combat resource icons", "number": 9, "text": "A precise metronome tick or offset clock-hand mark; communicate action timing/tempo, not a clock interface or time travel."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/resource-tempo.svg", "required_png_exports": ["exports/128/resource-tempo.png", "exports/64/resource-tempo.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["base_stats.speed"], "reason": "Speed is canonical and initiative is normalized to speed in the schema; no spendable tempo pool or approved turn-order policy follows from this."}
+    },
+    {
+      "ordinal": 10, "id": "status-open", "category": "Status", "meaning": "Exposed/open state",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Status icons", "number": 10, "text": "An opened guard or split outline with a clear gap; communicate an exposed state without a wound."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/status-open.svg", "required_png_exports": ["exports/128/status-open.png", "exports/64/status-open.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["statuses/exposed"], "reason": "Exposed exists with icon_shape crack; approve open-to-exposed terminology and silhouette without renaming the gameplay ID or changing effects."}
+    },
+    {
+      "ordinal": 11, "id": "status-bound", "category": "Status", "meaning": "Bound or restrained",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Status icons", "number": 11, "text": "Two restrained links crossing a simple central form; communicate restraint with a silhouette that stays legible when tiny."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/status-bound.svg", "required_png_exports": ["exports/128/status-bound.png", "exports/64/status-bound.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No bound/restrained status or restraint effect exists; stunned.skip_turn is not permission to relabel stun as binding."}
+    },
+    {
+      "ordinal": 12, "id": "status-confused", "category": "Status", "meaning": "Confused or disrupted",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Status icons", "number": 12, "text": "A broken or offset directional arrow around a central point; communicate disrupted orientation without a question mark or text."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/status-confused.svg", "required_png_exports": ["exports/128/status-confused.png", "exports/64/status-confused.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No confused/disrupted-orientation status or effect exists; neither chilled nor stunned supplies confusion mechanics."}
+    },
+    {
+      "ordinal": 13, "id": "status-wounded", "category": "Status", "meaning": "Wounded state",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Status icons", "number": 13, "text": "A small notched body/armor silhouette with one restrained cut line; no blood, gore, or medical symbol."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/status-wounded.svg", "required_png_exports": ["exports/128/status-wounded.png", "exports/64/status-wounded.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["statuses/bleeding"], "reason": "Bleeding is a specific stacking damage-over-time status with icon_shape drop, not a general wound. Meaning and blood-free notched silhouette require explicit review, not silent synonym substitution."}
+    },
+    {
+      "ordinal": 14, "id": "status-guarded", "category": "Status", "meaning": "Guarded state",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Status icons", "number": 14, "text": "A shield with a closed, reinforced inner contour; distinguish this status from the general protection resource icon."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/status-guarded.svg", "required_png_exports": ["exports/128/status-guarded.png", "exports/64/status-guarded.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["statuses/guarded"], "reason": "Name and shield cue align with the canonical damage-reduction status, but visual mapping still requires approval and must remain distinct from defense/action/echo/marker shields."}
+    },
+    {
+      "ordinal": 15, "id": "reaction-dodge", "category": "Reaction", "meaning": "Dodge",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Reaction icons", "number": 15, "text": "A quick sidestep silhouette with one short trailing motion line; communicate an evasive reaction without specifying movement distance."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/reaction-dodge.svg", "required_png_exports": ["exports/128/reaction-dodge.png", "exports/64/reaction-dodge.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No dodge reaction skill or dodge career reaction exists; careers use brace/parry/ward and quick_feint is control, not dodge."}
+    },
+    {
+      "ordinal": 16, "id": "reaction-riposte", "category": "Reaction", "meaning": "Riposte/counter",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Reaction icons", "number": 16, "text": "A short blade returning along a hooked arc; communicate an immediate counter, not a generic attack."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/reaction-riposte.svg", "required_png_exports": ["exports/128/reaction-riposte.png", "exports/64/reaction-riposte.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["skills/riposte"], "reason": "The canonical reaction skill riposte exists. Its after_melee_hit trigger is data, not approval of an immediate timing policy or an icon for the distinct career reaction parry."}
+    },
+    {
+      "ordinal": 17, "id": "reaction-stabilize", "category": "Reaction", "meaning": "Stabilize",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Reaction icons", "number": 17, "text": "A steady central form held level by a firm crossbar or bracing hand; communicate regaining control, not healing."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/reaction-stabilize.svg", "required_png_exports": ["exports/128/reaction-stabilize.png", "exports/64/reaction-stabilize.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No stabilize reaction exists. brace is a career reaction enum, not documented regaining-control behavior; cleanse skills and HP healing are not stabilize reactions."}
+    },
+    {
+      "ordinal": 18, "id": "reaction-secure", "category": "Reaction", "meaning": "Secure or preserve an effect",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Reaction icons", "number": 18, "text": "A compact clasp or locking ring closing around a small core; communicate preserving an effect or resource."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/reaction-secure.svg", "required_png_exports": ["exports/128/reaction-secure.png", "exports/64/reaction-secure.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No secure/preserve reaction or effect/resource-locking rule exists. ward and hold_the_line do not establish preservation behavior."}
+    },
+    {
+      "ordinal": 19, "id": "echo-attack", "category": "Echo", "meaning": "Attack echo",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Echo icons", "number": 19, "text": "A sharp outward pulse shaped around a forward strike; distinct from the direct `action-attack` icon by its echoing ring."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/echo-attack.svg", "required_png_exports": ["exports/128/echo-attack.png", "exports/64/echo-attack.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No echo entity, storage or attack-echo mechanic exists. Attack skills are direct actions, not echoes."}
+    },
+    {
+      "ordinal": 20, "id": "echo-guard", "category": "Echo", "meaning": "Guard echo",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Echo icons", "number": 20, "text": "A shield surrounded by one repeating resonance arc; communicate a stored defensive effect."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/echo-guard.svg", "required_png_exports": ["exports/128/echo-guard.png", "exports/64/echo-guard.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No stored guard echo exists. guarded is an active status and cannot become a stored defensive echo."}
+    },
+    {
+      "ordinal": 21, "id": "echo-move", "category": "Echo", "meaning": "Movement echo",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Echo icons", "number": 21, "text": "A stepping mark repeated once along a short curved path; communicate a lingering movement effect, not a direction selector."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/echo-move.svg", "required_png_exports": ["exports/128/echo-move.png", "exports/64/echo-move.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "Neither movement nor lingering/stored movement echoes are canonical; speed is a stat, not a movement echo."}
+    },
+    {
+      "ordinal": 22, "id": "echo-influence", "category": "Echo", "meaning": "Influence echo",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Echo icons", "number": 22, "text": "Two linked nodes inside one resonant ring; communicate a stored influence effect."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/echo-influence.svg", "required_png_exports": ["exports/128/echo-influence.png", "exports/64/echo-influence.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No stored influence/echo system exists. Control skills do not create stored influence effects."}
+    },
+    {
+      "ordinal": 23, "id": "echo-trap", "category": "Echo", "meaning": "Trap echo",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Echo icons", "number": 23, "text": "A compact sprung loop or concealed angular snare; communicate a placed hazard without spikes or gore."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/echo-trap.svg", "required_png_exports": ["exports/128/echo-trap.png", "exports/64/echo-trap.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No trap echo, placed hazard entity or hazard-placement rule exists."}
+    },
+    {
+      "ordinal": 24, "id": "echo-barrier", "category": "Echo", "meaning": "Barrier echo",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Echo icons", "number": 24, "text": "A firm segmented wall with a visible boundary line; distinguish it from personal protection by emphasizing a field boundary."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/echo-barrier.svg", "required_png_exports": ["exports/128/echo-barrier.png", "exports/64/echo-barrier.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No barrier echo or field-boundary rule exists; personal defense and guarded do not establish barriers."}
+    },
+    {
+      "ordinal": 25, "id": "echo-mist", "category": "Echo", "meaning": "Mist echo",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Echo icons", "number": 25, "text": "Three clean, spaced drifting bands surrounding an open center; maintain strong silhouette at small size."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/echo-mist.svg", "required_png_exports": ["exports/128/echo-mist.png", "exports/64/echo-mist.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No mist echo or mist effect exists; chilled/frost content is not mist or stored resonance."}
+    },
+    {
+      "ordinal": 26, "id": "echo-rift", "category": "Echo", "meaning": "Rift echo",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Echo icons", "number": 26, "text": "A narrow split through a contained ring; communicate a spatial tear abstractly, without cosmic scenery."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/echo-rift.svg", "required_png_exports": ["exports/128/echo-rift.png", "exports/64/echo-rift.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No rift echo or spatial-tear effect exists; arcane damage does not imply a rift."}
+    },
+    {
+      "ordinal": 27, "id": "marker-brand", "category": "Field marker", "meaning": "Brand marker",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Field marker icons", "number": 27, "text": "A simple stamped diamond or seal with a central mark; communicate a placed brand without letters or a faction emblem."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/marker-brand.svg", "required_png_exports": ["exports/128/marker-brand.png", "exports/64/marker-brand.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No brand marker, field-marker collection or placement rule exists; encounter arena keys are not marker state."}
+    },
+    {
+      "ordinal": 28, "id": "marker-mist", "category": "Field marker", "meaning": "Mist marker",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Field marker icons", "number": 28, "text": "A low curling cloud bounded by a small location dot; distinguish a placed field marker from the stored `echo-mist`."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/marker-mist.svg", "required_png_exports": ["exports/128/marker-mist.png", "exports/64/marker-mist.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No placed mist marker or mist field effect exists; chilled is a unit status, not a field marker."}
+    },
+    {
+      "ordinal": 29, "id": "marker-mirror", "category": "Field marker", "meaning": "Mirror marker",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Field marker icons", "number": 29, "text": "A narrow reflective plane with one reversed line; communicate reflection without a detailed mirror frame."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/marker-mirror.svg", "required_png_exports": ["exports/128/marker-mirror.png", "exports/64/marker-mirror.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No mirror marker or reflection effect exists; riposte is a melee counter skill, not reflection or marker placement."}
+    },
+    {
+      "ordinal": 30, "id": "marker-guard", "category": "Field marker", "meaning": "Guard marker",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Field marker icons", "number": 30, "text": "A grounded shield pin or protected field tile; distinguish a placed guard marker from personal protection and `echo-guard`."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/marker-guard.svg", "required_png_exports": ["exports/128/marker-guard.png", "exports/64/marker-guard.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No placed guard marker or protected-tile rule exists; guarded applies to a combatant, not a location."}
+    },
+    {
+      "ordinal": 31, "id": "marker-rift", "category": "Field marker", "meaning": "Rift marker",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Field marker icons", "number": 31, "text": "A small split ring anchored to a location point; distinguish the placed marker from the stored `echo-rift`."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/marker-rift.svg", "required_png_exports": ["exports/128/marker-rift.png", "exports/64/marker-rift.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No placed rift marker, spatial location state or rift mechanic exists."}
+    },
+    {
+      "ordinal": 32, "id": "marker-bind", "category": "Field marker", "meaning": "Bind marker",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Field marker icons", "number": 32, "text": "A tied loop fixed to a compact ground line; communicate a binding field marker without duplicating the personal `status-bound` silhouette."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/marker-bind.svg", "required_png_exports": ["exports/128/marker-bind.png", "exports/64/marker-bind.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "No binding field marker or restraint-placement mechanic exists; even personal bound is absent, and stunned is not binding."}
+    },
+    {
+      "ordinal": 33, "id": "gear-weapon", "category": "Equipment slot", "meaning": "Weapon slot",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Equipment slot icons", "number": 33, "text": "A neutral, compact weapon silhouette with no specific weapon model or attack effect."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/gear-weapon.svg", "required_png_exports": ["exports/128/gear-weapon.png", "exports/64/gear-weapon.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["items.slot=weapon"], "reason": "Weapon is a canonical item slot, not authorization to build an inventory-management screen or item-specific weapon art."}
+    },
+    {
+      "ordinal": 34, "id": "gear-armor", "category": "Equipment slot", "meaning": "Armor slot",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Equipment slot icons", "number": 34, "text": "A simple chest-plate silhouette with one clean central seam; no character or class styling."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/gear-armor.svg", "required_png_exports": ["exports/128/gear-armor.png", "exports/64/gear-armor.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "candidate_requires_gate_0_approval", "candidate_canonical": ["items.slot=armor"], "reason": "Armor is a canonical item slot; chest-plate art must remain generic across leather and robe equipment and does not authorize new inventory UI."}
+    },
+    {
+      "ordinal": 35, "id": "gear-tool", "category": "Equipment slot", "meaning": "Tool slot",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Equipment slot icons", "number": 35, "text": "A small multi-purpose hand tool silhouette with a clear handle and head; avoid a weapon-like profile."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/gear-tool.svg", "required_png_exports": ["exports/128/gear-tool.png", "exports/64/gear-tool.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "items.slot has no tool value. Consumable whetstone is not a tool equipment slot; offhand is not a generic tool slot."}
+    },
+    {
+      "ordinal": 36, "id": "gear-artifact", "category": "Equipment slot", "meaning": "Artifact slot",
+      "source_prompt": {"document": "docs/art-sprint-1-prompt-sheet.md", "section": "Equipment slot icons", "number": 36, "text": "A contained abstract relic core with one restrained orbit or notch; no rune text, lore, or implied ability."},
+      "delivery_requirements_ref": "icon-delivery-v1", "required_master_svg": "masters/gear-artifact.svg", "required_png_exports": ["exports/128/gear-artifact.png", "exports/64/gear-artifact.png"],
+      "production_status": "pending_production", "approval_status": "not_approved", "gate_status": {"0": "not_approved", "A": "not_approved", "B1": "not_approved", "B2": "not_approved", "C": "not_approved", "D": "not_approved"},
+      "mapping": {"status": "no_canonical_equivalent", "reason": "items.slot has no artifact value. ward_talisman is trinket; neither rarity nor a relic-like appearance makes trinket an approved artifact synonym."}
+    }
+  ]
+}
