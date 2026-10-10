@@ -360,7 +360,11 @@ export async function executePlan(
         for (const [index, output] of entry.outputs.entries()) {
           if (output.perSheet) await writeSheetTabs(entry, output);
           else await writeSingle(entry, output, index);
-          output.result = "written";
+          const wroteSomething = output.perSheet
+            ? (output.tabs ?? []).some((tab) => tab.rawPath || tab.sortedPath)
+            : Boolean(output.rawPath || output.sortedPath);
+          // "skipped": conflicts left no destination; the next run plans it again.
+          output.result = wroteSomething ? "written" : "skipped";
         }
       } catch (error) {
         failures += 1;

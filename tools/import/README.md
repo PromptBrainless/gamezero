@@ -292,7 +292,7 @@ entry, handy in a spreadsheet; disable with `--no-csv` or `output.manifestCsv`).
           "sha256": "…",
           "bytes": 1234,
           "md5": "…",
-          "result": "written|unchanged|failed",
+          "result": "written|unchanged|skipped|failed",
         },
       ],
       // spreadsheets with perSheet: { "rawDir": "….tabs", "sortedDir": "…", "tabs": [{ "title", "sheetId", "rawPath", "sortedPath", "sha256", "bytes" }] }

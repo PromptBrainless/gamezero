@@ -205,8 +205,10 @@ function listFiles(dir) {
     .sort();
 }
 
-function setup() {
-  const config = loadConfig({ overrides: { limits: { concurrency: 3, maxFileSizeMB: 50 } } });
+function setup(output = {}) {
+  const config = loadConfig({
+    overrides: { limits: { concurrency: 3, maxFileSizeMB: 50 }, output },
+  });
   const rules = loadRules(fileURLToPath(new URL("../mapping-rules.json", import.meta.url)));
   const client = new DriveClient({
     auth: accessTokenAuth(TOKEN),
@@ -415,4 +417,29 @@ test("import downloads, exports, sorts and writes a manifest; re-import is incre
     "a renamed fallback destination stays stable across imports",
   );
   assert.equal(read("docs/design/notizen_zum_design.txt"), "local notes\n");
+});
+
+test("conflict policy skip with --no-raw records skipped outputs instead of written", async () => {
+  const otherRoot = mkdtempSync(join(tmpdir(), "gamezero-drive-skip-"));
+  try {
+    mkdirSync(join(otherRoot, "docs/design"), { recursive: true });
+    writeFileSync(join(otherRoot, "docs/design/notizen_zum_design.txt"), "local notes\n");
+    const { config, rules, client } = setup({ writeRaw: false, conflictPolicy: "skip" });
+    const tree = await traverseFolder(client, ROOT);
+    const plan = buildPlan(tree, { config, rules, repoRoot: otherRoot, mode: "import" });
+    const notes = plan.entries.find((entry) => entry.id === "docNotes00001");
+    notes.outputs = notes.outputs.slice(0, 1);
+    const single = { ...plan, entries: [notes] };
+    const { failures } = await executePlan(single, { client, config, repoRoot: otherRoot });
+    assert.equal(failures, 0);
+    assert.equal(notes.outputs[0].result, "skipped");
+    assert.equal(notes.outputs[0].conflictResolution, "skipped");
+    assert.equal(notes.outputs[0].sortedPath, null);
+    assert.equal(
+      readFileSync(join(otherRoot, "docs/design/notizen_zum_design.txt"), "utf8"),
+      "local notes\n",
+    );
+  } finally {
+    rmSync(otherRoot, { recursive: true, force: true });
+  }
 });
