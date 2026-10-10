@@ -20,7 +20,12 @@
     "data:check": "node --experimental-strip-types scripts/export-godot-data.ts --check",
     "data:export:godot": "node --experimental-strip-types scripts/export-godot-data.ts",
     "check:auth": "node scripts/check-auth-invariant.mjs",
-    "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts",
+    "test": "node --test 'scripts/**/*.test.mjs' 'tools/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts",
+    "test:import": "node --test 'tools/import/**/*.test.mjs'",
+    "drive:auth": "node tools/import/drive-import.mjs auth login",
+    "drive:status": "node tools/import/drive-import.mjs auth status",
+    "drive:plan": "node tools/import/drive-import.mjs plan",
+    "drive:import": "node tools/import/drive-import.mjs import",
     "lint": "eslint .",
     "format": "prettier --write ."
   },

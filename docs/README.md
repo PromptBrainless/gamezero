@@ -2,6 +2,10 @@
 
 Canonical entry point for the first playable vertical slice. Each subject has one source of truth; [`repo-consolidation-plan.md`](repo-consolidation-plan.md) explains the selected baseline and [`pr-integration-review.md`](pr-integration-review.md) records how the PR strands were reviewed.
 
+## Actionable execution backlog
+
+[`workstreams/README.md`](workstreams/README.md) consolidates the canonical plans into six implementation briefs with dependencies, sequencing, acceptance criteria, complete source coverage, and recorded agent dispatches. These briefs route execution; the canonical documents below remain authoritative for scope and contracts.
+
 ## First-playable execution
 
 | Document | Owns |
@@ -42,6 +46,13 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 | [`project-history-and-execution-log.md`](project-history-and-execution-log.md) | Decisions, sequencing, and historical context |
 | [`repo-consolidation-plan.md`](repo-consolidation-plan.md) | Baseline choices and source replacement rules |
 | [`pr-integration-review.md`](pr-integration-review.md) | Per-PR adoption/defer/exclusion decisions |
+
+## Tooling
+
+| Document | Owns |
+|---|---|
+| [`../tools/import/README.md`](../tools/import/README.md) | Google Drive importer: setup, dry run, import, mapping rules, manifest, safety |
+| [`../imports/drive/README.md`](../imports/drive/README.md) | Import output area (manifest, raw mirror, unsorted review queue) |
 
 ## Reading order
 

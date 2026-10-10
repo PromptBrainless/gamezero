@@ -1,0 +1,264 @@
+{
+  "$comment": "GameZero Drive import mapping rules. Rules are evaluated top to bottom; the first rule whose conditions ALL match wins. Patterns are case-insensitive regular expressions tested against normalised names (ASCII-folded, lower case, words separated by single spaces: 'Größe_Final-v2' -> 'groesse final v2'). folderPattern tests each Drive folder name below the import root, namePattern tests the file name without extension, anyPattern tests both. See tools/import/README.md.",
+  "schemaVersion": 1,
+  "fallbackCategory": "unsorted",
+  "categories": {
+    "design_docs": {
+      "destination": "docs/design",
+      "description": "Game design documents, mechanics, systems, pitches, roadmaps"
+    },
+    "lore": {
+      "destination": "docs/lore",
+      "description": "Story, history, factions, myths, character backstories"
+    },
+    "quests": {
+      "destination": "docs/quests",
+      "description": "Quest lines, missions, objectives, quest scripts"
+    },
+    "worldbuilding": {
+      "destination": "docs/world",
+      "description": "Regions, locations, maps, cultures, geography"
+    },
+    "reference_media": {
+      "destination": "docs/references",
+      "description": "Reference videos, presentations and other non-runtime media"
+    },
+    "concept_art": {
+      "destination": "docs/art/concept",
+      "description": "Concept art, sketches, mood boards, visual references (kept out of the Godot import pipeline)"
+    },
+    "art_source": {
+      "destination": "art-source",
+      "description": "Layered/editable art and level source files (PSD, Krita, Aseprite, Tiled, ...)"
+    },
+    "characters": {
+      "destination": "godot/assets/art/characters",
+      "description": "Player, NPC and party sprites, sprite sheets, portraits, animations"
+    },
+    "enemies": {
+      "destination": "godot/assets/art/enemies",
+      "description": "Enemy, monster and boss sprites"
+    },
+    "ui_art": {
+      "destination": "godot/assets/art/ui",
+      "description": "HUD, menus, icons, buttons, frames, cursors"
+    },
+    "tilesets": {
+      "destination": "godot/assets/art/tilesets",
+      "description": "Tiles, tilesets, terrain and autotile atlases"
+    },
+    "items": {
+      "destination": "godot/assets/art/items",
+      "description": "Item, weapon, armour and consumable art"
+    },
+    "backgrounds": {
+      "destination": "godot/assets/art/backgrounds",
+      "description": "Backgrounds, parallax layers, environment paintings"
+    },
+    "vfx": {
+      "destination": "godot/assets/art/vfx",
+      "description": "Effects, particles, spell visuals"
+    },
+    "fonts": {
+      "destination": "godot/assets/fonts",
+      "description": "Font files"
+    },
+    "models": {
+      "destination": "godot/assets/models",
+      "description": "3D models"
+    },
+    "music": {
+      "destination": "godot/assets/audio/music",
+      "description": "Music tracks and themes"
+    },
+    "sound_effects": {
+      "destination": "godot/assets/audio/sfx",
+      "description": "Sound effects and UI sounds"
+    },
+    "ambience": {
+      "destination": "godot/assets/audio/ambience",
+      "description": "Ambient loops and atmospheres"
+    },
+    "voice": {
+      "destination": "godot/assets/audio/voice",
+      "description": "Voice-over, barks, spoken dialogue recordings"
+    },
+    "audio_source": {
+      "destination": "art-source/audio",
+      "description": "DAW / audio editor project files"
+    },
+    "dialogue_data": {
+      "destination": "data-sources/dialogue",
+      "description": "Dialogue tables, scripts and conversation data awaiting conversion"
+    },
+    "gameplay_data": {
+      "destination": "data-sources/gameplay",
+      "description": "Balancing sheets, stats, loot, item/enemy/skill tables awaiting conversion into data/"
+    },
+    "unsorted": {
+      "destination": "imports/drive/unsorted",
+      "description": "Anything no rule matched; review and re-map",
+      "subfolders": "full"
+    }
+  },
+  "overrides": [],
+  "rules": [
+    {
+      "id": "art-source-files",
+      "category": "art_source",
+      "kinds": ["art_source"],
+      "subfolders": "full"
+    },
+    {
+      "id": "audio-project-files",
+      "category": "audio_source",
+      "kinds": ["audio_project"],
+      "subfolders": "full"
+    },
+    {
+      "id": "fonts",
+      "category": "fonts",
+      "kinds": ["font"]
+    },
+    {
+      "id": "models",
+      "category": "models",
+      "kinds": ["model"]
+    },
+    {
+      "id": "voice-audio",
+      "category": "voice",
+      "kinds": ["audio"],
+      "anyPattern": "\\b(voice|voices|vo|vox|voiceover|voice over|stimme|stimmen|sprecher|sprachaufnahme\\w*|synchro\\w*|bark|barks|dialog|dialogue|dialoge|line|lines)\\b"
+    },
+    {
+      "id": "music-audio",
+      "category": "music",
+      "kinds": ["audio"],
+      "anyPattern": "\\b(music|musik|bgm|ost|soundtrack|score|theme|themes|song|songs|lied|lieder|track|tracks|melod\\w*|jingle|stinger)\\b"
+    },
+    {
+      "id": "ambience-audio",
+      "category": "ambience",
+      "kinds": ["audio"],
+      "anyPattern": "\\b(ambien\\w*|ambient|atmo|atmosphaere|atmosphere|umgebung\\w*|loop|loops|room tone)\\b"
+    },
+    {
+      "id": "sfx-audio",
+      "category": "sound_effects",
+      "kinds": ["audio"],
+      "anyPattern": "\\b(sfx|fx|sound|sounds|soundeffekt\\w*|effekt\\w*|effect|effects|geraeusch\\w*|foley|hit|hits|swing|step|steps|footstep\\w*|click|ui sound\\w*|impact|explosion\\w*)\\b"
+    },
+    {
+      "id": "midi-is-music",
+      "category": "music",
+      "kinds": ["audio"],
+      "extensions": ["mid", "midi", "xm", "mod", "it", "s3m"]
+    },
+    {
+      "id": "dialogue-data",
+      "category": "dialogue_data",
+      "kinds": ["spreadsheet", "data"],
+      "anyPattern": "\\b(dialog|dialogs|dialogue|dialogues|dialoge|gespraech\\w*|conversation\\w*|barks|ink|yarn|text lines|lines|script|skript|drehbuch)\\b"
+    },
+    {
+      "id": "dialogue-documents",
+      "category": "dialogue_data",
+      "kinds": ["document"],
+      "anyPattern": "\\b(dialog|dialogs|dialogue|dialogues|dialoge|gespraech\\w*|conversation\\w*|barks|drehbuch)\\b"
+    },
+    {
+      "id": "dialogue-ink-yarn",
+      "category": "dialogue_data",
+      "extensions": ["ink", "yarn", "dlg", "dialogue", "po", "pot"]
+    },
+    {
+      "id": "gameplay-data-tables",
+      "category": "gameplay_data",
+      "kinds": ["spreadsheet", "data"]
+    },
+    {
+      "id": "concept-art",
+      "category": "concept_art",
+      "kinds": ["image", "presentation"],
+      "anyPattern": "\\b(concept\\w*|konzept\\w*|skizze\\w*|sketch\\w*|scribble\\w*|mood\\w*|reference\\w*|referenz\\w*|refs?|inspiration\\w*|stud(y|ies)|studie\\w*|ideen?|ideas?|entw(u|ue)rf\\w*|drafts?|wip|thumbnail\\w*|paintover\\w*|artbook|key ?art|style ?guide)\\b"
+    },
+    {
+      "id": "ui-art",
+      "category": "ui_art",
+      "kinds": ["image"],
+      "anyPattern": "\\b(ui|gui|hud|interface|icons?|ikone?n?|symbol\\w*|buttons?|knoepfe|menue?s?|cursor\\w*|rahmen|panels?|bars?|healthbar|portrait frame|widgets?|logo\\w*|title ?screen|splash)\\b"
+    },
+    {
+      "id": "tilesets",
+      "category": "tilesets",
+      "kinds": ["image"],
+      "anyPattern": "\\b(tiles?|tileset\\w*|tilemap\\w*|tilesheet\\w*|kachel\\w*|terrain\\w*|autotiles?|ground|boden\\w*|walls?|waende|dungeon tiles?)\\b"
+    },
+    {
+      "id": "item-art",
+      "category": "items",
+      "kinds": ["image"],
+      "anyPattern": "\\b(items?|gegenst(a|ae)nde?|weapons?|waffen?|swords?|schwert\\w*|armou?rs?|ruestung\\w*|shields?|schild\\w*|potions?|trank|traenke|tr(a|ae)nke|loot|equipment|ausruestung|inventory|inventar|consumables?|artifacts?|artefakt\\w*|treasure|schatz\\w*|pickups?)\\b"
+    },
+    {
+      "id": "enemy-art",
+      "category": "enemies",
+      "kinds": ["image"],
+      "anyPattern": "\\b(enem(y|ies)|gegner|feinde?|monsters?|bosse?s?|bossgegner|creatures?|kreaturen?|mobs?|bestiar\\w*|cultists?|kultisten?|deserteure?|deserters?|cutthroats?)\\b"
+    },
+    {
+      "id": "vfx-art",
+      "category": "vfx",
+      "kinds": ["image"],
+      "anyPattern": "\\b(vfx|fx|particles?|partikel\\w*|effects?|effekte?|spells?|zauber\\w*|magic|magie|slash|explosion\\w*|aura)\\b"
+    },
+    {
+      "id": "character-art",
+      "category": "characters",
+      "kinds": ["image"],
+      "anyPattern": "\\b(characters?|charakter\\w*|chars?|sprites?|spritesheets?|sprite sheets?|heroe?s?|held(en)?|npcs?|portraits?|portr(a|ae)ts?|figur\\w*|player|spieler\\w*|avatars?|party|anim\\w*|idle|walk|run|attack|careers?|klassen?|class(es)?|duelist|mercenary|soeldner|scholar|mage|magier)\\b"
+    },
+    {
+      "id": "world-maps-images",
+      "category": "worldbuilding",
+      "kinds": ["image"],
+      "anyPattern": "\\b(maps?|karten?|weltkarte\\w*|world ?map|world|welt|regions?|regionen?|locations?|orte?)\\b"
+    },
+    {
+      "id": "background-art",
+      "category": "backgrounds",
+      "kinds": ["image"],
+      "anyPattern": "\\b(backgrounds?|hintergr(u|ue)nde?|bgs?|parallax|environments?|environment art|landscapes?|landschaft\\w*|scenery|kulisse\\w*|szenen?|scenes?|vista)\\b"
+    },
+    {
+      "id": "quest-documents",
+      "category": "quests",
+      "kinds": ["document", "presentation"],
+      "anyPattern": "\\b(quests?|questlines?|questlinien?|nebenquests?|hauptquests?|side ?quests?|main ?quests?|missions?|missionen|auftr(a|ae)ge?|aufgaben?|objectives?|encounters?|begegnung\\w*)\\b"
+    },
+    {
+      "id": "lore-documents",
+      "category": "lore",
+      "kinds": ["document", "presentation"],
+      "anyPattern": "\\b(lore|story|stories|geschichte\\w*|history|histor\\w*|myth\\w*|mythos|legend\\w*|sagen?|religion\\w*|g(o|oe)tter|gods?|factions?|fraktion\\w*|backstor(y|ies)|hintergrundgeschichte\\w*|chronik\\w*|chronicles?|plot|narrative?|narrativ|erz(a|ae)hl\\w*|biograph\\w*|timeline|zeitlinie|charaktere?|characters?|npcs?)\\b"
+    },
+    {
+      "id": "world-documents",
+      "category": "worldbuilding",
+      "kinds": ["document", "presentation"],
+      "anyPattern": "\\b(world\\w*|welt\\w*|worldbuilding|regions?|regionen?|locations?|orte?|cit(y|ies)|st(a|ae)dte?|towns?|d(o|oe)rfe?r?|villages?|kingdoms?|k(o|oe)nigreich\\w*|reiche?|geograph\\w*|settings?|biomes?|dungeons?|zones?|maps?|karten?|kulturen?|cultures?|nations?|v(o|oe)lker)\\b"
+    },
+    {
+      "id": "design-documents",
+      "category": "design_docs",
+      "kinds": ["document", "presentation"],
+      "anyPattern": "\\b(design\\w*|gdd|game ?design|konzept\\w*|concepts?|mechani\\w*|systems?|systeme|gameplay|combat|kampf\\w*|balanc\\w*|specs?|spezifikation\\w*|features?|plan|plans|planung|roadmap|pitch\\w*|docs?|dokument\\w*|documentation|regeln|rules|progression|skills?|f(a|ae)higkeit\\w*|classes|klassen|careers?|ui|ux|hud|controls|steuerung)\\b"
+    },
+    {
+      "id": "reference-video",
+      "category": "reference_media",
+      "kinds": ["video", "presentation"]
+    }
+  ]
+}

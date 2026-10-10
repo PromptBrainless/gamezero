@@ -6,3 +6,10 @@ node_modules/
 godot/.godot/
 godot/data/content_bundle.json
 godot/data/content_bundle.json.*.stage
+
+# Google Drive importer (tools/import): credentials and bulky generated output
+tools/import/.secrets/
+imports/drive/raw/
+imports/drive/.staging/
+imports/drive/plan*.json
+*.part-????????
