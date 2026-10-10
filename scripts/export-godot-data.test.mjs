@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { tmpdir } from "node:os";
 import { spawnSync } from "node:child_process";
 import { test } from "node:test";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -9,8 +10,10 @@ const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const EXPORTER = join(ROOT, "scripts/export-godot-data.ts");
 
 function fixture(run) {
-  const root = mkdtempSync(join(ROOT, ".godot-export-test-"));
+  const root = mkdtempSync(join(tmpdir(), "gamezero-export-test-"));
   try {
+    writeFileSync(join(root, "package.json"), JSON.stringify({ type: "module" }));
+    symlinkSync(join(ROOT, "node_modules"), join(root, "node_modules"), "dir");
     cpSync(join(ROOT, "data"), join(root, "data"), { recursive: true });
     for (const path of [
       "scripts/export-godot-data.ts",

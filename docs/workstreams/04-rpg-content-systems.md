@@ -36,6 +36,8 @@ Inputs: selected career, ordered/resolved encounter, accepted combat result. Out
 
 Cult includes `hedge_cultist` **and** `alley_cutthroat` in one starting wave. Encounter array order and spawn identity remain authoritative; one selected target does not mean one enemy.
 
+Base `role` is authored flavor/classification text; archetype `role` is the supplement's tactical taxonomy (`striker`, `defender`, `controller`, `boss`). They are distinct fields, not aliases to normalize into one enum.
+
 ## Implementation backlog
 
 1. Resolve career starts and metadata unlocks: level 1 has starting skills, level 2 exposes the rest of the canonical pool; max slice level 4. Starting skills must remain affordable and career-compatible.
