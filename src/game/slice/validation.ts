@@ -65,6 +65,12 @@ export function loadContent(files: Partial<Record<Collection, Record<string, str
       if (data.items[itemId]?.career_tags && !data.items[itemId].career_tags.includes(career.id)) report("careers", career.id, "starting_items", `Gegenstand ${itemId} ist fuer Karriere gesperrt`);
     }
     if (!career.starting_skills.every((skillId) => career.skill_pool.includes(skillId))) report("careers", career.id, "skill_pool", "Startfaehigkeit fehlt im Pool");
+    if (!career.starting_skills.some((skillId) => {
+      const skill = data.skills[skillId];
+      return skill && !skill.trigger && Object.entries(skill.cost).every(([resource, amount]) =>
+        amount <= (career.base_stats[resource as "focus" | "stamina"] ?? 0),
+      );
+    })) report("careers", career.id, "starting_skills", "Keine bezahlbare Startfaehigkeit");
   }
   for (const skill of Object.values(data.skills)) {
     if (skill.career) reference("skills", skill.id, "career", "careers", skill.career);

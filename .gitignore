@@ -3,6 +3,7 @@ node_modules/
 .github_repo
 .env
 .env.*
+godot/.godot/
 
 # Google Drive importer (tools/import): credentials and bulky generated output
 tools/import/.secrets/

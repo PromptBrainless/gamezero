@@ -70,3 +70,25 @@ These behaviors are part of the current content contract. The runtime track is n
 - All cross-references resolve.
 - The resolver returns complete combat/preview records for each encounter.
 - Tests cover valid loading, malformed or invalid records, unresolved references, and encounter resolution.
+
+## Implemented Godot handoff
+
+`npm run data:godot` runs the shared `src/game/slice/validation.ts` validator
+over all seven canonical collections and writes `godot/data/runtime_pack.json`.
+The versioned envelope is `{schema_version: 1, collections: {...}}`; each
+collection is a dictionary keyed by stable record ID. It contains no timestamp
+or machine-specific path. Invalid source content prevents export; errors retain
+the source filename and field. `npm run data:godot:check` rejects stale output.
+The pack is a generated deployment artifact, not an independent authoring source.
+
+Godot reads the pack from `res://data/runtime_pack.json`, rejects missing,
+malformed, incompatible or disconnected content before career selection, and
+resolves encounter IDs to normal enemies or bosses. The main controller owns the
+run context; the resolver receives dictionaries detached from presentation.
+The older `*_definition.gd` Resource sketches are not used by this JSON runtime.
+
+`npm run test:slice` covers source validation, reference failures and export
+reproducibility. `npm run test:godot` first checks pack freshness, then runs the
+native combat and screen-flow tests. Import automation should author candidate
+records in a staging area and pass these gates before replacing canonical files;
+Drive downloads and raw assets must never bypass validation.

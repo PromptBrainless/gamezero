@@ -48,3 +48,23 @@ Keep run state minimal and in-memory for the slice. Persistence and a full inven
 - Action/target/preview/confirm/resolution states work, including visible unavailable reasons.
 - Help and status details work on touch and keyboard, not just hover.
 - Career Select → Encounter Preview → Combat → Reward → Progression completes using the real slice data.
+
+## Native implementation
+
+The boot scene mounts `CombatHUD`; `scripts/core/main.gd` owns navigation and
+the run context while `scripts/ui/combat_hud.gd` renders it. All career and
+encounter choices come from the exported registries. Action selection, living
+target selection, numeric preview, confirmation and cancellation are separate
+input states. Help uses focusable controls, not hover alone.
+
+Victory grants the encounter's inline XP/items once; defeat offers retry or a
+new career without rewards. Progression is deliberately an in-memory summary
+and encounter cursor, **not** a new level/rank/unlock track. Combatants start each
+encounter with career equipment and restored resources; earned consumables are
+handed into subsequent encounters. Random loot rolls and equipping earned gear
+remain follow-up scope, rather than duplicating inline reward grants.
+
+Native flow tests exercise transitions, rejected content, reward idempotence,
+defeat/retry and reset. Responsive career/combat views are checked at narrow
+portrait and wide sizes. Final side-view actor art, animation and device export
+remain production work; the functional HUD is not a claim of final presentation.

@@ -14,7 +14,7 @@ Career Select → Encounter Preview → Combat → Reward → Progression
 
 The direction separates **canonical content definitions**, a proposed **runtime supplement**, **deterministic combat rules**, **combat instance state**, **run state**, and **presentation**. Definitions are read-only; rules own outcomes; HUD and animation communicate them.
 
-These artifacts guide intent, not implementation status. The canonical schema and first-playable plans remain authoritative. The runtime supplement and export bundle are target work, and browser reference tests do not establish Godot parity or native acceptance.
+These artifacts guide intent, not implementation status. The canonical schema and first-playable plans remain authoritative. The runtime supplement remains target work; the canonical Godot pack export is implemented below. Browser reference tests do not establish Godot parity or native acceptance.
 
 ## Repository guide
 
@@ -33,10 +33,31 @@ Contributors should read the three vision artifacts for direction, then the docu
 The existing React/Vite prototype can be run with `npm install && npm run dev`.
 It is not the target runtime for the planned Godot slice.
 
+## Godot first playable
+
+Open `godot/project.godot` with Godot 4.4+ and run the main scene. The native
+slice connects career selection, encounter preview, combat, rewards, and
+in-memory progression using the canonical content.
+
+Content preparation and regression gates:
+
+```sh
+npm ci
+npm run data:godot
+npm run test:slice
+npm run test:godot
+```
+
+`test:godot` requires `godot` on PATH (or `GODOT=/absolute/path/to/godot`).
+The generated pack is committed so the project can run without Node; edit
+`data/`, not `godot/data/runtime_pack.json`. See
+[`docs/runtime-data-plan.md`](docs/runtime-data-plan.md) for runtime contracts
+and [`docs/implementation-board.md`](docs/implementation-board.md) for remaining gates.
+
 ## Relevant checks
 
 - `npm run test:slice` — reference combat, validation, and canonical content checks.
 - `node --test scripts/workstream-docs.test.mjs` — documentation links and workstream consistency.
 - `npm test` — repository Node test suite.
 
-There are no runtime-supplement or Godot bundle export commands in this baseline. Native first-playable acceptance remains a separate workstream gate.
+The versioned runtime supplement remains target work. Native first-playable acceptance remains a separate workstream gate.
