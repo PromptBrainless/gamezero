@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.schema.json",
+  "title": "Shared runtime-data building blocks",
+  "description": "Blocks shared by every staged entity type. Shapes match docs/data-schema.md so canonical slice records stay valid.",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "id_list": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/id" },
+      "uniqueItems": true
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "chance": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "base_stats": {
+      "type": "object",
+      "required": ["hp", "attack", "defense", "magic", "speed", "crit_chance"],
+      "additionalProperties": false,
+      "properties": {
+        "hp": { "type": "integer", "minimum": 1 },
+        "focus": { "type": "integer", "minimum": 0 },
+        "stamina": { "type": "integer", "minimum": 0 },
+        "attack": { "type": "integer", "minimum": 0 },
+        "defense": { "type": "integer", "minimum": 0 },
+        "magic": { "type": "integer", "minimum": 0 },
+        "speed": { "type": "integer", "minimum": 0 },
+        "crit_chance": { "$ref": "#/$defs/chance" }
+      }
+    },
+    "stat_delta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hp": { "type": "integer" },
+        "focus": { "type": "integer" },
+        "stamina": { "type": "integer" },
+        "attack": { "type": "integer" },
+        "defense": { "type": "integer" },
+        "magic": { "type": "integer" },
+        "speed": { "type": "integer" }
+      }
+    },
+    "visual": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "silhouette": { "$ref": "#/$defs/id" },
+        "accent_color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" },
+        "art_quality": { "$ref": "#/$defs/id" }
+      }
+    },
+    "loot_entry": {
+      "type": "object",
+      "required": ["item", "chance"],
+      "additionalProperties": false,
+      "properties": {
+        "item": { "$ref": "#/$defs/id" },
+        "chance": { "$ref": "#/$defs/chance" }
+      }
+    },
+    "rewards": {
+      "type": "object",
+      "required": ["xp"],
+      "additionalProperties": false,
+      "properties": {
+        "xp": { "type": "integer", "minimum": 0 },
+        "items": { "$ref": "#/$defs/id_list" }
+      }
+    }
+  }
+}

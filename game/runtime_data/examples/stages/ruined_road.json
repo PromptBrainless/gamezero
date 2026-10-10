@@ -1,0 +1,11 @@
+{
+  "id": "ruined_road",
+  "name": "Verfallene Straße",
+  "layout": {
+    "player_slots": 1,
+    "enemy_slots": 3
+  },
+  "background": "bg_ruined_road",
+  "music_cue": "combat_standard",
+  "description": "Zerfahrene Handelsstraße mit umgestürztem Karren als Mittelgrund."
+}

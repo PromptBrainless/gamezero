@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "enemy_def.schema.json",
+  "title": "enemy_def",
+  "description": "Normal (non-boss) enemy. Strict superset of the canonical slice `enemies` record; adds family and rank for encounter composition. See docs/final-data-entities/enemies-and-encounters.md.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "role",
+    "family",
+    "rank",
+    "tier",
+    "base_stats",
+    "skills",
+    "description"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/id" },
+    "name": { "$ref": "common.schema.json#/$defs/text" },
+    "role": { "$ref": "common.schema.json#/$defs/id" },
+    "family": { "$ref": "common.schema.json#/$defs/id" },
+    "rank": { "enum": ["minion", "standard", "elite"] },
+    "tier": { "type": "integer", "minimum": 1 },
+    "base_stats": { "$ref": "common.schema.json#/$defs/base_stats" },
+    "skills": {
+      "allOf": [{ "$ref": "common.schema.json#/$defs/id_list" }, { "minItems": 1 }]
+    },
+    "weaknesses": { "$ref": "common.schema.json#/$defs/id_list" },
+    "resistances": { "$ref": "common.schema.json#/$defs/id_list" },
+    "ai": {
+      "type": "object",
+      "required": ["pattern", "weights"],
+      "additionalProperties": false,
+      "properties": {
+        "pattern": { "enum": ["weighted_random"] },
+        "weights": {
+          "type": "object",
+          "additionalProperties": { "type": "number", "exclusiveMinimum": 0 }
+        }
+      }
+    },
+    "loot_table": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/loot_entry" }
+    },
+    "xp_reward": { "type": "integer", "minimum": 0 },
+    "description": { "$ref": "common.schema.json#/$defs/text" },
+    "visual": { "$ref": "common.schema.json#/$defs/visual" }
+  }
+}

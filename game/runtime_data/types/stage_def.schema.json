@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "stage_def.schema.json",
+  "title": "stage_def",
+  "description": "Reusable side-view combat stage. Replaces the slice encounter `arena` string key; the stage id equals the former arena key. See docs/final-data-entities/enemies-and-encounters.md.",
+  "type": "object",
+  "required": ["id", "name", "layout", "background", "description"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/id" },
+    "name": { "$ref": "common.schema.json#/$defs/text" },
+    "layout": {
+      "type": "object",
+      "required": ["player_slots", "enemy_slots"],
+      "additionalProperties": false,
+      "properties": {
+        "player_slots": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "enemy_slots": { "type": "integer", "minimum": 1, "maximum": 6 }
+      }
+    },
+    "background": { "$ref": "common.schema.json#/$defs/id" },
+    "music_cue": { "$ref": "common.schema.json#/$defs/id" },
+    "description": { "$ref": "common.schema.json#/$defs/text" }
+  }
+}
