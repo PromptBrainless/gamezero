@@ -6,6 +6,18 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 
 [`workstreams/README.md`](workstreams/README.md) consolidates the canonical plans into six implementation briefs with dependencies, sequencing, acceptance criteria, complete source coverage, and recorded agent dispatches. These briefs route execution; the canonical documents below remain authoritative for scope and contracts.
 
+## Vision and target direction
+
+- [Vision Manifest](vision-manifest.md) — mission, product pillars, authoring philosophy, non-goals, and scaling vision.
+- [Technical Target Architecture](target-architecture.md) — layers, ownership, runtime/state boundaries, and the target validation/export pipeline.
+- [Game Director Pitch](game-director-pitch.md) — emotional player promise, world framing, and creative guardrails.
+
+Read these together for strategic, technical, and creative intent. They extend the
+[slice vision](vision.md), not the approved content budget or mechanics. The runtime
+supplement/export direction is proposed work; schema, slice plans, and workstream
+acceptance evidence still govern implementation. Historical Resource-based pipeline
+and scaling drafts are not permission to replace canonical JSON.
+
 ## First-playable execution
 
 | Document | Owns |
@@ -52,6 +64,8 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 | [`../imports/drive/README.md`](../imports/drive/README.md) | Import output area (manifest, raw mirror, unsorted review queue) |
 
 ## Reading order
+
+For product orientation, start with the three artifacts above. For implementation:
 
 1. `milestones.md` and `implementation-board.md`
 2. `vertical-slice-implementation-plan.md`

@@ -44,6 +44,29 @@ test("all generated documentation links resolve", () => {
   }
 });
 
+test("vision artifacts are linked from repository entry points and their links resolve", () => {
+  const repository = resolve(root, "../..");
+  const artifacts = [
+    "docs/vision-manifest.md",
+    "docs/target-architecture.md",
+    "docs/game-director-pitch.md",
+  ];
+  const entryPoints = ["README.md", "AGENTS.md", "docs/README.md"];
+  for (const name of [...entryPoints, ...artifacts]) {
+    const path = resolve(repository, name);
+    const targets = [...readFileSync(path, "utf8").matchAll(/\[[^\]]+\]\(([^)]+)\)/g)]
+      .map((match) => match[1])
+      .filter((target) => !/^https?:/.test(target))
+      .map((target) => resolve(dirname(path), target.split("#")[0]));
+    for (const target of targets) assert.ok(existsSync(target), `${name}: ${target}`);
+    if (entryPoints.includes(name)) {
+      for (const artifact of artifacts) {
+        assert.ok(targets.includes(resolve(repository, artifact)), `${name}: missing ${artifact}`);
+      }
+    }
+  }
+});
+
 test("source coverage accounts for all canonical index documents", () => {
   const canonical = readFileSync(resolve(root, "../README.md"), "utf8");
   const coverage = readFileSync(resolve(root, "source-coverage.md"), "utf8");
