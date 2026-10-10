@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "pull_request": 17,
+  "execution_mode": "session-subagents-shared-checkout",
+  "workstreams": [
+    { "id": "WS01", "brief": "01-data-runtime.md", "dependencies": [], "agent_id": "ws01-data", "status": "started" },
+    { "id": "WS02", "brief": "02-combat-contract.md", "dependencies": ["WS01"], "agent_id": "ws02-combat", "status": "started" },
+    { "id": "WS03", "brief": "03-combat-hud.md", "dependencies": ["WS01", "WS02"], "agent_id": "ws03-hud", "status": "started" },
+    { "id": "WS04", "brief": "04-screen-flow.md", "dependencies": ["WS01", "WS02", "WS03"], "agent_id": "ws04-flow", "status": "started" },
+    { "id": "WS05", "brief": "05-art-production.md", "dependencies": [], "agent_id": "ws05-art", "status": "started" },
+    { "id": "WS06", "brief": "06-integration-acceptance.md", "dependencies": ["WS01", "WS02", "WS03", "WS04"], "agent_id": "ws06-acceptance", "status": "started" }
+  ]
+}

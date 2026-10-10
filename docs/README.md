@@ -2,6 +2,10 @@
 
 Canonical entry point for the first playable vertical slice. Each subject has one source of truth; [`repo-consolidation-plan.md`](repo-consolidation-plan.md) explains the selected baseline and [`pr-integration-review.md`](pr-integration-review.md) records how the PR strands were reviewed.
 
+## Actionable execution backlog
+
+[`workstreams/README.md`](workstreams/README.md) consolidates the canonical plans into six implementation briefs with dependencies, sequencing, acceptance criteria, complete source coverage, and recorded agent dispatches. These briefs route execution; the canonical documents below remain authoritative for scope and contracts.
+
 ## First-playable execution
 
 | Document | Owns |
