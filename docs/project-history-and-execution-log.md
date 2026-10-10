@@ -146,3 +146,10 @@ Consolidation is complete when:
 - The next implementation block starts from a stable content, runtime, and UI contract.
 
 Sprint 1 art planning is complete only when the separate art checklist's review gates and done criteria are satisfied.
+
+## 11. 2026-10-10 — Open-PR triage (#16–#26)
+
+- **Scope/evidence:** Docs only, this PR; `main` at the audit date. Changed paths: `docs/pr-integration-review.md` and `docs/project-history-and-execution-log.md`.
+- **Decisions:** See [`pr-integration-review.md#open-pr-triage-snapshot-2026-10-10`](pr-integration-review.md#open-pr-triage-snapshot-2026-10-10). Blocked item: runtime-supplement contract approval; accountable role: WS01/WS02; gate: `runtime-data-plan.md`.
+- **Validation:** `node --test scripts/workstream-docs.test.mjs` — 4/5 passed; `source coverage accounts for all canonical index documents` failed (expected 18, found 24). `npm test` — 256/265 passed; 9 failures (8 in `scripts/grok-pwa-plugin.test.mjs`, 1 the same source-coverage assertion). The same results were observed before and after the documentation edits; existing failures are unrelated and were not changed.
+- **Resume:** Next bounded action = merge #26, then rebase #22 per the integration order; destination `docs/pr-integration-review.md` for any changed disposition.
