@@ -1,0 +1,137 @@
+Repository: https://github.com/PromptBrainless/gamezero
+
+Mission:
+Audit the full current state of this repository and all recent Copilot/agent work, then aggressively consolidate, improve, and implement the highest-value next steps so the project becomes as runnable, coherent, and production-directed as possible.
+
+Non-negotiable quality rules:
+- No placeholders.
+- No low-quality filler content.
+- No vague stubs pretending to be design.
+- No empty scaffolding unless it directly supports real implementation added in the same change.
+- Every new file must contain meaningful, durable, implementation-oriented content.
+- Prefer one clear canonical structure over duplicated parallel drafts.
+- Make explicit decisions where the repository context allows it.
+
+Repository:
+https://github.com/PromptBrainless/gamezero
+
+Project direction:
+- Godot-first
+- mobile-first
+- 2D side-view / 2.5D-feel
+- turn-based combat RPG
+- deep class-based rules
+- data-driven architecture
+- canonical documentation under `docs/`
+
+Known active work areas from recent development:
+- Google Drive import automation / content ingestion
+- Workstream and planning orchestration
+- Final runtime data model
+- Skill / effect system
+- Combat-event contract
+- Classes / progression planning
+- Enemies / encounters planning
+- HUD integration planning for combat events
+
+Primary objective:
+Do a full status pass, identify the strongest existing work across main and active PR/agent outputs, and push the repository materially forward with concrete, high-quality implementation artifacts. The end result should be cleaner, more canonical, and more runnable than before.
+
+PHASE 1 — FULL STATUS AUDIT
+1. Inspect the current repository on `main`.
+2. Identify all relevant open pull requests, branches, and recent Copilot/agent outputs connected to the active work above.
+3. Determine:
+   - what is already merged
+   - what exists only in open PRs/branches
+   - what is duplicated or conflicting
+   - what is implementation-ready
+   - what is weak and should be excluded or rewritten
+4. Produce an internal working assessment of:
+   - current runnable state
+   - current documentation quality
+   - current runtime/data foundation quality
+   - major missing integration points
+
+PHASE 2 — QUALITY FILTER AND CANONICAL CONSOLIDATION
+5. Do not blindly preserve every draft artifact.
+6. Keep strong content, rewrite weak content, and remove or supersede duplicated/contradictory structures.
+7. Consolidate planning, runtime-data design, and content-pipeline work into a single coherent repository direction.
+8. Ensure that `docs/README.md` remains aligned with the canonical documentation set.
+9. Prefer fewer, stronger files over many fragmented low-value files.
+
+PHASE 3 — MAKE THE PROJECT MORE RUNNABLE
+10. Prioritize work that improves actual execution, validation, and integration.
+11. Preserve or restore the currently runnable prototype path if it already exists.
+12. Add or improve whatever is necessary so the repository becomes more practically usable, such as:
+   - package scripts
+   - validation scripts
+   - runtime data examples
+   - type definitions
+   - schemas
+   - tests
+   - startup documentation
+   - integration notes tied to actual code/data
+13. If full Godot runtime execution is not yet possible, still make the repo more executable by ensuring:
+   - data structures are testable
+   - examples are valid
+   - contracts are explicit
+   - tooling can run
+   - documentation maps to implementation
+
+PHASE 4 — HIGH-VALUE IMPLEMENTATION TARGETS
+14. Push forward the highest-value concrete artifacts in these areas where appropriate:
+   - runtime data schema / types / examples / validation
+   - skill and effect system
+   - combat-event contract
+   - classes / progression data model
+   - enemies / encounters data model
+   - HUD integration planning tied to combat events
+   - import / tooling integration points
+15. Prefer implementation-oriented outputs such as:
+   - TypeScript types or schemas
+   - JSON example content
+   - validators
+   - registries
+   - event contract definitions
+   - example content packs
+   - real docs that explain implemented structures
+
+PHASE 5 — REPOSITORY STRUCTURE
+16. Organize all new and consolidated material into a durable structure. Favor paths like:
+   - `docs/workstreams/...`
+   - `docs/final-data-entities/...`
+   - `docs/combat/...`
+   - `docs/ui/...`
+   - `tools/import/...`
+   - `game/runtime_data/types/...`
+   - `game/runtime_data/schemas/...`
+   - `game/runtime_data/examples/...`
+   - `game/runtime_data/validators/...`
+17. Avoid loose documents at the repo root unless clearly justified.
+
+PHASE 6 — OUTPUT STANDARD
+18. Open or update a pull request with the resulting work.
+19. End with a precise summary of:
+   - what was kept
+   - what was rewritten
+   - what was excluded
+   - what is now runnable or testable
+   - what remains blocked
+   - the next 3 highest-leverage implementation steps
+
+Implementation rules:
+- Be decisive.
+- Be concrete.
+- Be production-minded.
+- Avoid speculative expansion beyond the established game direction.
+- Do not create content whose only purpose is to “look complete.”
+- Every addition should either improve execution, improve architecture, improve data quality, or remove ambiguity.
+
+Specific instruction:
+If multiple prior agent outputs overlap, select the best approach and consolidate into one canonical version instead of preserving all variants.
+
+Success criteria:
+- The repository is cleaner, stronger, and more implementation-ready.
+- Weak drafts are not allowed to remain as the apparent source of truth.
+- The project is materially closer to a buildable first playable slice.
+- The resulting PR is worth merging, not just reviewing.

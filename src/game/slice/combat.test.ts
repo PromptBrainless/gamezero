@@ -17,11 +17,32 @@ test("preview, resource cost and cooldown are resolved without mutating input", 
   assert.equal(resolveRound(next, "cut", 0, registry), next);
 });
 
+test("combat events are ordered, typed, and keep sequence numbers across rounds", () => {
+  const battle = createBattle(career, [enemy]);
+  const zeroCooldownRegistry: Registry = { ...registry, skills: { cut: { ...registry.skills.cut, cooldown: 0 } } };
+  const first = resolveRound(battle, "cut", 0, zeroCooldownRegistry);
+  assert.deepEqual(first.events.map(({ sequence, turn, type }) => ({ sequence, turn, type })), [
+    { sequence: 0, turn: 1, type: "skill_used" },
+    { sequence: 1, turn: 1, type: "damage" },
+    { sequence: 2, turn: 1, type: "skill_used" },
+    { sequence: 3, turn: 1, type: "damage" },
+  ]);
+  assert.deepEqual(first.events[1], {
+    sequence: 1, turn: 1, type: "damage", source_id: "test", target_id: "enemy", amount: 10, cause: "skill", skill_id: "cut",
+  });
+  const second = resolveRound(first, null, 0, zeroCooldownRegistry);
+  assert.deepEqual(second.events.slice(4).map(({ sequence, turn }) => ({ sequence, turn })), [
+    { sequence: 4, turn: 2 }, { sequence: 5, turn: 2 },
+  ]);
+  assert.deepEqual(battle.events, []);
+});
+
 test("rest restores bounded resources and victory stops enemy retaliation", () => {
   const battle = createBattle(career, [{ ...enemy, base_stats: { ...enemy.base_stats, hp: 5 } }]);
   const win = resolveRound(battle, "cut", 0, registry);
   assert.equal(win.result, "victory");
   assert.equal(win.player.hp, 30);
+  assert.equal(win.events.at(-1)?.type, "combat_ended");
   assert.equal(resolveRound(win, null, 0, registry), win);
   const rested = resolveRound(createBattle(career, [enemy]), null, 0, registry);
   assert.equal(rested.player.stamina, 10);

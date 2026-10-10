@@ -2,6 +2,8 @@
 
 This review assembles the useful, compatible work from the first planning PR series into the current first-playable branch. “Reviewed” does not mean every proposed file or mechanic is accepted. The canonical first-slice schema in [`data-schema.md`](data-schema.md) and scope in [`vertical-slice-implementation-plan.md`](vertical-slice-implementation-plan.md) take precedence over competing drafts.
 
+The open-PR dispositions below are an audit snapshot from 2026-10-10. Recheck PR files and validation before adopting work because open branches can change independently of this document.
+
 | PR | Contribution reviewed | Disposition in the consolidated strand |
 |---:|---|---|
 | #1 | Godot scaffold, event-driven combat separation, project guide | Keep the action → resolver → event → presentation architecture in [`combat-architecture.md`](combat-architecture.md). Defer the submitted stub project code: resolver and data classes are incomplete/unverified, and its `.tres` direction conflicts with JSON-first slice content. |
@@ -19,6 +21,13 @@ This review assembles the useful, compatible work from the first planning PR ser
 | #13 | Docs index, schema, consolidation plan | Already merged. Retain as the canonical docs/schema baseline, with this review adding compatible plans and content. |
 | #14 | Project history and execution log | Already merged. Preserve the structured history and update its status/order to reflect the current consolidation. |
 | #15 | Sprint 1 HUD and 36-icon art planning | Current branch work. Keep as the bounded art-production pack and link it from the canonical docs index. |
+| #16 | Google Drive content importer (open; 25 changed files) | Keep isolated as tooling; do not duplicate its importer in runtime data. Validate its own tests and review before adoption. |
+| #17 | Workstreams, Godot runtime boundary, combat contracts, HUD widgets, run context, and art tracking (open; 33 changed files) | Retain the workstream sequence as input, but do not call runtime validation complete: publication depends on injected schema/reference callbacks, and the current tests use accepting callbacks. Verify in Godot and supply real validators before adoption. |
+| #18 | Final data structure (open; no changed files at audit time) | No implementation to adopt. |
+| #19 | Godot vertical slice (open; no changed files at audit time) | No implementation to adopt. The resolver on `main` remains a stub. |
+| #20 | Skill/effect system and combat-event contract (open; no changed files at audit time) | No implementation to adopt. Existing slice combat remains the executable mechanics reference. |
+| #21 | Class, encounter, and HUD planning structure (open; no changed files at audit time) | No implementation to adopt. Keep the existing schema and first-playable plans canonical rather than adding a competing data tree. |
+| #22 | Repository mission prompt (current branch) | Keep the prompt in `docs/operations/`; this integration review records the active PR audit without treating its drafts as merged work. |
 
 ## Integration order
 
@@ -27,7 +36,10 @@ This review assembles the useful, compatible work from the first planning PR ser
 3. Add schema-aligned authoring, runtime, UI, milestone, and board documents from PRs #7–#10.
 4. Preserve useful PR #1–#4 direction only where it does not create another source of truth or unapproved gameplay.
 5. Retain PR #15 art planning and update the project index/history to describe the unified source of truth.
-6. Re-run data reference and documentation link checks before the combined PR is considered ready.
+6. Treat PR #16 as isolated importer tooling and require its tests/review; do not mix its credentials/configuration workflow into runtime content.
+7. Use PR #17 workstream order as supporting context, but require actual schema/reference validation before accepting its runtime boundary.
+8. Keep PRs #18–#21 out of the canonical baseline until they contain reviewable changes and are checked against the existing schema and first-playable scope.
+9. Re-run data reference and documentation link checks before the combined PR is considered ready.
 
 ## Explicitly deferred or excluded
 
@@ -35,3 +47,5 @@ This review assembles the useful, compatible work from the first planning PR ser
 - PR #2–#4 expanded mechanics, large rosters, regions, and numeric balance proposals are not first-playable commitments.
 - PR #6's competing content is not mixed into the PR #5 content baseline.
 - PR #11 contained no encounter implementation to merge.
+- PR #17's runtime boundary is not a schema or reference validator; accepting callbacks are not evidence that canonical content is valid.
+- Open PR plans are not treated as implementation until changes are committed and validated.

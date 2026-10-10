@@ -18,7 +18,7 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 |---|---|
 | [`data-schema.md`](data-schema.md) | Canonical JSON entities, fields, references, validation |
 | [`data-authoring-rules.md`](data-authoring-rules.md) | How content is authored and reviewed |
-| [`combat-architecture.md`](combat-architecture.md) | Resolver/event/presentation boundary; no detailed mechanics |
+| [`combat-architecture.md`](combat-architecture.md) | Resolver/event/presentation boundary and current slice event contract |
 
 ## UI and visual direction
 
@@ -39,6 +39,12 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 | [`project-history-and-execution-log.md`](project-history-and-execution-log.md) | Decisions, sequencing, and historical context |
 | [`repo-consolidation-plan.md`](repo-consolidation-plan.md) | Baseline choices and source replacement rules |
 | [`pr-integration-review.md`](pr-integration-review.md) | Per-PR adoption/defer/exclusion decisions |
+
+## Operations
+
+| Document | Owns |
+|---|---|
+| [`operations/gamezero-aggressive-status-and-make-runnable.txt`](operations/gamezero-aggressive-status-and-make-runnable.txt) | The repository audit and implementation mission prompt |
 
 ## Reading order
 

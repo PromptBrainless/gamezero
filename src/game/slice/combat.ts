@@ -99,9 +99,31 @@ export interface Battle {
   enemies: Actor[];
   round: number;
   seed: number;
+  events: CombatEvent[];
   log: string[];
   result: "victory" | "defeat" | null;
   inventory: Record<string, number>;
+}
+
+export type CombatEvent =
+  | { sequence: number; turn: number; type: "skill_used"; source_id: string; target_id: string; skill_id: string }
+  | { sequence: number; turn: number; type: "item_used"; source_id: string; item_id: string }
+  | { sequence: number; turn: number; type: "damage"; source_id: string; target_id: string; amount: number; cause: "skill" | "status"; skill_id?: string; status_id?: string }
+  | { sequence: number; turn: number; type: "status_applied"; source_id: string; target_id: string; status_id: string; duration: number; stacks: number }
+  | { sequence: number; turn: number; type: "status_removed"; source_id: string; target_id: string; status_id: string }
+  | { sequence: number; turn: number; type: "turn_skipped"; actor_id: string; reason: "stunned" }
+  | { sequence: number; turn: number; type: "phase_changed"; actor_id: string; phase_index: number; phase_name: string }
+  | { sequence: number; turn: number; type: "telegraph"; actor_id: string; skill_id: string; warning_turns: number }
+  | { sequence: number; turn: number; type: "combat_ended"; result: "victory" | "defeat" };
+
+type CombatEventDetail = CombatEvent extends infer Event
+  ? Event extends CombatEvent
+    ? Omit<Event, "sequence" | "turn">
+    : never
+  : never;
+
+function emitEvent(battle: Battle, detail: CombatEventDetail) {
+  battle.events.push({ ...detail, sequence: battle.events.length, turn: battle.round } as CombatEvent);
 }
 
 export interface Registry {
@@ -142,7 +164,7 @@ export function createBattle(career: Career, enemies: Enemy[], seed = 42, equipm
   return {
     player,
     enemies: enemies.map((enemy) => actor(enemy, enemy.skills ?? enemy.phases?.[0].skills ?? [])),
-    round: 1, seed, log: ["Die Begegnung beginnt."], result: null, inventory,
+    round: 1, seed, events: [], log: ["Die Begegnung beginnt."], result: null, inventory,
   };
 }
 
@@ -172,18 +194,25 @@ function random(battle: Battle): number {
   return battle.seed / 4294967296;
 }
 
-function useSkill(battle: Battle, source: Actor, target: Actor, skill: Skill, registry: Registry, pay: boolean) {
+function executeSkill(battle: Battle, source: Actor, target: Actor, skill: Skill, registry: Registry, pay: boolean) {
   const recipient = skill.target === "self" ? source : target;
   if (pay) {
     source.stamina -= skill.cost.stamina ?? 0;
     source.focus -= skill.cost.focus ?? 0;
   }
   source.cooldowns[skill.id] = skill.cooldown + 1;
+  emitEvent(battle, { type: "skill_used", source_id: source.id, target_id: recipient.id, skill_id: skill.id });
   const damage = preview(source, recipient, skill, registry);
   if (skill.damage) source.nextAttackBonus = 0;
   recipient.hp = Math.max(0, recipient.hp - damage);
+  if (skill.damage) emitEvent(battle, { type: "damage", source_id: source.id, target_id: recipient.id, amount: damage, cause: "skill", skill_id: skill.id });
   battle.log.push(`${source.name}: ${skill.name}${damage ? ` · ${damage} Schaden an ${recipient.name}` : ""}.`);
-  for (const id of skill.removes_statuses ?? []) recipient.effects = recipient.effects.filter((effect) => effect.id !== id);
+  for (const id of skill.removes_statuses ?? []) {
+    if (recipient.effects.some((effect) => effect.id === id)) {
+      emitEvent(battle, { type: "status_removed", source_id: source.id, target_id: recipient.id, status_id: id });
+      recipient.effects = recipient.effects.filter((effect) => effect.id !== id);
+    }
+  }
   for (const application of skill.applies_statuses ?? []) {
     if (random(battle) > (application.chance ?? 1)) continue;
     const affected = application.target === "self" ? source : application.target === "enemy" ? target : recipient;
@@ -194,6 +223,7 @@ function useSkill(battle: Battle, source: Actor, target: Actor, skill: Skill, re
       existing.duration = Math.max(existing.duration, application.duration);
       existing.stacks = Math.min(definition.max_stacks, existing.stacks + 1);
     } else affected.effects.push({ id: application.status, duration: application.duration, stacks: 1 });
+    emitEvent(battle, { type: "status_applied", source_id: source.id, target_id: affected.id, status_id: application.status, duration: existing?.duration ?? application.duration, stacks: existing?.stacks ?? 1 });
     battle.log.push(`${affected.name}: ${definition.name} (${application.duration} Runden).`);
   }
 }
@@ -205,6 +235,7 @@ function tick(battle: Battle, actor: Actor, registry: Registry): boolean {
     const damage = Number(definition?.effect.damage_per_turn_per_stack ?? 0) * effect.stacks;
     if (damage > 0) {
       actor.hp = Math.max(0, actor.hp - damage);
+      emitEvent(battle, { type: "damage", source_id: actor.id, target_id: actor.id, amount: damage, cause: "status", status_id: effect.id });
       battle.log.push(`${actor.name}: ${damage} Schaden durch ${definition.name}.`);
     }
     if (definition?.effect.skip_turn) skipped = true;
@@ -215,7 +246,9 @@ function tick(battle: Battle, actor: Actor, registry: Registry): boolean {
 }
 
 function outcome(battle: Battle): boolean {
-  battle.result = battle.player.hp <= 0 ? "defeat" : battle.enemies.every((enemy) => enemy.hp <= 0) ? "victory" : null;
+  const result = battle.player.hp <= 0 ? "defeat" : battle.enemies.every((enemy) => enemy.hp <= 0) ? "victory" : null;
+  if (result && battle.result !== result) emitEvent(battle, { type: "combat_ended", result });
+  battle.result = result;
   return battle.result !== null;
 }
 
@@ -232,18 +265,28 @@ export function resolveRound(previous: Battle, skillId: string | null, targetInd
   battle.log = [];
   if (battle.player.skipTurn) {
     battle.player.skipTurn = false;
+    emitEvent(battle, { type: "turn_skipped", actor_id: battle.player.id, reason: "stunned" });
     battle.log.push(`${battle.player.name} ist betäubt und verliert diesen Zug.`);
   } else if (item?.use && itemId) {
     battle.inventory[itemId] -= 1;
+    emitEvent(battle, { type: "item_used", source_id: battle.player.id, item_id: itemId });
     battle.player.hp = Math.min(battle.player.stats.hp, battle.player.hp + (item.use.heal_hp ?? 0));
     battle.player.focus = Math.min(battle.player.stats.focus ?? 0, battle.player.focus + (item.use.restore_focus ?? 0));
     battle.player.nextAttackBonus += item.use.next_attack_bonus ?? 0;
-    battle.player.effects = battle.player.effects.filter((effect) => !item.use?.removes_statuses?.includes(effect.id));
+    for (const id of item.use.removes_statuses ?? []) {
+      if (battle.player.effects.some((effect) => effect.id === id)) {
+        emitEvent(battle, { type: "status_removed", source_id: battle.player.id, target_id: battle.player.id, status_id: id });
+        battle.player.effects = battle.player.effects.filter((effect) => effect.id !== id);
+      }
+    }
     for (const application of item.use.applies_statuses ?? []) {
-      if (random(battle) <= (application.chance ?? 1)) battle.player.effects.push({ id: application.status, duration: application.duration, stacks: 1 });
+      if (random(battle) <= (application.chance ?? 1)) {
+        battle.player.effects.push({ id: application.status, duration: application.duration, stacks: 1 });
+        emitEvent(battle, { type: "status_applied", source_id: battle.player.id, target_id: battle.player.id, status_id: application.status, duration: application.duration, stacks: 1 });
+      }
     }
     battle.log.push(`${battle.player.name} verwendet ${item.name}.`);
-  } else if (skill) useSkill(battle, battle.player, battle.enemies[targetIndex], skill, registry, true);
+  } else if (skill) executeSkill(battle, battle.player, battle.enemies[targetIndex], skill, registry, true);
   else {
     battle.player.stamina = Math.min(battle.player.stats.stamina ?? 0, battle.player.stamina + 6);
     battle.player.focus = Math.min(battle.player.stats.focus ?? 0, battle.player.focus + 4);
@@ -256,13 +299,18 @@ export function resolveRound(previous: Battle, skillId: string | null, targetInd
     const skipped = tick(battle, enemy, registry);
     if (outcome(battle)) return battle;
     if (enemy.hp <= 0) continue;
-    if (skipped) { battle.log.push(`${enemy.name} ist betäubt.`); continue; }
+    if (skipped) {
+      emitEvent(battle, { type: "turn_skipped", actor_id: enemy.id, reason: "stunned" });
+      battle.log.push(`${enemy.name} ist betäubt.`);
+      continue;
+    }
     if (enemy.phases) {
       const nextPhase = enemy.phases.reduce((current, entry, index) => enemy.hp / enemy.stats.hp <= entry.hp_threshold ? index : current, 0);
       const phase = enemy.phases[nextPhase];
       enemy.skills = phase.skills;
       if (nextPhase !== enemy.phaseIndex) {
         enemy.phaseIndex = nextPhase;
+        emitEvent(battle, { type: "phase_changed", actor_id: enemy.id, phase_index: nextPhase, phase_name: phase.name });
         battle.log.push(`${enemy.name}: ${phase.name}.`);
         for (const action of phase.on_enter ?? []) {
           if (action.apply_status) enemy.effects.push({ id: action.apply_status, duration: action.duration ?? 1, stacks: 1 });
@@ -278,14 +326,15 @@ export function resolveRound(previous: Battle, skillId: string | null, targetInd
     const telegraph = enemy.phases?.[enemy.phaseIndex].telegraphs?.find((entry) => entry.skill === enemySkill?.id);
     if (enemySkill && telegraph && !enemy.pendingSkill) {
       enemy.pendingSkill = enemySkill.id;
+      emitEvent(battle, { type: "telegraph", actor_id: enemy.id, skill_id: enemySkill.id, warning_turns: telegraph.warning_turns });
       battle.log.push(`${enemy.name} kündigt ${enemySkill.name} für die nächste Runde an.`);
     } else if (enemySkill) {
       enemy.pendingSkill = null;
       const beforeHit = battle.player.hp;
-      useSkill(battle, enemy, battle.player, enemySkill, registry, false);
+      executeSkill(battle, enemy, battle.player, enemySkill, registry, false);
       if (battle.player.hp > 0 && battle.player.hp < beforeHit && enemySkill.tags?.includes("melee") && !battle.player.effects.some((effect) => registry.statuses[effect.id]?.effect.skip_turn)) {
         const reaction = battle.player.skills.map((id) => registry.skills[id]).find((entry) => entry.trigger === "after_melee_hit" && !unavailable(battle.player, entry));
-        if (reaction) useSkill(battle, battle.player, enemy, reaction, registry, true);
+        if (reaction) executeSkill(battle, battle.player, enemy, reaction, registry, true);
       }
     }
     else battle.log.push(`${enemy.name} bereitet den nächsten Angriff vor.`);
