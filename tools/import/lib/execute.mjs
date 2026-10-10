@@ -133,7 +133,8 @@ export async function executePlan(
 
   async function writeSingle(entry, output, index) {
     const staging = `${stagingRoot}/${entry.id}-${index}-${randomBytes(3).toString("hex")}`;
-    const fetchTarget = output.rawPath ? abs(output.rawPath) : staging;
+    const keepRaw = Boolean(output.rawPath);
+    const fetchTarget = keepRaw ? abs(output.rawPath) : staging;
     let result;
     try {
       result = await fetchToFile(entry, output, fetchTarget);
@@ -142,17 +143,17 @@ export async function executePlan(
         output.usedFallback = { mimeType: result.mimeType, extension: result.extension };
         output.rawPath = replaceExtension(output.rawPath, result.extension);
         output.sortedPath = replaceExtension(output.sortedPath, result.extension);
-        if (output.rawPath) {
+        if (keepRaw) {
           await atomicMove(fetchTarget, abs(output.rawPath));
           landed = abs(output.rawPath);
         }
       }
       if (output.sortedPath) {
-        if (output.rawPath) await atomicCopy(landed, abs(output.sortedPath));
+        if (keepRaw) await atomicCopy(landed, abs(output.sortedPath));
         else await atomicMove(landed, abs(output.sortedPath));
       }
     } finally {
-      if (!output.rawPath) await rm(staging, { force: true });
+      if (!keepRaw) await rm(staging, { force: true });
     }
     output.bytes = result.bytes;
     output.sha256 = result.sha256;

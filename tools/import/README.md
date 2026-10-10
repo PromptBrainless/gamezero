@@ -155,7 +155,7 @@ What happens:
    safe). This area is git-ignored: it is the untouched local source of truth.
 3. **Sorted placement** — the primary output is copied to its category
    destination (below) with a slugged file name, e.g.
-   `Charaktere/Held Sprite (Final).PNG` → `godot/assets/art/characters/held-sprite-final.png`.
+   `Charaktere/Held Sprite (Final).PNG` → `godot/assets/art/characters/held_sprite_final.png`.
 4. The manifest (`imports/drive/manifest.json` + `.csv`) is written.
 5. Exit code `1` if any entry failed (others are still imported and recorded),
    `0` otherwise.
@@ -237,7 +237,7 @@ entry, handy in a spreadsheet; disable with `--no-csv` or `output.manifestCsv`).
 {
   "schemaVersion": 1,
   "tool": "gamezero-drive-import",
-  "mode": "import", // "plan" for --plan-out files
+  "mode": "import", // "dry-run" for --plan-out files
   "generatedAt": "...",
   "completedAt": "...",
   "source": { "folderId": "1J7W…", "folderUrl": "…", "rootName": "…", "rootModifiedTime": "…" },
@@ -314,10 +314,16 @@ The manifest contains no tokens, no owner names or e-mail addresses.
   - `kinds`: media kinds (`image`, `art_source`, `audio`, `audio_project`, `video`,
     `document`, `presentation`, `spreadsheet`, `data`, `font`, `model`, `code`, `archive`)
   - `extensions`, `mimeTypes`
-  - `folderPattern` (regex on the folder path), `namePattern` (regex on the file
-    name), `anyPattern` (regex on the full path). Names are matched lower-cased,
-    German umlauts transliterated and `_ - .` / camelCase split into words, so
-    `"\\b(quest|auftrag)"` matches `Quests/Hauptquest_01.docx`.
+  - `folderPattern` — regex tested against **each folder name** of the Drive
+    path separately (the outermost matching folder decides where kept
+    sub-folders start); `namePattern` — regex tested against the file name
+    without extension; `anyPattern` — matches if it hits any folder name _or_
+    the file name. Patterns never see `/`, so do not write patterns that span
+    folders. Before matching, names are lower-cased, German umlauts
+    transliterated (`ä`→`ae`, `ß`→`ss`) and `_ - .` / camelCase boundaries turned
+    into spaces: `Quests/Hauptquest_01.docx` is seen as folder `quests` and name
+    `hauptquest 01`, so `"folderPattern": "\\bquests?\\b"` and
+    `"namePattern": "quest"` both match.
   - `subfolders` overrides the category default.
 - `overrides` — pin individual entries, by Drive `id` or `path` glob:
 
