@@ -3,3 +3,10 @@ node_modules/
 .github_repo
 .env
 .env.*
+
+# Google Drive importer (tools/import): credentials and bulky generated output
+tools/import/.secrets/
+imports/drive/raw/
+imports/drive/.staging/
+imports/drive/plan*.json
+*.part-????????
