@@ -37,7 +37,7 @@ Eine Faehigkeit mit Abklingzeit 2 bleibt fuer zwei nachfolgende eigene Aktionsge
 - Betäubung: naechste Aktionsgelegenheit auslassen.
 - Unterkuehlung: reduziert Ressourcenregeneration; Tempo hat noch keine Rundenreihenfolge-Wirkung.
 - Erfolgswahrscheinlichkeiten fuer Statusanwendungen nutzen einen deterministischen Seed.
-- Direkte Treffer sind sicher. Kritische Treffer, Initiative und Resistenzen sind noch nicht implementiert. Riposte ist ein automatischer Konter nach einem schadenverursachenden Nahkampftreffer, sofern der Spieler lebt, nicht betaeubt ist und Kosten/Abklingzeit die Reaktion erlauben. Riposte ist nicht manuell waehlbar.
+- Direkte Treffer sind sicher. Kritische Treffer, Initiative und Resistenzen sind noch nicht implementiert. Riposte ist ein automatischer Konter nach einem schadenverursachenden Nahkampftreffer, sofern der Spieler lebt, kein angehaengter Betaeubungseffekt vorhanden ist und Kosten/Abklingzeit die Reaktion erlauben. Der gemerkte Zugausfall sperrt nach Verbrauch aktuell keinen Konter mehr. Riposte ist nicht manuell waehlbar.
 - Verbrauchsgegenstaende kosten eine Aktion: Heilung, Fokus, Statusentfernung und der Bonus auf den naechsten Angriff kommen aus `items.use`. Startverbrauchsgegenstaende sind nur zu Reisebeginn vorhanden; unverbrauchte Vorräte und garantierte Verbrauchsbelohnungen werden weitergereicht.
 - Sieg beendet sofort die Gegenaktionen; Niederlage bei 0 Lebenspunkten. Ein Wiederholungsversuch startet dieselbe Begegnung frisch.
 

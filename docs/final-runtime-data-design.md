@@ -82,7 +82,12 @@ The team must agree with base `target`; stage x/y never constrain range.
 `execution` is `manual` except `riposte`, which is `reaction` with
 `reaction_hook: after_melee_hit`, matching its base trigger. It is not a second
 player action button. The current hook requires a damaging melee hit, a living,
-non-stunned player and an affordable, ready reaction. Costs and cooldowns stay
+player without a currently attached stun effect and an affordable, ready
+reaction. The remembered turn-skip flag is consumed before enemy actions; a
+player who just lost an action can currently react if the stun instance has
+already expired. Blocking reactions for that entire round requires an explicit
+combat-rule decision and regression test, not an incidental migration change.
+Costs and cooldowns stay
 on the skill. Shared skills may be used by enemies despite their player career
 ownership; `career` restricts learning, not enemy use.
 
@@ -115,6 +120,14 @@ seconds. `reapply: keep_longer_duration` uses max(existing, incoming);
 `cleanseable: true` permits explicitly listed removals; it does not make every
 action a cleanse.
 
+This is the target invariant and matches **skill** application. Existing
+consumable and boss-entry paths append status instances without merging. For
+example, `focused_mind` followed by `focus_draught` can currently duplicate
+`focused` despite `max_stacks: 1`. The combat workstream must consolidate status
+application and add mixed-source cap/reapply tests before claiming that all
+application paths enforce this contract. Metadata validation does not repair
+this existing runtime discrepancy.
+
 The web resolver currently ticks enemies before their action and the player
 after the enemy sequence. Stun is remembered for the next player opportunity;
 its instance can expire before that skip. This asymmetry is intentional parity
@@ -128,6 +141,10 @@ stack count and source instance ID; definitions must never be mutated.
 `archetypes[]` has `{id, combatant:{collection,id}, role, resource_policy,
 selection_policy}`. The three normal enemies map to striker/defender/controller;
 the captain maps to boss. All use `resource_policy: free`.
+Base `role` is descriptive content (`glass_cannon`, `bruiser`, `caster`);
+archetype `role` is the constrained presentation/tactical classification.
+Neither selects an AI algorithm; `selection_policy` does. Do not interpret the
+base role string as an archetype enum.
 Normal selection is `uniform_available`; bosses use `telegraph_first`.
 Base `ai.weights` remains authored intent but is not evaluated by the current
 resolver. Boss phase skill lists, thresholds, entry effects and telegraphs
