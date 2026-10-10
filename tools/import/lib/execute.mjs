@@ -127,6 +127,8 @@ export async function executePlan(
   /**
    * Claim a path chosen during execution. Returns the path to write (possibly
    * renamed) or null when the conflict policy says to skip it.
+   * Must stay synchronous (no await between the check and the claim): pool
+   * workers run concurrently and rely on claims being atomic in the event loop.
    * @param {{ checkRepo: boolean }} options checkRepo: also protect existing repo files
    */
   function claimRuntimePath(entry, path, record, { checkRepo }) {
@@ -205,18 +207,15 @@ export async function executePlan(
       else delete output.usedFallback;
       // Planned paths may carry a previous run's fallback extension (or the
       // primary one): align them with what was actually fetched.
-      if (
-        entry.action === "export" &&
-        pathExtension(output.rawPath ?? output.sortedPath) !== result.extension
-      ) {
-        if (output.rawPath)
+      if (entry.action === "export") {
+        if (output.rawPath && pathExtension(output.rawPath) !== result.extension)
           output.rawPath = claimRuntimePath(
             entry,
             replaceExtension(output.rawPath, result.extension),
             output,
             { checkRepo: false },
           );
-        if (output.sortedPath)
+        if (output.sortedPath && pathExtension(output.sortedPath) !== result.extension)
           output.sortedPath = claimRuntimePath(
             entry,
             replaceExtension(output.sortedPath, result.extension),

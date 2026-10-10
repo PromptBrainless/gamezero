@@ -280,6 +280,7 @@ function buildAuthUrl(client, redirectUri, challenge, state) {
 export function startLoopbackReceiver(expectedState, timeoutMs = LOGIN_TIMEOUT_MS) {
   return new Promise((resolveStart, rejectStart) => {
     let settle;
+    let timer;
     const code = new Promise((resolveCode, rejectCode) => {
       settle = { resolveCode, rejectCode };
     });
@@ -306,7 +307,7 @@ export function startLoopbackReceiver(expectedState, timeoutMs = LOGIN_TIMEOUT_M
         settle.rejectCode(new Error("OAuth state mismatch; aborting."));
       else settle.resolveCode(received);
     });
-    const timer = setTimeout(() => {
+    timer = setTimeout(() => {
       server.close();
       settle.rejectCode(new Error("Timed out waiting for the browser authorisation (5 minutes)."));
     }, timeoutMs);
