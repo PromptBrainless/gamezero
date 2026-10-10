@@ -16,8 +16,9 @@ and creative intent; they do not override the [canonical schema](docs/data-schem
   Godot `.tres` files, legacy Resource models, or UI constants.
 - **Runtime supplement:** the target is separately validated, versioned execution
   metadata referencing canonical IDs, not duplicate base definitions or mutable state.
-  Its final contract, file, and export tooling are not implemented in this baseline.
-  Review missing policy and schema changes before adding fields or consumers.
+  Its isolated contract, file, validator and exporter now exist; native consumers
+  are not integrated. Review missing policy and schema changes before adding fields
+  or consumers; keep `data/contracts/v1/` separate from live slice registries.
 - **Deterministic combat rules:** keep legality, targeting, previews, resolution,
   seeded randomness, and ordered events independent of scenes, UI, and animation timing.
   Same content revision, initial state, seed, and intents must produce the same results.
@@ -35,8 +36,8 @@ and creative intent; they do not override the [canonical schema](docs/data-schem
 - Browser slice code/tests are reference evidence, not approval of unspecified
   gameplay policy or proof of Godot parity. Distinguish implemented behavior,
   proposed contracts, blocked decisions, and verified native acceptance.
-- Use the existing checks documented in the README. Do not claim missing supplement,
-  export, persistence, or native runtime features are complete, and do not introduce
+- Use the existing checks documented in the README. Do not claim supplement
+  integration, exported-game acceptance, or persistence are complete, and do not introduce
   dependencies or runtime changes for documentation-only work.
 
 The workspace execution rules below remain in force for applicable app-building work.

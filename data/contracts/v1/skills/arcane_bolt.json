@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "arcane_bolt",
+  "name": "Arkanes Geschoss",
+  "description": "Zuverlässiger arkaner Schaden mit Magieskalierung.",
+  "type": "attack",
+  "career": "scholar_mage",
+  "costs": [{ "resource": "focus", "amount": 8 }],
+  "cooldown": 0,
+  "targeting_rule_id": "single_enemy",
+  "effect_sequence_id": "arcane_bolt_effects",
+  "timing": { "window": "own_turn", "effect_phase": "impact" },
+  "hit_rule": { "mode": "always", "crit_multiplier": 1.5 },
+  "requirements": [],
+  "tags": ["spell", "ranged"]
+}

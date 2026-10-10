@@ -158,3 +158,63 @@ Sprint 1 art planning is complete only when the separate art checklist's review 
 - **Decisions:** See [`pr-integration-review.md#open-pr-triage-snapshot-2026-10-10`](pr-integration-review.md#open-pr-triage-snapshot-2026-10-10). Blocked item: runtime-supplement contract approval; accountable role: WS01/WS02; gate: `runtime-data-plan.md`.
 - **Validation:** `node --test scripts/workstream-docs.test.mjs` — 4/5 passed; `source coverage accounts for all canonical index documents` failed (expected 18, found 24). `npm test` — 256/265 passed; 9 failures (8 in `scripts/grok-pwa-plugin.test.mjs`, 1 the same source-coverage assertion). The same results were observed before and after the documentation edits; existing failures are unrelated and were not changed.
 - **Resume:** Next bounded action = merge #26, then rebase #22 per the integration order; destination `docs/pr-integration-review.md` for any changed disposition.
+
+## 12. 2026-10-10 — Repository instruction alignment handoff
+
+Historical PR #26 checkpoint; the integration handoff below supersedes its
+absent-tooling/resume statements without rewriting the original evidence.
+
+- **Scope:** repository guidance only, plus documentation regression tests;
+  PR #26 (`copilot/add-repository-instructions`). No gameplay data, runtime code,
+  dependencies, or historical dispatch IDs changed.
+- **Decisions:** [`README.md`](README.md#authority-and-orientation) routes subject
+  authorities and output locations. The [Vision Manifest](vision-manifest.md),
+  [Target Architecture](target-architecture.md), and
+  [Game Director Pitch](game-director-pitch.md) separate strategic, technical,
+  and creative direction without replacing schema/slice gates.
+- **Placement:** `.github/copilot-instructions.md` is the operational agent guide;
+  `AGENTS.project.md` routes to it. Local `data/`, `godot/`, and `scripts/` READMEs
+  map destinations. The [handoff convention](workstreams/orchestration.md#repository-handoff-convention)
+  reuses workstream blockers and this log rather than creating per-agent documents.
+- **Corrected conflict:** [`content-pipeline.md`](content-pipeline.md) replaces
+  `.tres`-first instructions; older Godot/scaling proposals are explicitly historical.
+  `runtime-data-plan.md` (the planned-supplement section at that checkpoint)
+  records the supplement as a proposal, not implemented/export-ready content.
+- **Resume:** WS01/WS02 and affected consumers must review supplement version,
+  schema, scope, and failure behavior before adding `data/runtime/slice.json`.
+  WS06 then owns packaging/output contract and native/export evidence. Existing
+  gameplay-policy blockers remain in the [decision queue](workstreams/README.md#decisions-and-blocked-work).
+  Do not create `final-runtime-data-design.md` as a shadow owner or prescribe
+  absent `data:check` / `data:export:godot` commands.
+- **Validation:** `node --test scripts/workstream-docs.test.mjs`: 7 passed
+  (links, anchors, authority coverage, handoff fields, planned-contract wording);
+  `git diff --check`: passed. `npm test`: 251 passed, 8 failed in unchanged
+  `scripts/grok-pwa-plugin.test.mjs` share-card/title expectations. Running that
+  suite on an isolated archive of baseline `55596f6` reproduced the same eight
+  failures (41 passed, 8 failed). Follow-up belongs to platform/PWA tooling,
+  not the gameplay workstreams. Final revision/review results remain in this PR;
+  these documentation checks do not certify any Godot/native/export gate.
+
+## 13. 2026-10-10 — Dependency-ordered PR integration handoff
+
+- **Scope:** integrate #18 → #23 → #20 → #26 on the main-based task branch.
+  Changes include isolated supplement/export tooling, v1 skill/event fixtures,
+  authority/output maps, local guides, and documentation regression coverage.
+  Mainline native boot, canonical pack, content definitions, and importer remain intact.
+- **Decisions:** the [integration review](pr-integration-review.md#dependency-ordered-integration-2026-10-10)
+  records exact PR heads, conflict choices, blockers, and maintainer actions.
+  The current WS01–WS06 ledger remains the execution authority; alternate runtime
+  packages are supporting material. Native supplement/contract migration is pending.
+- **Evidence:** build, typecheck, slice/content/supplement/pack checks and eight docs
+  checks pass. Full Node suite has eight unchanged platform failures; lint has
+  unchanged baseline failures. Godot is unavailable; no native acceptance claimed.
+  Secret scans passed before merge commits.
+- **Blocker/resume:** branch-scoped publication cannot update `main` or merge/retarget
+  source PRs; PR check-run reads return HTTP 403. Maintainer must review required
+  checks, merge the integration branch with history preserved, verify all recorded
+  heads on `main`, and reconcile the original PR states, especially stacked #23.
+- **Additional requirement:** strengthen existing agent/connector guidance without
+  creating credentials or new services. The [tooling map](../scripts/README.md#existing-connectors-and-credential-boundaries)
+  distinguishes repository Drive intake from viewer request-scoped connectors,
+  anchors existing code/configuration, and records safe secret/blocker handling.
+  No external authentication, grants, or credential provisioning is claimed.

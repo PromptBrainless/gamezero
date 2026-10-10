@@ -2,6 +2,11 @@
 
 This is a structural direction distilled from PRs #1, #3, and #4. It specifies separation of responsibilities, not a complete combat ruleset. Concrete first-slice data fields belong to [`data-schema.md`](data-schema.md); implementation work belongs to the [vertical-slice plan](vertical-slice-implementation-plan.md).
 
+The concrete next-runtime boundary is now specified by the canonical
+[`combat-event contract v1`](combat/combat-event-contract.md) and
+[`skill/effect model v1`](final-data-entities/skills-and-effects.md).
+These versioned artifacts do not silently replace current slice mechanics.
+
 ## Resolution and presentation
 
 ```text

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "hold_the_line",
+  "name": "Stellung halten",
+  "description": "Gewährt Gedeckt und entfernt Blutung, Entblößung und Betäubung.",
+  "type": "defense",
+  "career": "mercenary",
+  "costs": [{ "resource": "stamina", "amount": 10 }],
+  "cooldown": 3,
+  "targeting_rule_id": "self",
+  "effect_sequence_id": "hold_the_line_effects",
+  "timing": { "window": "own_turn", "effect_phase": "impact" },
+  "hit_rule": { "mode": "always", "crit_multiplier": 1.5 },
+  "requirements": [],
+  "tags": ["defense", "cleanse", "self"]
+}

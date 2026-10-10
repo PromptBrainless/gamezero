@@ -2,6 +2,11 @@
 
 Track 1 of the first playable vertical slice. The schema in [`data-schema.md`](data-schema.md) is authoritative for all record shapes and field names.
 
+For the next-runtime skill registries, use the versioned
+[`skill/effect contract`](final-data-entities/skills-and-effects.md) and its
+strict `src/game/contracts/skills.ts` schemas. Keep `data/contracts/v1/`
+separate from the existing loader until a tested importer/resolver migration.
+
 ## Principles
 
 - Slice content is JSON under `data/`; game code consumes validated runtime records, not arbitrary JSON.
@@ -24,6 +29,14 @@ data/
 ```
 
 Do not add separate `regions/` or `rewards/` directories, localization keys, or career `progression[]` until the schema and slice scope are explicitly changed.
+
+The versioned [runtime supplement](final-runtime-data-design.md) lives outside
+the seven base collections at `data/runtime/slice.json`. `npm run data:check`
+validates both layers; `npm run data:export:godot` packages validated registries
+and metadata in the optional `godot/data/content_bundle.json`. The web loader and
+native slice host still consume only base collections; the native host uses
+`runtime_pack.json` described below. Policy/consumer approval remains a separate gate.
+Generated Godot data is not a second authoring source.
 
 ## Components
 
@@ -55,6 +68,29 @@ The selected slice records use several optional fields that require explicit run
 - Consumable `use.next_attack_bonus` applies the whetstone's bonus to the next attack.
 
 These behaviors are part of the current content contract. The runtime track is not complete until each is validated and exercised; do not silently accept the fields while ignoring their effects.
+
+## Runtime supplement direction (tooling implemented, native integration pending)
+
+Canonical records define what exists; the isolated runtime supplement describes
+execution linkage not already owned by those records. Keep targeting, lifecycle,
+unlock, stage/wave, or dialogue policy explicit only where approved scope needs it.
+Do not duplicate existing skill targets, encounter order, rewards, or boss phases.
+
+The supplement exists at `data/runtime/slice.json`, with its own strict structural
+and reference validator in `scripts/runtime-data.mjs`; it is not part of the
+seven-collection schema/loader. Before native integration, WS01/WS02 and affected
+consumers must review:
+
+- Contract version, content revision, allowed fields, and stable ID references.
+- Which metadata is approved for this slice versus deferred expansion.
+- Structural/reference validation and rejection of unsupported versions.
+- Read-only registry access, deterministic interpretation, and failure tests.
+- Packaging/output contract with WS06; no UI- or engine-inferred defaults.
+
+Record approval here and update validators/consumers together. Unknown gameplay
+policies stay in the [workstream decision queue](workstreams/README.md#decisions-and-blocked-work),
+not in speculative metadata or mutable combat/run state.
+See [`content-pipeline.md`](content-pipeline.md) for readiness/export gates.
 
 ## Delivery sequence
 

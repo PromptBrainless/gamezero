@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "rending_cut",
+  "name": "Reißender Schnitt",
+  "description": "Körperlicher Schaden; bei Treffer 60 Prozent Chance auf drei Züge Blutung.",
+  "type": "attack",
+  "career": "mercenary",
+  "costs": [{ "resource": "stamina", "amount": 9 }],
+  "cooldown": 2,
+  "targeting_rule_id": "single_enemy",
+  "effect_sequence_id": "rending_cut_effects",
+  "timing": { "window": "own_turn", "effect_phase": "impact" },
+  "hit_rule": { "mode": "always", "crit_multiplier": 1.5 },
+  "requirements": [],
+  "tags": ["melee", "damage_over_time", "payoff"]
+}

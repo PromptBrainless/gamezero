@@ -99,6 +99,7 @@ fight matter. Those are ambitions, not a release promise.
 - Make costs, targets, and consequences readable; never invent numerical certainty for drama.
 - Preserve ordered event playback and respect reduced-effects/readability needs.
 - Treat final art, sound, expanded rosters, and narrative systems as separately reviewed work.
+- Respect the [art review gates](art-sprint-1-production-pack.md); a pitch or screenshot is not acceptance.
 - Finish the existing slice before expanding its scope.
 
 The feeling we are chasing is simple: **the world is dangerous, but my choices are mine**.

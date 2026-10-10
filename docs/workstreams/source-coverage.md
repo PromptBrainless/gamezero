@@ -1,6 +1,6 @@
 # Canonical source coverage and deduplication
 
-All 18 documents named by `docs/README.md` were read in full. This table routes their concrete commitments to the six [workstreams](README.md); repeated requirements have one implementation owner and shared acceptance, not duplicate tickets.
+This table routes the first-playable, data/combat, UI, and project-context sources in `docs/README.md` to the six [workstreams](README.md); repeated requirements have one implementation owner and shared acceptance, not duplicate tickets. Post-slice proposals and tooling references are supporting material, not additional slice requirements.
 
 | Canonical source | Concrete actions / disposition | Execution owner |
 |---|---|---|
@@ -11,7 +11,11 @@ All 18 documents named by `docs/README.md` were read in full. This table routes 
 | `first-playable-ui-plan.md` | Shared widgets/styles, both viewport references, action/target/preview/confirmation/lock/cancel, touch/focus help, five screens and minimal in-memory handoff | WS03 + WS04; WS06 verification |
 | `data-schema.md` | Seven types/shared blocks, required/optional/nested fields/enums/ranges, all reference rows, affordable starts/order/phases, numeric formula, normalization and deferred types | WS01 validation/resolution; WS02 consumers; WS06 content checks |
 | `data-authoring-rules.md` | Stable filenames/IDs, one entity, no unknown/null/placeholder content, real numeric fields, same-change resolved references, review first-pass balance without draft numeric targets | WS01 + WS06; no new content catalog |
+| `final-runtime-data-design.md` | Versioned runtime supplement and validated optional bundle; promotion into native consumers requires reviewed policy and interfaces | WS01 contract review; WS02/WS04 policy; WS06 integration |
+| `first-playable-rules.md` | Existing slice mechanics and historical balance evidence; does not independently approve native parity | WS02 reference behavior; WS06 acceptance |
 | `combat-architecture.md` | Scene-independent state/RNG, deterministic resolver authority, ordered identified events, no animation/UI rules, candidate-event list not scope expansion | WS02 contracts; WS03 consumes; WS06 replay evidence |
+| `final-data-entities/skills-and-effects.md` | Isolated next-runtime v1 skill/effect/targeting schemas and fixtures; no automatic migration of slice definitions | WS02 contract review; WS01 references; WS06 regression |
+| `combat/combat-event-contract.md` | Strict action commands and ordered resolved-event batches; lifecycle extensions remain explicit future work | WS02 contracts; WS03 consumes after integration; WS06 acceptance |
 | `hud-spec.md` | All nine module responsibilities, used states, inspectable unavailable actions, one-step cancel/lock/result handoff, exact numbers and non-hover accessibility | WS03 |
 | `ui-style-guide.md` | Redundant color, explicit values/state, spacing/borders/tabular numerals, contrast 4.5:1, 48 dp touch targets, focus/tap help and reduced motion | WS03; WS05 visual review; WS06 QA |
 | `visual-reference-brief.md` | Restrained material/silhouette/contrast, prompt subject/purpose/framing/palette/negative constraints, approved handoff not speculative image sizes | WS05; WS03 implementation |
@@ -22,6 +26,9 @@ All 18 documents named by `docs/README.md` were read in full. This table routes 
 | `project-history-and-execution-log.md` | Source-of-truth map, PR-history verification, selected content, shared contracts before parallel writes, optional behavior exercise, orientation/terminology risks, consolidation and art completion gates | WS06 audit, WS02/WS04 decisions, WS05 art gates |
 | `repo-consolidation-plan.md` | Selected JSON baseline, one source/topic, stable player content normalization, unresolved item modifiers exercised, link/name consistency, exclude competing dataset/stubs/full drafts | WS01 + WS06; historical cleanup addressed below |
 | `pr-integration-review.md` | Adopt compatible selected content/architecture/plans, preserve player IDs, rerun references/docs links; explicitly defer incomplete scaffold and expanded/conflicting proposals | WS06; do not merge/open historical PRs automatically |
+| `workstreams/README.md` | Six workstream briefs, sequencing, shared interfaces, ownership, gates, and blocked decisions | WS01–WS06 |
+| `../tools/import/README.md` | Drive import setup, dry-run/write safety, credential handling, classification, and data-sources boundary | WS05 + WS06 |
+| `../imports/drive/README.md` | Import output area, raw mirror, manifest, and unsorted review-queue ownership | WS05 + WS06 |
 
 ## Historical cleanup versus live work
 
