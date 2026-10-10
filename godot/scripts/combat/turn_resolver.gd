@@ -23,10 +23,16 @@ static func create_battle(career: Dictionary, opponents: Array, registry: Dictio
 	var player: Dictionary = ActorState.create(record, career.starting_skills)
 	player.equipment_effects = equipment_effects
 	var enemies: Array = []
+	var instance_counts: Dictionary = {player.id: 1}
 	for opponent in opponents:
 		var phases: Array = opponent.get("phases", [])
 		var skills: Array = opponent.get("skills", phases[0].skills if not phases.is_empty() else [])
-		enemies.append(ActorState.create(opponent, skills, true))
+		var enemy: Dictionary = ActorState.create(opponent, skills, true)
+		enemy.content_id = opponent.id
+		instance_counts[opponent.id] = int(instance_counts.get(opponent.id, 0)) + 1
+		if instance_counts[opponent.id] > 1:
+			enemy.id = "%s#%s" % [opponent.id, instance_counts[opponent.id]]
+		enemies.append(enemy)
 	var battle: Dictionary = BattleState.create(player, enemies, inventory, seed)
 	BattleState.emit(battle, "battle_start", player.id, "", {"seed": seed})
 	for enemy in enemies:

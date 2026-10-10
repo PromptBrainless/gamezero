@@ -15,7 +15,9 @@ func capture_screen(name: String) -> void:
 	await process_frame
 	await process_frame
 	await RenderingServer.frame_post_draw
-	var directory := ProjectSettings.globalize_path("res://../screenshots")
+	var directory := OS.get_environment("GODOT_SCREENSHOT_DIR")
+	if directory.is_empty():
+		directory = ProjectSettings.globalize_path("user://screenshots")
 	DirAccess.make_dir_recursive_absolute(directory)
 	var image := root.get_texture().get_image()
 	check(image.save_png(directory.path_join("godot-" + name + ".png")) == OK, "Visual reference captured")
@@ -80,6 +82,13 @@ func run_tests() -> void:
 	assert_buttons(main.hud)
 	var career_id: String = str(main.registry.careers.keys()[0])
 	main.choose_career(career_id)
+	var consumable_id := ""
+	for id in main.registry.items:
+		if main.registry.items[id].slot == "consumable" and main.registry.items[id].has("use"):
+			consumable_id = id
+			break
+	check(not consumable_id.is_empty(), "Canonical pack provides usable consumables")
+	main.run_inventory[consumable_id] = 2
 	check(main.screen == "encounter_preview", "Career selection opens encounter preview")
 	check(visible_text(main.hud).contains(main.current_encounter().arena), "Arena is visible")
 	check(visible_text(main.hud).contains(main.reward_summary(main.current_encounter().rewards)), "Canonical rewards are visible")
@@ -90,6 +99,12 @@ func run_tests() -> void:
 		await capture_screen("combat-desktop")
 		root.size = Vector2i(390, 844)
 	check(main.screen == "combat", "Start opens actual combat")
+	check(main.battle.inventory.get(consumable_id, 0) == 2, "Run consumables handed into combat")
+	main.choose_action("item:" + consumable_id)
+	main.choose_target(-1)
+	main.confirm_action()
+	await process_frame
+	check(main.battle.inventory.get(consumable_id, 0) == 1, "Resolver consumption is reflected in battle")
 	check(not main.battle.player.is_empty() and not main.battle.enemies.is_empty(), "Resolver constructs battle actors")
 	main.choose_action("")
 	check(main.interaction == "action_selected", "Recover still requires target selection")
@@ -137,21 +152,35 @@ func run_tests() -> void:
 	check(main.screen == "defeat" and main.encounter_index == 0, "Loss cannot enter reward/progression")
 	main.start_encounter()
 	check(main.screen == "combat" and main.encounter_index == 0, "Retry restarts same encounter")
+	check(main.battle.inventory.get(consumable_id, 0) == 2, "Defeat retry restores pre-fight consumable snapshot")
+	check(main.run_inventory.get(consumable_id, 0) == 2, "Failed attempt does not mutate run inventory")
 	check(main.battle.player.hp > 0, "Retry resets combat actors")
 	var expected_xp := 0
 	var expected_items: Dictionary = {}
+	var consumed := false
 	for index in range(main.encounter_ids.size()):
 		var encounter: Dictionary = main.current_encounter()
+		if main.battle.inventory.get(consumable_id, 0) > 0:
+			main.choose_action("item:" + consumable_id)
+			main.choose_target(-1)
+			main.confirm_action()
+			await process_frame
+			consumed = true
+		var remaining: Dictionary = main.battle.inventory.duplicate(true)
 		var won: Dictionary = main.battle.duplicate(true)
 		won.result = "victory"
 		expected_xp += int(encounter.rewards.xp)
 		for id in encounter.rewards.get("items", []):
 			expected_items[id] = expected_items.get(id, 0) + 1
+			if main.registry.items[id].slot == "consumable":
+				remaining[id] = remaining.get(id, 0) + 1
 		main.apply_battle_state(won)
 		check(main.screen == "reward", "Victory enters reward")
 		check(main.total_xp == expected_xp and main.earned_items == expected_items, "Victory awards exactly canonical XP and items")
+		check(main.run_inventory == remaining, "Victory preserves consumption and adds earned consumables")
 		main.apply_battle_state(won)
 		check(main.total_xp == expected_xp and main.earned_items == expected_items, "Repeated result cannot duplicate rewards")
+		check(main.run_inventory == remaining, "Repeated victory cannot duplicate consumable rewards")
 		main.accept_reward()
 		check(main.screen == "progression", "Reward continues to progression")
 		check(visible_text(main.hud).contains(str(expected_xp)), "Progression displays total XP")
@@ -159,13 +188,22 @@ func run_tests() -> void:
 		if index < main.encounter_ids.size() - 1:
 			check(main.screen == "encounter_preview", "Progression opens next encounter")
 			main.start_encounter()
+			check(main.battle.inventory == remaining, "Next encounter receives remaining consumables without regrant")
 		else:
 			check(main.screen == "complete", "Final encounter ends slice")
 	main.reset_run()
 	check(main.screen == "career_select" and main.career_id.is_empty(), "Reset opens career select")
-	check(main.total_xp == 0 and main.earned_items.is_empty() and main.rewarded_encounters.is_empty(), "Reset clears reward accounting")
+	check(consumed, "Consumable consumption exercised across encounter handoff")
+	check(main.total_xp == 0 and main.earned_items.is_empty() and main.rewarded_encounters.is_empty() and main.run_inventory.is_empty() and main.encounter_inventory.is_empty(), "Reset clears reward accounting and inventories")
 	check(main.encounter_index == 0 and main.battle.is_empty(), "Reset clears encounter/battle state")
 	var pack := {"schema_version": 1, "collections": main.registry.duplicate(true)}
+	var invalid_hp := pack.duplicate(true)
+	invalid_hp.collections.careers[career_id].base_stats.hp = "invalid"
+	check(not main.validate_pack(invalid_hp).is_empty(), "Non-numeric HP is rejected without a runtime error")
+	var invalid_phase := pack.duplicate(true)
+	var boss_id: String = str(invalid_phase.collections.bosses.keys()[0])
+	invalid_phase.collections.bosses[boss_id].phases[0].erase("id")
+	check(not main.validate_pack(invalid_phase).is_empty(), "Boss phase requires its runtime ID")
 	var first_encounter: String = str(main.encounter_ids[0])
 	pack.collections.encounters[first_encounter].enemies = ["not_a_resolved_reference"]
 	check(not main.validate_pack(pack).is_empty(), "Invalid pack reference rejected")
@@ -202,7 +240,55 @@ func run_tests() -> void:
 		main.start_encounter()
 		check(main.battle.player.id == id, "Every canonical career starts actual combat")
 		main.reset_run()
+	await test_fresh_playthrough(main)
 	finish(main)
+
+func test_fresh_playthrough(main: Node) -> void:
+	# Exercise real outcomes, not the result-handoff fixtures above.
+	var completed := false
+	for career in main.registry.careers:
+		main.reset_run()
+		main.choose_career(career)
+		var rounds := 0
+		while main.screen != "complete" and rounds < 400:
+			if main.screen == "encounter_preview":
+				main.start_encounter()
+			elif main.screen == "reward":
+				main.accept_reward()
+			elif main.screen == "progression":
+				main.continue_run()
+			elif main.screen == "defeat":
+				break
+			elif main.screen == "combat":
+				var target_index := -1
+				for index in range(main.battle.enemies.size()):
+					if main.battle.enemies[index].hp > 0 and (target_index < 0 or main.battle.enemies[index].hp < main.battle.enemies[target_index].hp):
+						target_index = index
+				var action := ""
+				var best_damage := 0
+				if target_index >= 0:
+					for skill_id in main.battle.player.skills:
+						var skill: Dictionary = main.registry.skills[skill_id]
+						if skill.target != "enemy" or skill.has("trigger") or not main.resolver.unavailable(main.battle.player, skill).is_empty():
+							continue
+						var damage: int = main.resolver.preview(main.battle.player, main.battle.enemies[target_index], skill, main.registry)
+						if damage > best_damage:
+							best_damage = damage
+							action = skill_id
+				main.choose_action(action)
+				main.choose_target(-1 if action.is_empty() else target_index)
+				main.confirm_action()
+				await process_frame
+				rounds += 1
+			else:
+				break
+		if main.screen == "complete":
+			completed = true
+			print("Fresh canonical playthrough: %s completed %s encounters in %s rounds, XP %s" % [career, main.rewarded_encounters.size(), rounds, main.total_xp])
+			check(main.rewarded_encounters.size() == main.encounter_ids.size(), "Fresh resolver sequence awards all four encounters")
+			break
+		print("Fresh playthrough attempt: %s reached encounter %s; result %s" % [career, main.encounter_index + 1, main.screen])
+	check(completed, "Fresh full encounter sequence is completable without levels or new mechanics")
 
 func finish(main: Node) -> void:
 	main.queue_free()

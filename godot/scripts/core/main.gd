@@ -18,6 +18,8 @@ var selected_target := -1
 var interaction := "idle"
 var total_xp := 0
 var earned_items: Dictionary = {}
+var run_inventory: Dictionary = {}
+var encounter_inventory: Dictionary = {}
 var rewarded_encounters: Dictionary = {}
 var content_error := ""
 
@@ -129,7 +131,8 @@ func validate_pack(value: Variant) -> PackedStringArray:
 				var pool = record.base_stats.get(stat, 0)
 				if not (pool is int or pool is float) or pool < 0:
 					errors.append("[%s/%s] base_stats.%s must be nonnegative." % [collection, id, stat])
-			if record.base_stats.get("hp", 0) <= 0:
+			var hp = record.base_stats.get("hp", 0)
+			if (hp is int or hp is float) and hp <= 0:
 				errors.append("[%s/%s] hp must be positive." % [collection, id])
 			if collection == "careers":
 				check_refs(record.starting_skills, collections.skills, "%s.starting_skills" % id, errors)
@@ -155,7 +158,7 @@ func validate_pack(value: Variant) -> PackedStringArray:
 					errors.append("[%s] phases cannot be empty." % id)
 				var previous := 2.0
 				for phase in record.phases:
-					if not phase is Dictionary or not phase.get("skills") is Array or not phase.get("name") is String or not (phase.get("hp_threshold") is float or phase.get("hp_threshold") is int):
+					if not phase is Dictionary or not phase.get("id") is String or phase.get("id", "").is_empty() or not phase.get("skills") is Array or not phase.get("name") is String or not (phase.get("hp_threshold") is float or phase.get("hp_threshold") is int):
 						errors.append("[%s] invalid boss phase." % id)
 						continue
 					if phase.hp_threshold <= 0 or phase.hp_threshold >= previous or (previous == 2.0 and phase.hp_threshold != 1.0):
@@ -286,6 +289,8 @@ func reset_state() -> void:
 	encounter_index = 0
 	total_xp = 0
 	earned_items.clear()
+	run_inventory.clear()
+	encounter_inventory.clear()
 	rewarded_encounters.clear()
 	battle.clear()
 	combat_events.clear()
@@ -302,6 +307,9 @@ func choose_career(id: String) -> void:
 	if screen != "career_select" or not registry.careers.has(id):
 		return
 	career_id = id
+	for item_id in registry.careers[id].starting_items:
+		if registry.items[item_id].slot == "consumable":
+			run_inventory[item_id] = run_inventory.get(item_id, 0) + 1
 	screen = "encounter_preview"
 	render()
 
@@ -314,11 +322,21 @@ func start_encounter() -> void:
 	if screen not in ["encounter_preview", "defeat"]:
 		return
 	var encounter := current_encounter()
+	if screen == "encounter_preview":
+		encounter_inventory = run_inventory.duplicate(true)
 	var collection: Dictionary = registry.bosses if encounter.type == "boss" else registry.enemies
 	var opponents: Array = []
 	for id in encounter.enemies:
 		opponents.append(collection[id])
-	battle = resolver.create_battle(registry.careers[career_id], opponents, registry, 42 + encounter_index)
+	var career: Dictionary = registry.careers[career_id].duplicate(true)
+	# Consumables belong to the run; the resolver still equips canonical gear.
+	var equipment: Array = []
+	for item_id in career.starting_items:
+		if registry.items[item_id].slot != "consumable":
+			equipment.append(item_id)
+	career.starting_items = equipment
+	battle = resolver.create_battle(career, opponents, registry, 42 + encounter_index)
+	battle.inventory = encounter_inventory.duplicate(true)
 	combat_events = battle.get("events", []).duplicate(true)
 	screen = "combat"
 	interaction = "idle"
@@ -401,10 +419,13 @@ func apply_battle_state(next: Dictionary) -> void:
 		"victory":
 			var encounter := current_encounter()
 			if not rewarded_encounters.has(encounter.id):
+				run_inventory = battle.get("inventory", {}).duplicate(true)
 				rewarded_encounters[encounter.id] = true
 				total_xp += int(encounter.rewards.xp)
 				for id in encounter.rewards.get("items", []):
 					earned_items[id] = earned_items.get(id, 0) + 1
+					if registry.items[id].slot == "consumable":
+						run_inventory[id] = run_inventory.get(id, 0) + 1
 			screen = "reward"
 		"defeat":
 			screen = "defeat"
@@ -494,6 +515,11 @@ func render() -> void:
 				hud.text("No item rewards yet.")
 			for id in earned_items:
 				hud.text("%s × %s" % [registry.items[id].name, earned_items[id]])
+			hud.text("Available consumables · carried into the next encounter")
+			if run_inventory.is_empty():
+				hud.text("None remaining.")
+			for id in run_inventory:
+				hud.text("%s × %s" % [registry.items[id].name, run_inventory[id]])
 			if screen == "progression":
 				var next_name: String = registry.encounters[encounter_ids[encounter_index + 1]].name if encounter_index + 1 < encounter_ids.size() else "End of slice"
 				hud.text("Next · %s" % next_name)

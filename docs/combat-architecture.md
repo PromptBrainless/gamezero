@@ -45,6 +45,10 @@ across rounds. The HUD consumes these events and resolver previews, never applie
 damage itself. Stable replay is guaranteed for the same native seed and inputs,
 not parity with the older browser simulator.
 
+Repeated opponent definitions receive distinct combat-instance IDs; `content_id`
+retains the canonical lookup key. Consumers must not use an instance ID as an
+authoring reference.
+
 The native rules cover numeric damage and modifiers, resource costs and
 cooldowns, timed statuses, cleanse, melee-triggered reactions, consumables,
 weighted enemy actions and boss phase/telegraph transitions. Critical-hit rolls,

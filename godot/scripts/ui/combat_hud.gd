@@ -220,7 +220,7 @@ func render_combat(battle: Dictionary, registry: Dictionary, encounter: Dictiona
 			text("Target: %s" % actor.name)
 			if record.has("damage"):
 				var damage: int = resolver.preview(player, actor, record, registry)
-				text("Preview damage: %s HP · numeric resolver estimate (critical rolls excluded)" % damage)
+				text("Preview damage: %s HP · guaranteed resolver damage" % damage)
 			elif action == "" or action.begins_with("item:"):
 				text("Direct damage: 0 HP · resource / item action")
 			else:

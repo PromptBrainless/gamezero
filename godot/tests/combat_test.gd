@@ -23,6 +23,8 @@ func _initialize() -> void:
 	_test_phases_telegraphs()
 	_test_reactions_items()
 	_test_outcomes_ai()
+	_test_encounter_sequence()
+	_test_starting_stat_matrix()
 	print("Combat tests: %s checks, %s failures" % [checks, failures])
 	quit(1 if failures > 0 else 0)
 
@@ -62,6 +64,11 @@ func _test_creation_damage() -> void:
 	_check(mage.player.stats.magic == 12 and mage.player.focus == 61, "Equipment adjusts resource maxima")
 	_check(mage.inventory.get("focus_draught") == 1, "Starting consumables populated")
 	_check(registry == original, "Creation does not mutate records")
+	var duplicates := Resolver.create_battle(registry.careers.mercenary, [registry.enemies.alley_cutthroat, registry.enemies.alley_cutthroat], registry)
+	_check(duplicates.enemies[0].id != duplicates.enemies[1].id and duplicates.enemies[1].content_id == "alley_cutthroat", "Repeated opponent IDs distinguish event instances without changing content ID")
+	duplicates = Resolver.resolve_round(duplicates, "", -1, registry)
+	var duplicate_actions := _events(duplicates, "action")
+	_check(duplicate_actions.size() == 2 and duplicate_actions[0].source != duplicate_actions[1].source, "Repeated opponent event sources distinguish instances")
 	var hit: int = Resolver.preview(battle.player, battle.enemies[0], registry.skills.shield_bash, registry)
 	_check(hit == 11, "Canonical flat + scaling - defense damage")
 	battle.enemies[0].effects = [{"id": "guarded", "duration": 2, "stacks": 1}]
@@ -314,3 +321,114 @@ func _test_outcomes_ai() -> void:
 						action = skill_id
 				battle = Resolver.resolve_round(battle, action, 0, registry)
 			_check(battle.result != "", "Actual content terminates for %s/%s" % [career, id])
+
+func _test_encounter_sequence() -> void:
+	var encounters: Array = registry.encounters.values()
+	encounters.sort_custom(func(left: Dictionary, right: Dictionary) -> bool: return left.order < right.order)
+	var completed_careers := 0
+	for career in registry.careers:
+		var inventory: Dictionary = {}
+		var completed := 0
+		for encounter in encounters:
+			var opponents: Array = []
+			for id in encounter.enemies:
+				opponents.append(registry.bosses[id] if encounter.type == "boss" else registry.enemies[id])
+			var won := false
+			# Each retry is fresh; no growth, bonus stats or newly unlocked skills.
+			for seed in range(42, 142):
+				var battle: Dictionary = Resolver.create_battle(registry.careers[career], opponents, registry, seed)
+				if completed > 0:
+					battle.inventory = inventory.duplicate(true)
+				var initial_inventory: Dictionary = battle.inventory.duplicate(true)
+				for turn in range(200):
+					if battle.result != "":
+						break
+					var target_index := -1
+					for index in range(battle.enemies.size()):
+						if battle.enemies[index].hp > 0:
+							target_index = index
+							break
+					var action := ""
+					var best := 0
+					for skill_id in battle.player.skills:
+						var skill: Dictionary = registry.skills[skill_id]
+						if Resolver.unavailable(battle.player, skill) != "" or skill.target != "enemy":
+							continue
+						var damage: int = Resolver.preview(battle.player, battle.enemies[target_index], skill, registry)
+						if damage > best:
+							best = damage
+							action = skill_id
+					for id in battle.inventory:
+						if battle.inventory[id] <= 0:
+							continue
+						var use: Dictionary = registry.items[id].get("use", {})
+						if int(use.get("heal_hp", 0)) > 0 and battle.player.hp <= battle.player.stats.hp - int(use.heal_hp):
+							action = "item:" + id
+							break
+						if int(use.get("restore_focus", 0)) > 0 and battle.player.focus < 8:
+							action = "item:" + id
+							break
+					battle = Resolver.resolve_round(battle, action, target_index, registry)
+				_check(battle.result != "", "No-growth sequence fight terminates: %s/%s seed %s" % [career, encounter.id, seed])
+				if battle.result == "victory":
+					inventory = battle.inventory.duplicate(true)
+					for id in encounter.rewards.get("items", []):
+						if registry.items[id].slot == "consumable":
+							inventory[id] = int(inventory.get(id, 0)) + 1
+					won = true
+					print("Sequence %s/%s: victory seed %s, round %s" % [career, encounter.id, seed, battle.round])
+					break
+				inventory = initial_inventory
+			if not won:
+				print("BALANCE LIMITATION: %s/%s not won by offensive/item heuristic across seeds 42-141 (no growth)." % [career, encounter.id])
+				break
+			completed += 1
+		if completed == encounters.size():
+			completed_careers += 1
+	_check(completed_careers > 0, "Full canonical sequence can complete without growth or new mechanics")
+
+func _test_starting_stat_matrix() -> void:
+	for career in registry.careers:
+		for encounter in registry.encounters.values():
+			var wins := 0
+			var losses := 0
+			var unfinished := 0
+			var opponents: Array = []
+			for id in encounter.enemies:
+				opponents.append(registry.bosses[id] if encounter.type == "boss" else registry.enemies[id])
+			for seed in range(42, 142):
+				var battle: Dictionary = Resolver.create_battle(registry.careers[career], opponents, registry, seed)
+				for turn in range(200):
+					if battle.result != "":
+						break
+					var target_index := -1
+					for index in range(battle.enemies.size()):
+						if battle.enemies[index].hp > 0:
+							target_index = index
+							break
+					var action := ""
+					var best := 0
+					for id in battle.player.skills:
+						var skill: Dictionary = registry.skills[id]
+						if skill.target != "enemy" or Resolver.unavailable(battle.player, skill) != "":
+							continue
+						var damage: int = Resolver.preview(battle.player, battle.enemies[target_index], skill, registry)
+						if damage > best:
+							best = damage
+							action = id
+					for id in battle.inventory:
+						if battle.inventory[id] <= 0:
+							continue
+						var use: Dictionary = registry.items[id].get("use", {})
+						if int(use.get("heal_hp", 0)) > 0 and battle.player.hp <= battle.player.stats.hp - int(use.heal_hp):
+							action = "item:" + id
+							break
+					battle = Resolver.resolve_round(battle, action, target_index, registry)
+				if battle.result == "victory":
+					wins += 1
+				elif battle.result == "defeat":
+					losses += 1
+				else:
+					unfinished += 1
+			print("Starting stats %s/%s: %s wins, %s losses, %s unfinished / 100 seeds (42-141)." % [career, encounter.id, wins, losses, unfinished])
+			_check(unfinished == 0, "Real starting-stat fights terminate: %s/%s" % [career, encounter.id])
