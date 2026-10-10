@@ -1,0 +1,952 @@
+{
+  "schema_version": 1,
+  "collections": {
+    "careers": {
+      "duelist": {
+        "id": "duelist",
+        "name": "Duellant",
+        "role": "fast_precision",
+        "description": "Schlanker Klingenkämpfer: hohe Initiative, Präzision und Konter.",
+        "base_stats": {
+          "hp": 44,
+          "attack": 8,
+          "defense": 3,
+          "magic": 1,
+          "speed": 9,
+          "crit_chance": 0.12,
+          "stamina": 34,
+          "focus": 26
+        },
+        "stat_growth": {
+          "hp": 5,
+          "focus": 2,
+          "stamina": 2,
+          "attack": 1,
+          "defense": 0,
+          "magic": 0,
+          "speed": 1
+        },
+        "starting_skills": [
+          "riposte",
+          "precise_thrust"
+        ],
+        "skill_pool": [
+          "riposte",
+          "precise_thrust",
+          "quick_feint"
+        ],
+        "starting_items": [
+          "rapier",
+          "leather_jerkin",
+          "bandage_roll"
+        ],
+        "reaction": "parry",
+        "visual": {
+          "silhouette": "slim_sideways",
+          "accent_color": "#d9b44a"
+        }
+      },
+      "mercenary": {
+        "id": "mercenary",
+        "name": "Söldner",
+        "role": "frontline_bruiser",
+        "description": "Ein standhafter Frontkämpfer, der Gegner mit Schild und Klinge unter Druck setzt.",
+        "base_stats": {
+          "hp": 60,
+          "attack": 7,
+          "defense": 4,
+          "magic": 0,
+          "speed": 4,
+          "crit_chance": 0.05,
+          "stamina": 30,
+          "focus": 20
+        },
+        "stat_growth": {
+          "hp": 7,
+          "stamina": 3,
+          "focus": 1,
+          "attack": 1,
+          "defense": 0,
+          "magic": 0,
+          "speed": 0
+        },
+        "starting_skills": [
+          "shield_bash",
+          "hold_the_line"
+        ],
+        "skill_pool": [
+          "shield_bash",
+          "hold_the_line",
+          "rending_cut"
+        ],
+        "starting_items": [
+          "iron_sword",
+          "buckler",
+          "leather_jerkin"
+        ],
+        "reaction": "brace",
+        "visual": {
+          "silhouette": "broad_shield_forward",
+          "accent_color": "#8c5a3c"
+        }
+      },
+      "scholar_mage": {
+        "id": "scholar_mage",
+        "name": "Gelehrtenmagier",
+        "role": "control_caster",
+        "description": "Ein fokussierter Zauberwirker, der Gegner mit arkanem Schaden und Frost kontrolliert.",
+        "base_stats": {
+          "hp": 38,
+          "attack": 2,
+          "defense": 2,
+          "magic": 9,
+          "speed": 5,
+          "crit_chance": 0.06,
+          "stamina": 22,
+          "focus": 50
+        },
+        "stat_growth": {
+          "hp": 4,
+          "focus": 5,
+          "stamina": 1,
+          "attack": 0,
+          "defense": 0,
+          "magic": 1,
+          "speed": 0
+        },
+        "starting_skills": [
+          "arcane_bolt",
+          "frost_sigil"
+        ],
+        "skill_pool": [
+          "arcane_bolt",
+          "frost_sigil",
+          "focused_mind"
+        ],
+        "starting_items": [
+          "oak_staff",
+          "scholars_robe",
+          "focus_draught"
+        ],
+        "reaction": "ward",
+        "visual": {
+          "silhouette": "hooded_staff",
+          "accent_color": "#7789c4"
+        }
+      }
+    },
+    "skills": {
+      "arcane_bolt": {
+        "id": "arcane_bolt",
+        "name": "Arkanes Geschoss",
+        "type": "attack",
+        "cost": {
+          "focus": 8
+        },
+        "cooldown": 0,
+        "target": "enemy",
+        "description": "Verursacht zuverlässigen arkanen Schaden aus sicherer Entfernung.",
+        "career": "scholar_mage",
+        "damage": {
+          "damage_type": "arcane",
+          "scaling_stat": "magic",
+          "multiplier": 1.1,
+          "flat": 4
+        },
+        "tags": [
+          "spell",
+          "ranged"
+        ]
+      },
+      "focused_mind": {
+        "id": "focused_mind",
+        "name": "Klarer Fokus",
+        "type": "control",
+        "cost": {
+          "focus": 6
+        },
+        "cooldown": 3,
+        "target": "self",
+        "description": "Stärkt die eigene Magie und Kritchance für zwei Runden.",
+        "career": "scholar_mage",
+        "applies_statuses": [
+          {
+            "status": "focused",
+            "duration": 2
+          }
+        ],
+        "tags": [
+          "setup",
+          "spell",
+          "self"
+        ]
+      },
+      "frost_sigil": {
+        "id": "frost_sigil",
+        "name": "Frostsiegel",
+        "type": "control",
+        "cost": {
+          "focus": 14
+        },
+        "cooldown": 3,
+        "target": "enemy",
+        "description": "Verursacht Frostschaden und senkt mit hoher Chance das Tempo des Ziels.",
+        "career": "scholar_mage",
+        "damage": {
+          "damage_type": "frost",
+          "scaling_stat": "magic",
+          "multiplier": 0.8,
+          "flat": 3
+        },
+        "applies_statuses": [
+          {
+            "status": "chilled",
+            "duration": 3,
+            "chance": 0.8
+          }
+        ],
+        "tags": [
+          "spell",
+          "control",
+          "ranged"
+        ]
+      },
+      "hold_the_line": {
+        "id": "hold_the_line",
+        "name": "Stellung halten",
+        "type": "defense",
+        "cost": {
+          "stamina": 10
+        },
+        "cooldown": 3,
+        "target": "self",
+        "description": "Verringert zwei Runden lang eingehenden Schaden und entfernt Blutung, Entblößung oder Betäubung.",
+        "career": "mercenary",
+        "applies_statuses": [
+          {
+            "status": "guarded",
+            "duration": 2
+          }
+        ],
+        "tags": [
+          "defense",
+          "cleanse",
+          "self"
+        ],
+        "removes_statuses": [
+          "bleeding",
+          "exposed",
+          "stunned"
+        ]
+      },
+      "iron_command": {
+        "id": "iron_command",
+        "name": "Eiserner Befehl",
+        "type": "attack",
+        "cost": {},
+        "cooldown": 2,
+        "target": "enemy",
+        "description": "Signaturangriff des Eisernen Hauptmanns.",
+        "damage": {
+          "damage_type": "physical",
+          "scaling_stat": "attack",
+          "multiplier": 1.3,
+          "flat": 2,
+          "formula": "flat + scaling_stat * multiplier - target_defense"
+        },
+        "applies_statuses": [
+          {
+            "status": "guarded",
+            "duration": 2,
+            "chance": 1,
+            "target": "self"
+          }
+        ],
+        "tags": [
+          "boss"
+        ]
+      },
+      "precise_thrust": {
+        "id": "precise_thrust",
+        "name": "Präziser Stich",
+        "type": "attack",
+        "cost": {
+          "focus": 4,
+          "stamina": 8
+        },
+        "cooldown": 2,
+        "target": "enemy",
+        "description": "Fügt präzisen körperlichen Schaden zu und legt Schwachstellen des Ziels frei.",
+        "career": "duelist",
+        "damage": {
+          "damage_type": "physical",
+          "scaling_stat": "attack",
+          "multiplier": 1.1,
+          "flat": 0
+        },
+        "applies_statuses": [
+          {
+            "status": "exposed",
+            "duration": 2,
+            "chance": 0.5
+          }
+        ],
+        "tags": [
+          "melee",
+          "precision",
+          "payoff"
+        ]
+      },
+      "quick_feint": {
+        "id": "quick_feint",
+        "name": "Flinke Finte",
+        "type": "control",
+        "cost": {
+          "focus": 2,
+          "stamina": 5
+        },
+        "cooldown": 2,
+        "target": "self",
+        "description": "Entgeht Kälte und bereitet mit einem Fokusbonus den nächsten präzisen Treffer vor.",
+        "career": "duelist",
+        "applies_statuses": [
+          {
+            "status": "focused",
+            "duration": 1
+          }
+        ],
+        "tags": [
+          "setup",
+          "cleanse",
+          "self"
+        ],
+        "removes_statuses": [
+          "chilled"
+        ]
+      },
+      "rending_cut": {
+        "id": "rending_cut",
+        "name": "Reißender Schnitt",
+        "type": "attack",
+        "cost": {
+          "stamina": 9
+        },
+        "cooldown": 2,
+        "target": "enemy",
+        "description": "Verursacht körperlichen Schaden und lässt das Ziel mit hoher Chance drei Runden bluten.",
+        "career": "mercenary",
+        "damage": {
+          "damage_type": "physical",
+          "scaling_stat": "attack",
+          "multiplier": 0.9,
+          "flat": 2
+        },
+        "applies_statuses": [
+          {
+            "status": "bleeding",
+            "duration": 3,
+            "chance": 0.6
+          }
+        ],
+        "tags": [
+          "melee",
+          "damage_over_time",
+          "payoff"
+        ]
+      },
+      "riposte": {
+        "id": "riposte",
+        "name": "Riposte",
+        "type": "reaction",
+        "cost": {
+          "stamina": 6
+        },
+        "cooldown": 1,
+        "target": "enemy",
+        "description": "Kontert einen eingehenden Nahkampfangriff mit einem präzisen Gegenstoß.",
+        "career": "duelist",
+        "damage": {
+          "damage_type": "physical",
+          "scaling_stat": "attack",
+          "multiplier": 1.2,
+          "flat": 3
+        },
+        "tags": [
+          "melee",
+          "reaction",
+          "utility"
+        ],
+        "trigger": "after_melee_hit"
+      },
+      "shield_bash": {
+        "id": "shield_bash",
+        "name": "Schildstoß",
+        "type": "attack",
+        "cost": {
+          "stamina": 8
+        },
+        "cooldown": 1,
+        "target": "enemy",
+        "description": "Fügt körperlichen Schaden zu und betäubt das Ziel mit geringer Chance für eine Runde.",
+        "career": "mercenary",
+        "damage": {
+          "damage_type": "physical",
+          "scaling_stat": "attack",
+          "multiplier": 1,
+          "flat": 3
+        },
+        "applies_statuses": [
+          {
+            "status": "stunned",
+            "duration": 1,
+            "chance": 0.35
+          }
+        ],
+        "tags": [
+          "melee",
+          "control",
+          "setup"
+        ]
+      }
+    },
+    "statuses": {
+      "bleeding": {
+        "id": "bleeding",
+        "name": "Blutung",
+        "kind": "debuff",
+        "default_duration": 3,
+        "max_stacks": 3,
+        "effect": {
+          "damage_per_turn_per_stack": 3,
+          "damage_type": "bleed",
+          "ignores_defense": true
+        },
+        "description": "Verursacht zu Beginn des Zuges drei Schaden pro Stapel.",
+        "tick": "turn_start",
+        "icon_shape": "drop"
+      },
+      "chilled": {
+        "id": "chilled",
+        "name": "Unterkühlt",
+        "kind": "debuff",
+        "default_duration": 3,
+        "max_stacks": 1,
+        "effect": {
+          "speed_modifier": -3,
+          "stamina_regen_multiplier": 0.75
+        },
+        "description": "Senkt das Tempo um drei und reduziert die Ausdauerregeneration um 25 Prozent.",
+        "tick": "turn_start",
+        "icon_shape": "snowflake"
+      },
+      "exposed": {
+        "id": "exposed",
+        "name": "Entblößt",
+        "kind": "debuff",
+        "default_duration": 2,
+        "max_stacks": 1,
+        "effect": {
+          "defense_modifier": -3,
+          "crit_chance_taken_bonus": 0.15
+        },
+        "description": "Senkt die Verteidigung um drei und erhöht die erlittene Kritchance um 15 Prozentpunkte.",
+        "icon_shape": "crack"
+      },
+      "focused": {
+        "id": "focused",
+        "name": "Fokussiert",
+        "kind": "buff",
+        "default_duration": 2,
+        "max_stacks": 1,
+        "effect": {
+          "crit_chance_bonus": 0.15,
+          "attack_modifier": 2
+        },
+        "description": "Erhöht die Kritchance um 15 Prozentpunkte und die Angriffskraft um zwei.",
+        "icon_shape": "eye"
+      },
+      "guarded": {
+        "id": "guarded",
+        "name": "Gedeckt",
+        "kind": "buff",
+        "default_duration": 2,
+        "max_stacks": 1,
+        "effect": {
+          "damage_taken_multiplier": 0.6
+        },
+        "description": "Verringert erlittenen Schaden um 40 Prozent.",
+        "icon_shape": "shield"
+      },
+      "stunned": {
+        "id": "stunned",
+        "name": "Betäubt",
+        "kind": "debuff",
+        "default_duration": 1,
+        "max_stacks": 1,
+        "effect": {
+          "skip_turn": true
+        },
+        "description": "Überspringt den nächsten Zug und endet nach einer Runde.",
+        "icon_shape": "star"
+      }
+    },
+    "items": {
+      "bandage_roll": {
+        "id": "bandage_roll",
+        "name": "Verbandsrolle",
+        "slot": "consumable",
+        "rarity": "common",
+        "stat_modifiers": {},
+        "description": "Heilt 15 HP und entfernt Blutung.",
+        "value": 15,
+        "use": {
+          "heal_hp": 15,
+          "removes_statuses": [
+            "bleeding"
+          ],
+          "stackable": true,
+          "max_stack": 5
+        }
+      },
+      "buckler": {
+        "id": "buckler",
+        "name": "Faustschild",
+        "slot": "offhand",
+        "rarity": "common",
+        "stat_modifiers": {
+          "defense": 2
+        },
+        "description": "Kleiner Schild.",
+        "value": 30
+      },
+      "captains_greatshield": {
+        "id": "captains_greatshield",
+        "name": "Großschild des Hauptmanns",
+        "slot": "offhand",
+        "rarity": "rare",
+        "stat_modifiers": {
+          "defense": 5,
+          "speed": -1
+        },
+        "description": "Beute des Eisernen Hauptmanns.",
+        "value": 250,
+        "career_tags": [
+          "mercenary"
+        ]
+      },
+      "focus_draught": {
+        "id": "focus_draught",
+        "name": "Fokustrank",
+        "slot": "consumable",
+        "rarity": "common",
+        "stat_modifiers": {},
+        "description": "Stellt 15 Fokus wieder her.",
+        "value": 20,
+        "use": {
+          "restore_focus": 15,
+          "applies_statuses": [
+            {
+              "status": "focused",
+              "duration": 2
+            }
+          ],
+          "stackable": true,
+          "max_stack": 5
+        }
+      },
+      "iron_sword": {
+        "id": "iron_sword",
+        "name": "Eisenschwert",
+        "slot": "weapon",
+        "rarity": "common",
+        "stat_modifiers": {
+          "attack": 3
+        },
+        "description": "Solide Klinge.",
+        "value": 40,
+        "career_tags": [
+          "mercenary"
+        ]
+      },
+      "leather_jerkin": {
+        "id": "leather_jerkin",
+        "name": "Lederwams",
+        "slot": "armor",
+        "rarity": "common",
+        "stat_modifiers": {
+          "defense": 2,
+          "speed": 1
+        },
+        "description": "Leichte Rüstung.",
+        "value": 35
+      },
+      "oak_staff": {
+        "id": "oak_staff",
+        "name": "Eichenstab",
+        "slot": "weapon",
+        "rarity": "common",
+        "stat_modifiers": {
+          "magic": 3,
+          "focus": 5
+        },
+        "description": "Fokusstab eines Gelehrten.",
+        "value": 45,
+        "career_tags": [
+          "scholar_mage"
+        ]
+      },
+      "rapier": {
+        "id": "rapier",
+        "name": "Rapier",
+        "slot": "weapon",
+        "rarity": "common",
+        "stat_modifiers": {
+          "attack": 2,
+          "speed": 1,
+          "crit_chance": 0.05
+        },
+        "description": "Leichte Stichwaffe.",
+        "value": 45,
+        "career_tags": [
+          "duelist"
+        ]
+      },
+      "scholars_robe": {
+        "id": "scholars_robe",
+        "name": "Gelehrtenrobe",
+        "slot": "armor",
+        "rarity": "common",
+        "stat_modifiers": {
+          "defense": 1,
+          "focus": 6
+        },
+        "description": "Stoffrobe mit Siegelstickerei.",
+        "value": 35
+      },
+      "ward_talisman": {
+        "id": "ward_talisman",
+        "name": "Schutztalisman",
+        "slot": "trinket",
+        "rarity": "uncommon",
+        "stat_modifiers": {
+          "defense": 1,
+          "magic": 1
+        },
+        "description": "Verringert Magieschaden um 10 %.",
+        "value": 80,
+        "effects": [
+          {
+            "magic_damage_taken_multiplier": 0.9
+          }
+        ]
+      },
+      "whetstone": {
+        "id": "whetstone",
+        "name": "Wetzstein",
+        "slot": "consumable",
+        "rarity": "common",
+        "stat_modifiers": {},
+        "description": "Nächster physischer Angriff: +3 Schaden.",
+        "value": 18,
+        "use": {
+          "next_attack_bonus": 3,
+          "stackable": true,
+          "max_stack": 5
+        }
+      }
+    },
+    "enemies": {
+      "alley_cutthroat": {
+        "id": "alley_cutthroat",
+        "name": "Gassenmesser",
+        "role": "glass_cannon",
+        "tier": 1,
+        "base_stats": {
+          "hp": 32,
+          "attack": 8,
+          "defense": 2,
+          "magic": 0,
+          "speed": 8,
+          "crit_chance": 0.05
+        },
+        "skills": [
+          "precise_thrust",
+          "rending_cut"
+        ],
+        "description": "Flinker Straßenkämpfer mit Blutungsmessern.",
+        "weaknesses": [
+          "physical"
+        ],
+        "resistances": [],
+        "ai": {
+          "pattern": "weighted_random",
+          "weights": {
+            "precise_thrust": 1,
+            "rending_cut": 1
+          }
+        },
+        "loot_table": [
+          {
+            "item": "whetstone",
+            "chance": 0.35
+          },
+          {
+            "item": "leather_jerkin",
+            "chance": 0.1
+          }
+        ],
+        "xp_reward": 22,
+        "visual": {
+          "silhouette": "glass_cannon",
+          "accent_color": "#b33a3a"
+        }
+      },
+      "hedge_cultist": {
+        "id": "hedge_cultist",
+        "name": "Heckenkultist",
+        "role": "caster",
+        "tier": 1,
+        "base_stats": {
+          "hp": 30,
+          "attack": 3,
+          "defense": 2,
+          "magic": 0,
+          "speed": 5,
+          "crit_chance": 0.05
+        },
+        "skills": [
+          "frost_sigil",
+          "arcane_bolt"
+        ],
+        "description": "Okkulter Wanderprediger, schwach im Nahkampf, gefährlich mit Zaubern.",
+        "weaknesses": [
+          "physical"
+        ],
+        "resistances": [
+          "frost"
+        ],
+        "ai": {
+          "pattern": "weighted_random",
+          "weights": {
+            "frost_sigil": 1,
+            "arcane_bolt": 1
+          }
+        },
+        "loot_table": [
+          {
+            "item": "focus_draught",
+            "chance": 0.4
+          },
+          {
+            "item": "ward_talisman",
+            "chance": 0.15
+          }
+        ],
+        "xp_reward": 24,
+        "visual": {
+          "silhouette": "caster",
+          "accent_color": "#6b4fa3"
+        }
+      },
+      "rusted_deserter": {
+        "id": "rusted_deserter",
+        "name": "Verrosteter Deserteur",
+        "role": "bruiser",
+        "tier": 1,
+        "base_stats": {
+          "hp": 45,
+          "attack": 6,
+          "defense": 4,
+          "magic": 0,
+          "speed": 3,
+          "crit_chance": 0.05
+        },
+        "skills": [
+          "shield_bash",
+          "rending_cut"
+        ],
+        "description": "Ausgemusterter Soldat mit Rostpanzer; langsam, aber zäh.",
+        "weaknesses": [
+          "frost"
+        ],
+        "resistances": [],
+        "ai": {
+          "pattern": "weighted_random",
+          "weights": {
+            "shield_bash": 1,
+            "rending_cut": 1
+          }
+        },
+        "loot_table": [
+          {
+            "item": "bandage_roll",
+            "chance": 0.4
+          },
+          {
+            "item": "iron_sword",
+            "chance": 0.1
+          }
+        ],
+        "xp_reward": 20,
+        "visual": {
+          "silhouette": "bruiser",
+          "accent_color": "#8c5a3c"
+        }
+      }
+    },
+    "bosses": {
+      "iron_captain": {
+        "id": "iron_captain",
+        "name": "Der Eiserne Hauptmann",
+        "title": "Letzter Kommandant der Nordwacht",
+        "tier": 1,
+        "base_stats": {
+          "hp": 80,
+          "attack": 7,
+          "defense": 5,
+          "magic": 0,
+          "speed": 4,
+          "crit_chance": 0.05
+        },
+        "description": "Massiver Plattenträger mit schwerem Schild; diszipliniert, langsam, erbarmungslos.",
+        "visual": {
+          "silhouette": "oversized_plate",
+          "accent_color": "#a32626",
+          "art_quality": "hd_dark_fantasy"
+        },
+        "phases": [
+          {
+            "id": "phase_1_formation",
+            "name": "Formation",
+            "hp_threshold": 1,
+            "skills": [
+              "shield_bash",
+              "iron_command"
+            ],
+            "telegraphs": [
+              {
+                "skill": "iron_command",
+                "warning_turns": 1,
+                "icon": "amber_sword"
+              }
+            ]
+          },
+          {
+            "id": "phase_2_last_stand",
+            "name": "Letztes Gefecht",
+            "hp_threshold": 0.5,
+            "skills": [
+              "rending_cut",
+              "iron_command"
+            ],
+            "telegraphs": [
+              {
+                "skill": "iron_command",
+                "warning_turns": 1,
+                "icon": "amber_sword"
+              }
+            ],
+            "on_enter": [
+              {
+                "apply_status": "guarded",
+                "duration": 2,
+                "target": "self"
+              },
+              {
+                "stat_modifier": {
+                  "attack": 3
+                }
+              }
+            ]
+          }
+        ],
+        "loot_table": [
+          {
+            "item": "captains_greatshield",
+            "chance": 1
+          },
+          {
+            "item": "whetstone",
+            "chance": 0.5
+          }
+        ],
+        "xp_reward": 150
+      }
+    },
+    "encounters": {
+      "cult_in_the_hedges": {
+        "id": "cult_in_the_hedges",
+        "name": "Kult in den Hecken",
+        "type": "standard",
+        "order": 3,
+        "enemies": [
+          "hedge_cultist",
+          "alley_cutthroat"
+        ],
+        "difficulty": 3,
+        "arena": "hedge_clearing",
+        "rewards": {
+          "xp": 46,
+          "items": [
+            "focus_draught"
+          ]
+        },
+        "description": "Zwei verschiedene Gegnertypen: Ziele priorisieren."
+      },
+      "deserters_toll": {
+        "id": "deserters_toll",
+        "name": "Der Wegzoll des Deserteurs",
+        "type": "standard",
+        "order": 2,
+        "enemies": [
+          "rusted_deserter"
+        ],
+        "difficulty": 2,
+        "arena": "ruined_road",
+        "rewards": {
+          "xp": 20,
+          "items": [
+            "whetstone"
+          ]
+        },
+        "description": "Lernen: Verteidigung und Betäubung."
+      },
+      "first_blood": {
+        "id": "first_blood",
+        "name": "Erstes Blut",
+        "type": "tutorial",
+        "order": 1,
+        "enemies": [
+          "alley_cutthroat"
+        ],
+        "difficulty": 1,
+        "arena": "alley_dusk",
+        "rewards": {
+          "xp": 22,
+          "items": [
+            "bandage_roll"
+          ]
+        },
+        "description": "Einführung: Zugablauf, Schaden und Blutung."
+      },
+      "gate_of_the_north_watch": {
+        "id": "gate_of_the_north_watch",
+        "name": "Tor der Nordwacht",
+        "type": "boss",
+        "order": 4,
+        "enemies": [
+          "iron_captain"
+        ],
+        "difficulty": 5,
+        "arena": "fortress_gate",
+        "rewards": {
+          "xp": 150,
+          "items": [
+            "captains_greatshield"
+          ]
+        },
+        "description": "Bosskampf in zwei Phasen mit Telegraphen."
+      }
+    }
+  }
+}

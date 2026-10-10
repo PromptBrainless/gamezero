@@ -118,3 +118,26 @@ Career Select → Encounter Preview → Combat → Reward → Progression
 ## Exit Condition
 
 The board is complete when the full flow runs end-to-end on real runtime data: a career is selected, an encounter is resolved and started, combat is played with the HUD, reward is shown, and progression closes the flow.
+
+## Native implementation handoff
+
+The current implementation replaces the boot/resolver/HUD placeholders with a
+connected Godot flow. These artifacts advance the three tracks without declaring
+the entire production slice finished:
+
+| Area | Concrete artifact / gate | Next production task |
+|---|---|---|
+| Data foundation | Shared source validation, deterministic `runtime_pack.json`, `data:godot:check`, export regression tests | Keep import candidates outside canonical content until validation passes |
+| Combat core | Detached seeded resolver, ordered events, native combat regression script | Review balance and decide currently unspecified crit/initiative/resistance rules |
+| Runtime / HUD | Main scene, career/preview/combat/reward/progression flow, native flow tests | Side-view actor scenes, animation/event playback, final icon integration |
+| RPG content | Existing three careers, normal enemies, boss phases, four ordered encounters consumed by ID | Human playthrough and tuning without inventing progression tracks |
+| Production pipeline | Validated content-pack boundary usable by ingestion tooling | Land/review the separate Drive importer and raw-to-reviewed asset workflow |
+
+Parallel ownership is deliberately non-overlapping: data/export owns canonical
+validation and packaging; combat owns state transitions and events; presentation
+owns input states/navigation and reads resolver output. Schema extensions must
+land with consumers and tests, not as speculative catalog additions.
+
+Remaining release gates: review the complete encounter run for all careers,
+mobile device/export testing, final side-view presentation, and asset review.
+Save/load, shops, overworld and extensive catalogs remain post-slice work.

@@ -85,7 +85,10 @@ After the consolidation and content work is reviewed:
 2. **Combat HUD Foundation:** HUD layout, player/enemy state, action/target/preview flow, tooltips, compact event log, and runtime-data connection.
 3. **First Playable Screen Flow:** Career Select, Encounter Preview, Reward, Progression, and minimal state handoff to/from combat.
 
-Do not expand these steps into a full combat resolver, save/load, overworld, shop, or inventory management without a separate scope decision. Establish shared data/UI contracts before parallel agent work and assign non-overlapping surfaces.
+The autonomous development follow-up authorizes implementing the first-slice
+combat resolver and connected Godot runtime. Save/load, overworld, shop, and
+inventory management remain outside the slice. Establish shared data/UI contracts
+before parallel agent work and assign non-overlapping surfaces.
 
 ## 7. Sprint 1 art-planning direction
 
@@ -113,7 +116,9 @@ These documents are plans; they do not claim that assets have been created or ap
 - Prototype `ECHO//BRUCH` details should not silently define the planned Godot slice.
 - Icon labels and HUD semantics must be confirmed against the canonical gameplay model before integration.
 - Final target device orientation remains unresolved between earlier portrait and landscape proposals; plan responsive references without claiming it is settled.
-- The PR #1 Godot scaffold contains unverified stubs and is deferred rather than copied as functioning runtime code.
+- The original PR #1 Godot scaffold contained unverified stubs. Native boot,
+  combat and HUD implementation now replaces those core placeholders; unrelated
+  early Resource/save/progression sketches are still not runtime authority.
 - Optional content behaviors (`trigger`, `removes_statuses`, and consumable `next_attack_bonus`) are explicit schema fields; runtime implementation must exercise them before the data/runtime track is done.
 - Milestones and implementation status can drift from the actual repository.
 

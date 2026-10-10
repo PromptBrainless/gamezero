@@ -24,3 +24,30 @@ An event should identify its sequence, event type, source and target when applic
 - Keep UI as a consumer of resolved state/events rather than a second combat authority.
 - Do not adopt unreviewed turn rules, hit formulas, extra resources, or balance targets from the early concept PRs.
 - Separate presentation milestones from gameplay implementation; the initial Godot scaffold proposed in PR #1 remains a separate, unverified implementation contribution.
+
+## Native first-slice contract
+
+`godot/scripts/combat/turn_resolver.gd` implements a scene-independent dictionary
+API:
+
+- `create_battle(career, opponents, registry, seed = 42)` initializes detached
+  combatants, starting equipment and consumables.
+- `unavailable(actor, skill)` returns an explanation, or an empty string.
+- `preview(source, target, skill, registry)` returns calculated damage.
+- `resolve_round(previous, skill_id, target_index, registry)` returns new state;
+  rejected actions and terminal battles leave the supplied state unchanged.
+  Empty `skill_id` means recovery; `item:<id>` selects a consumable.
+
+Battle state carries player, enemies, round, seeded RNG state, inventory, result
+(`""`, `"victory"`, `"defeat"`) and current-round events. Events carry
+`seq`, `type`, `source`, `target`, `turn`, and `payload`; sequence numbers continue
+across rounds. The HUD consumes these events and resolver previews, never applies
+damage itself. Stable replay is guaranteed for the same native seed and inputs,
+not parity with the older browser simulator.
+
+The native rules cover numeric damage and modifiers, resource costs and
+cooldowns, timed statuses, cleanse, melee-triggered reactions, consumables,
+weighted enemy actions and boss phase/telegraph transitions. Critical-hit rolls,
+weakness/resistance tuning and a speed-based initiative scheduler are not
+introduced: the architecture did not approve formulas for them. Those descriptive
+stats must not imply effects in the HUD.

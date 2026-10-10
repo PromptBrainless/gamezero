@@ -49,3 +49,20 @@ test("filename mismatch, forbidden null and encounter order are rejected", () =>
   assert.ok(runtime.issues.some((issue) => issue.field === "tags"));
   assert.ok(runtime.issues.some((issue) => issue.field === "order"));
 });
+
+test("a career needs an affordable selectable starting skill", () => {
+  const files = sources();
+  const path = "data/careers/mercenary.json";
+  const career = JSON.parse(files.careers![path]);
+  for (const skillId of career.starting_skills) {
+    const skillPath = `data/skills/${skillId}.json`;
+    const skill = JSON.parse(files.skills![skillPath]);
+    skill.cost = { stamina: career.base_stats.stamina + 1 };
+    files.skills![skillPath] = JSON.stringify(skill);
+  }
+  const runtime = loadContent(files);
+  assert.equal(runtime.ready, false);
+  assert.ok(runtime.issues.some((issue) =>
+    issue.path === path && issue.field === "starting_skills" && issue.message.includes("bezahlbare"),
+  ));
+});

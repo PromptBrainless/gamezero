@@ -17,3 +17,24 @@ Career Select → Encounter Preview → Combat → Reward → Progression
 
 The existing React/Vite prototype can be run with `npm install && npm run dev`.
 It is not the target runtime for the planned Godot slice.
+
+## Godot first playable
+
+Open `godot/project.godot` with Godot 4.4+ and run the main scene. The native
+slice connects career selection, encounter preview, combat, rewards, and
+in-memory progression using the canonical content.
+
+Content preparation and regression gates:
+
+```sh
+npm ci
+npm run data:godot
+npm run test:slice
+npm run test:godot
+```
+
+`test:godot` requires `godot` on PATH (or `GODOT=/absolute/path/to/godot`).
+The generated pack is committed so the project can run without Node; edit
+`data/`, not `godot/data/runtime_pack.json`. See
+[`docs/runtime-data-plan.md`](docs/runtime-data-plan.md) for runtime contracts
+and [`docs/implementation-board.md`](docs/implementation-board.md) for remaining gates.
