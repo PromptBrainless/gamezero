@@ -57,12 +57,12 @@ Unchanged rules: `skills` ≥ 1 and resolvable; `ai.weights` keys ⊂ `skills`; 
 
 ### `stage_def`
 
-| Field                                | Type       | Rule                                      |
-| ------------------------------------ | ---------- | ----------------------------------------- |
-| `id`, `name`, `description`          | id / text  | `id` equals the former `arena` key        |
-| `layout.player_slots`                | int 1–4    | Slice uses 1                              |
-| `layout.enemy_slots`                 | int 1–6    | Upper bound for spawn `slot` values       |
-| `background`, `music_cue` (optional) | asset keys | Resolved by presentation; never by combat |
+| Field                       | Type       | Rule                                                                                   |
+| --------------------------- | ---------- | -------------------------------------------------------------------------------------- |
+| `id`, `name`, `description` | id / text  | `id` equals the former `arena` key                                                     |
+| `layout.player_slots`       | int 1–4    | Slice uses 1                                                                           |
+| `layout.enemy_slots`        | int 1–6    | Upper bound for spawn `slot` values                                                    |
+| `background`, `music_cue`   | asset keys | `background` required, `music_cue` optional; resolved by presentation, never by combat |
 
 ### `encounter_def`
 
