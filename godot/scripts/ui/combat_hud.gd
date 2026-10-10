@@ -133,8 +133,10 @@ func values(record: Dictionary) -> String:
 	var parts: Array = []
 	for key in record:
 		var value = record[key]
-		if key == "crit_chance":
-			parts.append("Crit: %s%%" % snappedf(float(value) * 100.0, 0.1))
+		if str(key).begins_with("crit_chance"):
+			parts.append("Crit: %s%% (reference only; no critical rolls)" % snappedf(float(value) * 100.0, 0.1))
+		elif str(key).begins_with("speed"):
+			parts.append("Speed: %s (reference only; no initiative)" % value)
 		else:
 			parts.append("%s: %s" % [str(key).replace("_", " ").capitalize(), value])
 	return " · ".join(parts)
@@ -158,7 +160,7 @@ func render_combat(battle: Dictionary, registry: Dictionary, encounter: Dictiona
 	var self_action: bool = action == "" or action.begins_with("item:") or record.get("target") == "self"
 	var selecting := stage in ["action_selected", "preview"]
 	heading("YOUR SIDE")
-	render_actor(player, registry)
+	render_actor(player, registry, resolver)
 	if selecting and self_action:
 		var own := button("[Selected] %s" % player.name if stage == "preview" else "Choose self · %s" % player.name, func(): target_selected.emit(-1))
 		target_buttons[-1] = own
@@ -166,7 +168,7 @@ func render_combat(battle: Dictionary, registry: Dictionary, encounter: Dictiona
 	heading("OPPONENTS")
 	for index in range(battle.enemies.size()):
 		var enemy: Dictionary = battle.enemies[index]
-		render_actor(enemy, registry)
+		render_actor(enemy, registry, resolver)
 		if selecting and not self_action:
 			var label := "[Defeated] %s" % enemy.name if enemy.hp <= 0 else "[Selected] %s" % enemy.name if target == index and stage == "preview" else "Choose target · %s" % enemy.name
 			var target_button := button(label, func(): target_selected.emit(index), enemy.hp <= 0)
@@ -211,6 +213,9 @@ func render_combat(battle: Dictionary, registry: Dictionary, encounter: Dictiona
 		heading("ACTION PREVIEW")
 		if action == "":
 			text("Recover · no cost. Restores resources according to the combat resolver.")
+			if resolver.has_method("resource_preview"):
+				var recovery: Dictionary = resolver.resource_preview(player, registry)
+				text("Recovery grant · Stamina: +%s · Focus: +%s\nEnd-turn regeneration · Stamina: +%s · Focus: +%s\nEach grant is capped by the displayed resource maximum; recovery is skipped if the actor is stunned." % [recovery.recovery_stamina, recovery.recovery_focus, recovery.end_stamina, recovery.end_focus])
 		elif action.begins_with("item:"):
 			text("%s\n%s\nUse: %s" % [record.name, record.description, values(record.get("use", {}))])
 		else:
@@ -236,13 +241,16 @@ func render_combat(battle: Dictionary, registry: Dictionary, encounter: Dictiona
 	render_log(battle.get("events", []), registry)
 	finish_screen()
 
-func render_actor(actor: Dictionary, registry: Dictionary) -> void:
+func render_actor(actor: Dictionary, registry: Dictionary, resolver: Variant = null) -> void:
 	heading("%s · %s" % [actor.name, "Defeated" if actor.hp <= 0 else "Living"])
 	meter("HP", actor.hp, actor.stats.get("hp", actor.hp))
 	for resource in ["stamina", "focus"]:
 		if actor.has(resource):
 			meter(resource.capitalize(), actor[resource], actor.stats.get(resource, actor[resource]))
 	text(values(actor.stats), MUTED)
+	if resolver != null and resolver.has_method("resource_preview"):
+		var cadence: Dictionary = resolver.resource_preview(actor, registry)
+		text("Own end-turn regeneration · Stamina: +%s · Focus: +%s (capped at maximum; active status modifiers included)" % [cadence.end_stamina, cadence.end_focus], MUTED)
 	if registry.bosses.has(actor.id):
 		var boss: Dictionary = registry.bosses[actor.id]
 		var phase_index: int = int(actor.get("phase_index", 0))
@@ -251,7 +259,7 @@ func render_actor(actor: Dictionary, registry: Dictionary) -> void:
 			text("Boss phase %s / %s · %s · HP threshold %s%%" % [phase_index + 1, boss.phases.size(), phase.name, phase.hp_threshold * 100], ACCENT)
 	var pending: String = str(actor.get("pending_skill", ""))
 	if not pending.is_empty():
-		text("WARNING · Pending attack: %s" % registry.skills.get(pending, {}).get("name", pending), ACCENT)
+		text("WARNING · Pending attack: %s · warning turns remaining: %s" % [registry.skills.get(pending, {}).get("name", pending), int(actor.get("pending_turns", 0))], ACCENT)
 	var effects: Array = actor.get("effects", [])
 	if effects.is_empty():
 		text("Statuses: none", MUTED)

@@ -99,6 +99,8 @@ func run_tests() -> void:
 		await capture_screen("combat-desktop")
 		root.size = Vector2i(390, 844)
 	check(main.screen == "combat", "Start opens actual combat")
+	check(visible_text(main.hud).contains("reference only; no critical rolls"), "Crit is explicitly inactive metadata")
+	check(visible_text(main.hud).contains("reference only; no initiative"), "Speed is explicitly inactive metadata")
 	check(main.battle.inventory.get(consumable_id, 0) == 2, "Run consumables handed into combat")
 	main.choose_action("item:" + consumable_id)
 	main.choose_target(-1)
@@ -204,6 +206,22 @@ func run_tests() -> void:
 	var boss_id: String = str(invalid_phase.collections.bosses.keys()[0])
 	invalid_phase.collections.bosses[boss_id].phases[0].erase("id")
 	check(not main.validate_pack(invalid_phase).is_empty(), "Boss phase requires its runtime ID")
+	for field in ["telegraphs", "on_enter"]:
+		var malformed := pack.duplicate(true)
+		malformed.collections.bosses[boss_id].phases[0][field] = "not_an_array"
+		check(not main.validate_pack(malformed).is_empty(), "Nested boss " + field + " rejected safely")
+	var malformed_use := pack.duplicate(true)
+	malformed_use.collections.items[consumable_id].use.heal_hp = "not_a_number"
+	check(not main.validate_pack(malformed_use).is_empty(), "Non-numeric item heal rejected")
+	var malformed_damage := pack.duplicate(true)
+	for id in malformed_damage.collections.skills:
+		if malformed_damage.collections.skills[id].has("damage"):
+			malformed_damage.collections.skills[id].damage.multiplier = -1
+			break
+	check(not main.validate_pack(malformed_damage).is_empty(), "Negative damage multiplier rejected")
+	var malformed_application := pack.duplicate(true)
+	malformed_application.collections.skills[malformed_application.collections.skills.keys()[0]].applies_statuses = [{"status": str(main.registry.statuses.keys()[0]), "duration": 1.5, "target": "unknown"}]
+	check(not main.validate_pack(malformed_application).is_empty(), "Fractional duration and unknown status target rejected")
 	var first_encounter: String = str(main.encounter_ids[0])
 	pack.collections.encounters[first_encounter].enemies = ["not_a_resolved_reference"]
 	check(not main.validate_pack(pack).is_empty(), "Invalid pack reference rejected")
@@ -235,6 +253,14 @@ func run_tests() -> void:
 	check(visible_text(main.hud).contains("Retry loading") and visible_text(main.hud).contains("exporter"), "Failed content presents visible actionable recovery")
 	check(main.load_pack(), "Retry reloads canonical pack")
 	check(main.screen == "career_select", "Reload starts fresh career selection")
+	var warning_boss_id: String = str(main.registry.bosses.keys()[0])
+	var boss_actor: Dictionary = main.resolver.create_battle(main.registry.careers[career_id], [main.registry.bosses[warning_boss_id]], main.registry).enemies[0]
+	boss_actor.pending_skill = str(main.registry.bosses[warning_boss_id].phases[0].skills[0])
+	boss_actor.pending_turns = 3
+	main.hud.begin_screen("Test", "WARNING")
+	main.hud.render_actor(boss_actor, main.registry)
+	check(visible_text(main.hud).contains("warning turns remaining: 3"), "Multi-turn telegraph countdown is visible")
+	main.render()
 	for id in main.registry.careers:
 		main.choose_career(id)
 		main.start_encounter()

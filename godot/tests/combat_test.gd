@@ -57,6 +57,12 @@ func _test_creation_damage() -> void:
 	var original := registry.duplicate(true)
 	var battle := _battle()
 	_check(battle.round == 1 and battle.result == "", "Fresh battle contract")
+	var resources: Dictionary = Resolver.resource_preview(battle.player, registry)
+	_check(resources.recovery_stamina == 6 and resources.recovery_focus == 4 and resources.end_stamina == 4 and resources.end_focus == 3, "Resource preview owns canonical recovery and regeneration values")
+	_check(resources.max_stamina == battle.player.stats.stamina and resources.max_focus == battle.player.stats.focus, "Resource preview exposes actor resource caps")
+	var chilled_actor: Dictionary = battle.player.duplicate(true)
+	chilled_actor.effects = [{"id": "chilled", "duration": 1, "stacks": 1}]
+	_check(Resolver.resource_preview(chilled_actor, registry).end_stamina == 3, "Resource preview computes current status-modified regeneration")
 	_check(battle.player.stats.attack == 10 and battle.player.stats.defense == 8, "Starting equipment stats applied")
 	_check(battle.player.skills == registry.careers.mercenary.starting_skills, "No invented progression skills")
 	_check(battle.enemies[0].free_stamina and battle.enemies[0].free_focus, "Omitted enemy pools are resource-free")

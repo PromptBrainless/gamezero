@@ -3,6 +3,20 @@ extends RefCounted
 
 const ActorState = preload("res://scripts/combat/combatant_state.gd")
 const BattleState = preload("res://scripts/combat/combat_state.gd")
+const RECOVERY_STAMINA := 6
+const RECOVERY_FOCUS := 4
+const END_TURN_STAMINA := 4
+const END_TURN_FOCUS := 3
+
+static func resource_preview(actor: Dictionary, registry: Dictionary) -> Dictionary:
+	return {
+		"recovery_stamina": RECOVERY_STAMINA,
+		"recovery_focus": RECOVERY_FOCUS,
+		"end_stamina": int(floor(END_TURN_STAMINA * _modifier(actor, "stamina_regen_multiplier", registry))),
+		"end_focus": END_TURN_FOCUS,
+		"max_stamina": int(actor.stats.get("stamina", 0)),
+		"max_focus": int(actor.stats.get("focus", 0))
+	}
 
 static func create_battle(career: Dictionary, opponents: Array, registry: Dictionary, seed: int = 42) -> Dictionary:
 	var record := career.duplicate(true)
@@ -180,7 +194,8 @@ static func _end_turn(battle: Dictionary, actor: Dictionary, registry: Dictionar
 	_tick(battle, actor, "turn_end", registry)
 	if actor.hp <= 0:
 		return
-	_regenerate(battle, actor, int(floor(4 * _modifier(actor, "stamina_regen_multiplier", registry))), 3)
+	var resources := resource_preview(actor, registry)
+	_regenerate(battle, actor, resources.end_stamina, resources.end_focus)
 	for id in actor.cooldowns:
 		actor.cooldowns[id] = maxi(0, int(actor.cooldowns[id]) - 1)
 	for index in range(actor.effects.size() - 1, -1, -1):
@@ -201,7 +216,7 @@ static func _regenerate(battle: Dictionary, actor: Dictionary, stamina: int, foc
 
 static func _recover(battle: Dictionary, actor: Dictionary) -> void:
 	BattleState.emit(battle, "recovery", actor.id, actor.id)
-	_regenerate(battle, actor, 6, 4)
+	_regenerate(battle, actor, RECOVERY_STAMINA, RECOVERY_FOCUS)
 
 static func _enter_phase(battle: Dictionary, enemy: Dictionary, index: int, registry: Dictionary) -> void:
 	enemy.phase_index = index
