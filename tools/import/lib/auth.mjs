@@ -319,6 +319,12 @@ export function startLoopbackReceiver(expectedState, timeoutMs = LOGIN_TIMEOUT_M
   });
 }
 
+// Redirect target for the copy/paste (--manual) flow. Nothing listens on this
+// port: the browser shows a connection error and the user copies the URL,
+// whose query string carries the authorization code. Google allows any
+// loopback port for Desktop OAuth clients.
+export const MANUAL_REDIRECT_URI = "http://127.0.0.1:8085";
+
 /**
  * Interactive OAuth consent for a Desktop OAuth client. Stores the refresh
  * token in tokenFile (outside the repository by default).
@@ -339,7 +345,7 @@ export async function oauthLogin({
   let code;
   let redirectUri;
   if (manual) {
-    redirectUri = "http://127.0.0.1:8085";
+    redirectUri = MANUAL_REDIRECT_URI;
     log("Open this URL in any browser, approve access, then copy the full address of the page it");
     log("redirects to (it will fail to load - that is expected) and paste it here:\n");
     log(buildAuthUrl(client, redirectUri, challenge, state));

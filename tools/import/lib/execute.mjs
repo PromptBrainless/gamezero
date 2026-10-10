@@ -10,7 +10,7 @@ import { copyFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { DriveApiError, toCsv } from "./drive-client.mjs";
 import { resolveInside, safeFileName, slugFileName, withSuffix } from "./paths.mjs";
-import { summarize } from "./plan.mjs";
+import { shortId, summarize } from "./plan.mjs";
 
 async function sha256File(file) {
   const hash = createHash("sha256");
@@ -103,6 +103,62 @@ export async function executePlan(
     (entry) => entry.action === "download" || entry.action === "export",
   );
   const abs = (relativePath) => resolveInside(repoRoot, relativePath);
+  const conflictPolicy = plan.settings?.conflictPolicy ?? config.output.conflictPolicy;
+
+  // Paths decided at execution time (export fallbacks, spreadsheet tabs) must
+  // honour the same guarantees as planned paths: never clobber another entry's
+  // output or a repository file the importer does not own.
+  const ownedByPrevious = new Map();
+  for (const previous of previousManifest?.entries ?? []) {
+    for (const output of previous.outputs ?? []) {
+      for (const path of [output.sortedPath, ...(output.tabs ?? []).map((tab) => tab.sortedPath)])
+        if (path) ownedByPrevious.set(path.toLowerCase(), previous.id);
+    }
+  }
+  const claimed = new Map();
+  for (const entry of plan.entries) {
+    for (const output of entry.outputs ?? []) {
+      for (const path of [output.rawPath, output.sortedPath]) {
+        if (path) claimed.set(path.toLowerCase(), entry.id);
+      }
+    }
+  }
+
+  /**
+   * Claim a path chosen during execution. Returns the path to write (possibly
+   * renamed) or null when the conflict policy says to skip it.
+   * @param {{ checkRepo: boolean }} options checkRepo: also protect existing repo files
+   */
+  function claimRuntimePath(entry, path, record, { checkRepo }) {
+    const isTaken = (candidate) => {
+      const key = candidate.toLowerCase();
+      const holder = claimed.get(key);
+      if (holder !== undefined) return holder !== entry.id;
+      return checkRepo && existsSync(abs(candidate)) && ownedByPrevious.get(key) !== entry.id;
+    };
+    if (!isTaken(path)) {
+      claimed.set(path.toLowerCase(), entry.id);
+      return path;
+    }
+    const holder = claimed.get(path.toLowerCase());
+    record.conflict = holder ? `claimed by Drive entry ${holder}` : "existing repository file";
+    if (checkRepo && conflictPolicy === "skip") {
+      record.conflictResolution = "skipped";
+      return null;
+    }
+    if (checkRepo && conflictPolicy === "overwrite" && !holder) {
+      record.conflictResolution = "overwrite";
+      claimed.set(path.toLowerCase(), entry.id);
+      return path;
+    }
+    const base = `drive_${shortId(entry.id)}`;
+    let candidate = withSuffix(path, base);
+    for (let n = 2; isTaken(candidate); n += 1) candidate = withSuffix(path, `${base}_${n}`);
+    claimed.set(candidate.toLowerCase(), entry.id);
+    record.conflictResolution = "renamed";
+    return candidate;
+  }
+
   let done = 0;
   let failures = 0;
 
@@ -141,8 +197,20 @@ export async function executePlan(
       let landed = fetchTarget;
       if (result.extension !== output.extension) {
         output.usedFallback = { mimeType: result.mimeType, extension: result.extension };
-        output.rawPath = replaceExtension(output.rawPath, result.extension);
-        output.sortedPath = replaceExtension(output.sortedPath, result.extension);
+        if (output.rawPath)
+          output.rawPath = claimRuntimePath(
+            entry,
+            replaceExtension(output.rawPath, result.extension),
+            output,
+            { checkRepo: false },
+          );
+        if (output.sortedPath)
+          output.sortedPath = claimRuntimePath(
+            entry,
+            replaceExtension(output.sortedPath, result.extension),
+            output,
+            { checkRepo: true },
+          );
         if (keepRaw) {
           await atomicMove(fetchTarget, abs(output.rawPath));
           landed = abs(output.rawPath);
@@ -178,12 +246,25 @@ export async function executePlan(
       output.tabs = [{ title: null, sheetId: null, sha256: result.sha256, bytes: result.bytes }];
       try {
         if (output.rawDir) {
-          output.tabs[0].rawPath = `${output.rawDir}/${fileName}`;
+          output.tabs[0].rawPath = claimRuntimePath(
+            entry,
+            `${output.rawDir}/${fileName}`,
+            output.tabs[0],
+            { checkRepo: false },
+          );
           await atomicCopy(staging, abs(output.tabs[0].rawPath));
         }
         if (output.sortedDir) {
-          output.tabs[0].sortedPath = `${output.sortedDir}/${fileName}`;
-          await atomicCopy(staging, abs(output.tabs[0].sortedPath));
+          const sortedPath = claimRuntimePath(
+            entry,
+            `${output.sortedDir}/${fileName}`,
+            output.tabs[0],
+            { checkRepo: true },
+          );
+          if (sortedPath) {
+            output.tabs[0].sortedPath = sortedPath;
+            await atomicCopy(staging, abs(sortedPath));
+          }
         }
       } finally {
         await rm(staging, { force: true });
@@ -209,15 +290,20 @@ export async function executePlan(
         let name = safeFileName(tab.title, "csv");
         if (usedRaw.has(name.toLowerCase())) name = withSuffix(name, String(tab.sheetId));
         usedRaw.add(name.toLowerCase());
-        record.rawPath = `${output.rawDir}/${name}`;
+        record.rawPath = claimRuntimePath(entry, `${output.rawDir}/${name}`, record, {
+          checkRepo: false,
+        });
         await atomicWrite(abs(record.rawPath), csv);
       }
       if (output.sortedDir) {
         let name = slugFileName(tab.title, "csv");
         if (usedSorted.has(name)) name = withSuffix(name, String(tab.sheetId));
         usedSorted.add(name);
-        record.sortedPath = `${output.sortedDir}/${name}`;
-        await atomicWrite(abs(record.sortedPath), csv);
+        record.sortedPath = claimRuntimePath(entry, `${output.sortedDir}/${name}`, record, {
+          checkRepo: true,
+        });
+        if (record.sortedPath) await atomicWrite(abs(record.sortedPath), csv);
+        else delete record.sortedPath;
       }
       output.tabs.push(record);
     }

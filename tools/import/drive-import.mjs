@@ -255,7 +255,12 @@ async function commandPlan(parsed) {
 }
 
 function loadSavedPlan(file) {
-  const plan = JSON.parse(readFileSync(file, "utf8"));
+  let plan;
+  try {
+    plan = JSON.parse(readFileSync(file, "utf8"));
+  } catch (error) {
+    throw new Error(`Cannot read plan ${file}: ${error.message}`, { cause: error });
+  }
   if (
     plan.tool !== TOOL_NAME ||
     plan.schemaVersion !== MANIFEST_SCHEMA_VERSION ||

@@ -28,7 +28,7 @@ const GOOGLE_TYPE_LABELS = {
   "application/vnd.google-apps.vid": "Google Vids",
 };
 
-function shortId(id) {
+export function shortId(id) {
   return String(id)
     .replace(/[^A-Za-z0-9]/g, "")
     .slice(0, 8)

@@ -226,6 +226,8 @@ before(async () => {
   repoRoot = mkdtempSync(join(tmpdir(), "gamezero-drive-import-"));
   mkdirSync(join(repoRoot, "docs/design"), { recursive: true });
   writeFileSync(join(repoRoot, "docs/design/kampfsystem.md"), "hand-written, must survive\n");
+  // Paths only decided at execution time (here: an export fallback) are protected too.
+  writeFileSync(join(repoRoot, "docs/design/notizen_zum_design.txt"), "local notes\n");
 });
 
 after(() => {
@@ -238,7 +240,10 @@ test("dry run plans every entry without writing files", async () => {
   const tree = await traverseFolder(client, ROOT);
   const plan = buildPlan(tree, { config, rules, repoRoot, mode: "dry-run" });
 
-  assert.deepEqual(listFiles(repoRoot), ["docs/design/kampfsystem.md"]);
+  assert.deepEqual(listFiles(repoRoot), [
+    "docs/design/kampfsystem.md",
+    "docs/design/notizen_zum_design.txt",
+  ]);
   const byPath = new Map(plan.entries.map((entry) => [entry.drivePath, entry]));
 
   const duelist = byPath.get("Art/Characters/Duelist/Duelist Idle.PNG");
@@ -325,7 +330,7 @@ test("import downloads, exports, sorts and writes a manifest; re-import is incre
   assert.equal(read("docs/design/kampfsystem__drive_dockampf.md"), "# Kampfsystem\n\nRunden.\n");
   assert.equal(read(`imports/drive/raw/${ROOT}/Design/Kampfsystem.docx`), "DOCX-BYTES");
   assert.equal(
-    read("docs/design/notizen_zum_design.txt"),
+    read("docs/design/notizen_zum_design__drive_docnotes.txt"),
     "Plain notes",
     "markdown export fell back to text",
   );
@@ -336,6 +341,7 @@ test("import downloads, exports, sorts and writes a manifest; re-import is incre
   );
   assert.equal(read("godot/assets/art/ui/skill_riposte.png"), "icon");
   assert.equal(read("godot/assets/audio/music/boss_theme.ogg"), OGG.toString());
+  assert.equal(read("docs/design/notizen_zum_design.txt"), "local notes\n");
   assert.equal(read("data-sources/gameplay/balancing/waffen.csv"), "id,damage\niron_sword,5\n");
   assert.equal(read("data-sources/gameplay/balancing/gegner_bosse.csv"), "id\nhedge_cultist\n");
   assert.equal(
@@ -402,4 +408,11 @@ test("import downloads, exports, sorts and writes a manifest; re-import is incre
     "unchanged binaries are not downloaded again",
   );
   assert.equal(plan2.summary.unchanged, work.length - 1);
+  const notes = plan2.entries.find((entry) => entry.id === "docNotes00001").outputs[0];
+  assert.equal(
+    notes.sortedPath,
+    "docs/design/notizen_zum_design__drive_docnotes.txt",
+    "a renamed fallback destination stays stable across imports",
+  );
+  assert.equal(read("docs/design/notizen_zum_design.txt"), "local notes\n");
 });
