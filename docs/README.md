@@ -19,6 +19,8 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 | [`data-schema.md`](data-schema.md) | Canonical JSON entities, fields, references, validation |
 | [`data-authoring-rules.md`](data-authoring-rules.md) | How content is authored and reviewed |
 | [`combat-architecture.md`](combat-architecture.md) | Resolver/event/presentation boundary; no detailed mechanics |
+| [`final-data-entities/skills-and-effects.md`](final-data-entities/skills-and-effects.md) | Canonical v1 target skill/effect model, targeting, costs, timing and migration |
+| [`combat/combat-event-contract.md`](combat/combat-event-contract.md) | Canonical v1 commands, resolved action batches, events and Godot integration |
 
 ## UI and visual direction
 
@@ -50,3 +52,8 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 6. Vision, architecture, history, and integration review as supporting context
 
 Optional high-level drafts, alternate datasets, and unapproved mechanics are not canonical. If a supporting document conflicts with the schema or slice plan, the schema and plan win.
+
+The two v1 contract documents above own the next-runtime skill/action boundary.
+Their executable schemas and isolated `data/contracts/v1/` examples are approved
+design artifacts, not a migration of the existing playable slice. The current
+`data/` slice collections remain governed by `data-schema.md`.

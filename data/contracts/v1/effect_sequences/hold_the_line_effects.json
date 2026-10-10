@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "hold_the_line_effects",
+  "steps": [
+    {
+      "id": "guard",
+      "op": "apply_status",
+      "recipient": "source",
+      "gate": "always",
+      "status_id": "guarded",
+      "duration": 2,
+      "stacks": 1,
+      "chance": 1
+    },
+    {
+      "id": "cleanse",
+      "op": "remove_status",
+      "recipient": "source",
+      "gate": "always",
+      "status_ids": ["bleeding", "exposed", "stunned"]
+    }
+  ]
+}
