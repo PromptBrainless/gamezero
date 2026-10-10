@@ -70,8 +70,13 @@ test("vision artifacts are linked from repository entry points and their links r
 test("source coverage accounts for all canonical index documents", () => {
   const canonical = readFileSync(resolve(root, "../README.md"), "utf8");
   const coverage = readFileSync(resolve(root, "source-coverage.md"), "utf8");
-  const sources = [...canonical.matchAll(/\|\s*\[`([^`]+\.md)`\]/g)].map((match) => match[1]);
-  assert.equal(sources.length, 18);
+  const sections = canonical.split(/^## /m).filter((section) =>
+    /^(First-playable execution|Data and combat|UI and visual direction|Project context)\n/.test(section));
+  const sources = sections.flatMap((section) =>
+    [...section.matchAll(/\|\s*\[`([^`]+\.md)`\]/g)].map((match) => match[1]))
+    .filter((source) => !source.startsWith("workstreams/"));
+  assert.ok(sources.includes("data-schema.md"));
+  assert.ok(sources.includes("runtime-data-plan.md"));
   for (const source of sources) assert.ok(coverage.includes(`\`${source}\``), source);
 });
 

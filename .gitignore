@@ -11,3 +11,5 @@ imports/drive/raw/
 imports/drive/.staging/
 imports/drive/plan*.json
 *.part-????????
+godot/data/content_bundle.json
+godot/data/content_bundle.json.*.stage

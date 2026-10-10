@@ -1,6 +1,6 @@
 # Canonical source coverage and deduplication
 
-All 18 documents named by `docs/README.md` were read in full. This table routes their concrete commitments to the six [workstreams](README.md); repeated requirements have one implementation owner and shared acceptance, not duplicate tickets.
+This table routes the first-playable, data/combat, UI, and project-context sources in `docs/README.md` to the six [workstreams](README.md); repeated requirements have one implementation owner and shared acceptance, not duplicate tickets. Post-slice proposals and tooling references are supporting material, not additional slice requirements.
 
 | Canonical source | Concrete actions / disposition | Execution owner |
 |---|---|---|
@@ -11,6 +11,8 @@ All 18 documents named by `docs/README.md` were read in full. This table routes 
 | `first-playable-ui-plan.md` | Shared widgets/styles, both viewport references, action/target/preview/confirmation/lock/cancel, touch/focus help, five screens and minimal in-memory handoff | WS03 + WS04; WS06 verification |
 | `data-schema.md` | Seven types/shared blocks, required/optional/nested fields/enums/ranges, all reference rows, affordable starts/order/phases, numeric formula, normalization and deferred types | WS01 validation/resolution; WS02 consumers; WS06 content checks |
 | `data-authoring-rules.md` | Stable filenames/IDs, one entity, no unknown/null/placeholder content, real numeric fields, same-change resolved references, review first-pass balance without draft numeric targets | WS01 + WS06; no new content catalog |
+| `final-runtime-data-design.md` | Versioned runtime supplement and validated optional bundle; promotion into native consumers requires reviewed policy and interfaces | WS01 contract review; WS02/WS04 policy; WS06 integration |
+| `first-playable-rules.md` | Existing slice mechanics and historical balance evidence; does not independently approve native parity | WS02 reference behavior; WS06 acceptance |
 | `combat-architecture.md` | Scene-independent state/RNG, deterministic resolver authority, ordered identified events, no animation/UI rules, candidate-event list not scope expansion | WS02 contracts; WS03 consumes; WS06 replay evidence |
 | `hud-spec.md` | All nine module responsibilities, used states, inspectable unavailable actions, one-step cancel/lock/result handoff, exact numbers and non-hover accessibility | WS03 |
 | `ui-style-guide.md` | Redundant color, explicit values/state, spacing/borders/tabular numerals, contrast 4.5:1, 48 dp touch targets, focus/tap help and reduced motion | WS03; WS05 visual review; WS06 QA |

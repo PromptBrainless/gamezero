@@ -27,6 +27,7 @@ and scaling drafts are not permission to replace canonical JSON.
 | [`vertical-slice-implementation-plan.md`](vertical-slice-implementation-plan.md) | Scope, build sequence, slice done criteria |
 | [`runtime-data-plan.md`](runtime-data-plan.md) | JSON loading, validation, registries, encounter resolution |
 | [`first-playable-ui-plan.md`](first-playable-ui-plan.md) | Combat HUD foundation and screen flow |
+| [`workstreams/README.md`](workstreams/README.md) | Six implementation packages, ownership, dependencies and agent assignments |
 
 ## Data and combat
 
@@ -34,6 +35,8 @@ and scaling drafts are not permission to replace canonical JSON.
 |---|---|
 | [`data-schema.md`](data-schema.md) | Canonical JSON entities, fields, references, validation |
 | [`data-authoring-rules.md`](data-authoring-rules.md) | How content is authored and reviewed |
+| [`final-runtime-data-design.md`](final-runtime-data-design.md) | Versioned runtime supplement, concrete progression/targeting/staging/narrative data and Godot export |
+| [`first-playable-rules.md`](first-playable-rules.md) | Implemented slice mechanics and historical balance measurements |
 | [`combat-architecture.md`](combat-architecture.md) | Resolver/event/presentation boundary; no detailed mechanics |
 
 ## UI and visual direction
