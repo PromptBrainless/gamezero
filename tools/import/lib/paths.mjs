@@ -157,3 +157,19 @@ export function assertRepoRelativeDir(value, label) {
 export function toPosix(path) {
   return path.split(sep).join("/");
 }
+
+/** Replace (or add) the extension of a POSIX path; null/empty paths pass through. */
+export function replaceExtension(path, extension) {
+  if (!path) return path;
+  const slash = path.lastIndexOf("/");
+  const dot = path.lastIndexOf(".");
+  return `${dot > slash ? path.slice(0, dot) : path}.${extension}`;
+}
+
+/** Lower-cased extension of a POSIX path's last segment, or "" if none. */
+export function pathExtension(path) {
+  if (!path) return "";
+  const slash = path.lastIndexOf("/");
+  const dot = path.lastIndexOf(".");
+  return dot > slash ? path.slice(dot + 1).toLowerCase() : "";
+}

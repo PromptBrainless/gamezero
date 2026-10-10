@@ -9,7 +9,14 @@ import { createReadStream, existsSync } from "node:fs";
 import { copyFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { DriveApiError, toCsv } from "./drive-client.mjs";
-import { resolveInside, safeFileName, slugFileName, withSuffix } from "./paths.mjs";
+import {
+  pathExtension,
+  replaceExtension,
+  resolveInside,
+  safeFileName,
+  slugFileName,
+  withSuffix,
+} from "./paths.mjs";
 import { shortId, summarize } from "./plan.mjs";
 
 async function sha256File(file) {
@@ -51,13 +58,6 @@ async function atomicWrite(destination, contents) {
     await rm(temp, { force: true });
     throw error;
   }
-}
-
-function replaceExtension(path, extension) {
-  if (!path) return path;
-  const slash = path.lastIndexOf("/");
-  const dot = path.lastIndexOf(".");
-  return `${dot > slash ? path.slice(0, dot) : path}.${extension}`;
 }
 
 /** Export failures that mean "this format is not available", so a fallback is worth trying. */
@@ -200,8 +200,15 @@ export async function executePlan(
     let result;
     try {
       result = await fetchToFile(entry, output, fetchTarget);
-      if (result.extension !== output.extension) {
+      if (result.extension !== output.extension)
         output.usedFallback = { mimeType: result.mimeType, extension: result.extension };
+      else delete output.usedFallback;
+      // Planned paths may carry a previous run's fallback extension (or the
+      // primary one): align them with what was actually fetched.
+      if (
+        entry.action === "export" &&
+        pathExtension(output.rawPath ?? output.sortedPath) !== result.extension
+      ) {
         if (output.rawPath)
           output.rawPath = claimRuntimePath(
             entry,

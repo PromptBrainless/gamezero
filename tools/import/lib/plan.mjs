@@ -8,6 +8,7 @@ import { existsSync } from "node:fs";
 import { classify, globToRegExp } from "./classify.mjs";
 import { binaryExtension, isGoogleNative } from "./media.mjs";
 import {
+  replaceExtension,
   resolveInside,
   safeFileName,
   safeSegment,
@@ -84,13 +85,61 @@ function exportFormatsFor(entry, config) {
   return config.exports[entry.mimeType] ?? null;
 }
 
-function statusAgainst(previousEntry, entry, outputs, repoRoot) {
-  if (!previousEntry) return "new";
-  const sameSource =
+function sameSource(previousEntry, entry) {
+  return (
     previousEntry.modifiedTime === entry.modifiedTime &&
     (previousEntry.md5Checksum ?? null) === (entry.md5Checksum ?? null) &&
-    (previousEntry.version ?? null) === (entry.version ?? null);
-  if (!sameSource) return "updated";
+    (previousEntry.version ?? null) === (entry.version ?? null)
+  );
+}
+
+/** Same path, or the conflict-renamed (`<stem>__<suffix>.<ext>`) variant of it. */
+function isSameTarget(previousPath, expectedPath) {
+  if (previousPath === expectedPath) return true;
+  const { stem, ext } = splitExtension(expectedPath);
+  const previous = splitExtension(previousPath);
+  return (
+    previous.ext === ext &&
+    previous.stem.startsWith(`${stem}__`) &&
+    !previous.stem.slice(stem.length + 2).includes("/")
+  );
+}
+
+/**
+ * An unchanged export that last landed in a fallback format (e.g. .txt instead
+ * of .md) keeps its fallback paths, so it is recognised as unchanged instead of
+ * being re-exported on every run.
+ */
+function adoptPreviousFallbacks(previousEntry, item, { rawPaths, sortedPaths }) {
+  if (!previousEntry || item.action !== "export" || !sameSource(previousEntry, item)) return;
+  for (const output of item.outputs) {
+    const previous = previousEntry.outputs?.find((candidate) => candidate.format === output.format);
+    const extension = previous?.usedFallback?.extension;
+    if (!extension) continue;
+    const pairs = [
+      ["rawPath", rawPaths],
+      ["sortedPath", sortedPaths],
+    ].filter(([key]) => output[key]);
+    const adoptable = pairs.every(([key, allocator]) => {
+      const holder = allocator.claims.get(previous[key].toLowerCase());
+      return (
+        isSameTarget(previous[key], replaceExtension(output[key], extension)) &&
+        (holder === undefined || holder === item.id)
+      );
+    });
+    if (!adoptable) continue;
+    for (const [key, allocator] of pairs) {
+      allocator.claims.delete(output[key].toLowerCase());
+      allocator.claims.set(previous[key].toLowerCase(), item.id);
+      output[key] = previous[key];
+    }
+    output.usedFallback = previous.usedFallback;
+  }
+}
+
+function statusAgainst(previousEntry, entry, outputs, repoRoot) {
+  if (!previousEntry) return "new";
+  if (!sameSource(previousEntry, entry)) return "updated";
   const previousPaths = new Set();
   for (const output of previousEntry.outputs ?? []) {
     if (output.result !== "written" && output.result !== "unchanged") return "updated";
@@ -296,6 +345,7 @@ export function buildPlan(tree, { config, rules, repoRoot, previousManifest = nu
     ) {
       return skip("nothing to write (raw and sorted output disabled or blocked by conflicts)");
     }
+    adoptPreviousFallbacks(previousById.get(entry.id), item, { rawPaths, sortedPaths });
     item.status = statusAgainst(previousById.get(entry.id), item, item.outputs, repoRoot);
     return item;
   });

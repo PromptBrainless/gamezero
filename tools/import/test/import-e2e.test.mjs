@@ -392,8 +392,8 @@ test("import downloads, exports, sorts and writes a manifest; re-import is incre
   const notUnchanged = work
     .filter((entry) => entry.status !== "unchanged")
     .map((entry) => entry.drivePath);
-  // The notes doc used a fallback format, so its planned primary path differs and it is refreshed.
-  assert.deepEqual(notUnchanged, ["Design/Notizen zum Design"]);
+  // The notes doc used a fallback format last time; its fallback paths are adopted.
+  assert.deepEqual(notUnchanged, []);
   assert.equal(
     plan2.entries.find((entry) => entry.id === "docKampf00001").outputs[0].sortedPath,
     "docs/design/kampfsystem__drive_dockampf.md",
@@ -409,7 +409,7 @@ test("import downloads, exports, sorts and writes a manifest; re-import is incre
     !requests.some((path) => path.includes("alt=media")),
     "unchanged binaries are not downloaded again",
   );
-  assert.equal(plan2.summary.unchanged, work.length - 1);
+  assert.equal(plan2.summary.unchanged, work.length);
   const notes = plan2.entries.find((entry) => entry.id === "docNotes00001").outputs[0];
   assert.equal(
     notes.sortedPath,
