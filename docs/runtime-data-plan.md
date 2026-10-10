@@ -2,6 +2,11 @@
 
 Track 1 of the first playable vertical slice. The schema in [`data-schema.md`](data-schema.md) is authoritative for all record shapes and field names.
 
+For the next-runtime skill registries, use the versioned
+[`skill/effect contract`](final-data-entities/skills-and-effects.md) and its
+strict `src/game/contracts/skills.ts` schemas. Keep `data/contracts/v1/`
+separate from the existing loader until a tested importer/resolver migration.
+
 ## Principles
 
 - Slice content is JSON under `data/`; game code consumes validated runtime records, not arbitrary JSON.

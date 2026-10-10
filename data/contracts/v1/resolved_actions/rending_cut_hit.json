@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "action_id": "action_1",
+  "command": {
+    "schema_version": 1,
+    "command_id": "command_1",
+    "combat_id": "combat_slice",
+    "expected_revision": 0,
+    "actor_id": "player_1",
+    "skill_id": "rending_cut",
+    "target_ids": ["enemy_1"]
+  },
+  "status": "resolved",
+  "revision_before": 0,
+  "revision_after": 1,
+  "rng_cursor_before": 0,
+  "rng_cursor_after": 2,
+  "target_ids": ["enemy_1"],
+  "events": [
+    {
+      "schema_version": 1,
+      "event_id": "event_1",
+      "combat_id": "combat_slice",
+      "action_id": "action_1",
+      "sequence": 1,
+      "turn": 1,
+      "phase": "commit",
+      "source_id": "player_1",
+      "payload": { "type": "action_started", "skill_id": "rending_cut" }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "event_2",
+      "combat_id": "combat_slice",
+      "action_id": "action_1",
+      "sequence": 2,
+      "turn": 1,
+      "phase": "commit",
+      "source_id": "player_1",
+      "target_id": "player_1",
+      "payload": {
+        "type": "resource_changed",
+        "resource": "stamina",
+        "before": 20,
+        "after": 11,
+        "delta": -9,
+        "reason": "cost"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "event_3",
+      "combat_id": "combat_slice",
+      "action_id": "action_1",
+      "sequence": 3,
+      "turn": 1,
+      "phase": "commit",
+      "source_id": "player_1",
+      "target_id": "player_1",
+      "payload": { "type": "cooldown_changed", "skill_id": "rending_cut", "before": 0, "after": 2 }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "event_4",
+      "combat_id": "combat_slice",
+      "action_id": "action_1",
+      "sequence": 4,
+      "turn": 1,
+      "phase": "impact",
+      "source_id": "player_1",
+      "target_id": "enemy_1",
+      "payload": {
+        "type": "hit_resolved",
+        "outcome": "hit",
+        "hit_chance": 1,
+        "critical": false,
+        "crit_chance": 0.1,
+        "crit_roll": 0.8
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "event_5",
+      "combat_id": "combat_slice",
+      "action_id": "action_1",
+      "sequence": 5,
+      "turn": 1,
+      "phase": "impact",
+      "source_id": "player_1",
+      "target_id": "enemy_1",
+      "step_id": "cut",
+      "payload": {
+        "type": "damage_applied",
+        "amount": 13,
+        "damage_type": "physical",
+        "critical": false
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "event_6",
+      "combat_id": "combat_slice",
+      "action_id": "action_1",
+      "sequence": 6,
+      "turn": 1,
+      "phase": "impact",
+      "source_id": "player_1",
+      "target_id": "enemy_1",
+      "step_id": "cut",
+      "payload": {
+        "type": "resource_changed",
+        "resource": "hp",
+        "before": 30,
+        "after": 17,
+        "delta": -13,
+        "reason": "damage"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "event_7",
+      "combat_id": "combat_slice",
+      "action_id": "action_1",
+      "sequence": 7,
+      "turn": 1,
+      "phase": "impact",
+      "source_id": "player_1",
+      "target_id": "enemy_1",
+      "step_id": "bleed",
+      "payload": {
+        "type": "status_applied",
+        "status_id": "bleeding",
+        "instance_id": "status_1",
+        "duration": 3,
+        "stacks": 1,
+        "source_id": "player_1"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "event_8",
+      "combat_id": "combat_slice",
+      "action_id": "action_1",
+      "sequence": 8,
+      "turn": 1,
+      "phase": "complete",
+      "source_id": "player_1",
+      "payload": { "type": "action_completed", "revision": 1 }
+    }
+  ]
+}

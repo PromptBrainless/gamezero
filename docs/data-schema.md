@@ -2,6 +2,11 @@
 
 Canonical definition of the JSON content used by the first playable vertical slice. It documents the **shape actually used by the selected and normalized content under `data/`**, takes conventions and validation strictness from `data-authoring-rules.md` (PR #7), and is shaped so the Loader → Validator → Registry → Resolver pipeline in `runtime-data-plan.md` (PR #8) can consume it. Where source proposals disagreed, this file decides (see [Normalized names](#normalized-names)).
 
+The next-runtime skill/effect contract is defined separately in
+[`final-data-entities/skills-and-effects.md`](final-data-entities/skills-and-effects.md),
+with isolated versioned examples under `data/contracts/v1/`. Those records
+do not change or join the playable slice collections described here.
+
 ## Conventions
 
 - JSON, UTF-8, 2-space indent. **One entity per file**: `data/<type>/<id>.json`, where `<type>` is the plural collection name below.

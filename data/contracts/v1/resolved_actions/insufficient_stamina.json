@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "action_id": "action_2",
+  "command": {
+    "schema_version": 1,
+    "command_id": "command_2",
+    "combat_id": "combat_slice",
+    "expected_revision": 1,
+    "actor_id": "player_1",
+    "skill_id": "rending_cut",
+    "target_ids": ["enemy_1"]
+  },
+  "status": "rejected",
+  "reason": "insufficient_resource",
+  "revision_before": 1,
+  "revision_after": 1,
+  "rng_cursor_before": 2,
+  "rng_cursor_after": 2,
+  "events": []
+}

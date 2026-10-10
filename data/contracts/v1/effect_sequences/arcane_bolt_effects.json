@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "arcane_bolt_effects",
+  "steps": [
+    {
+      "id": "bolt",
+      "op": "damage",
+      "recipient": "targets",
+      "gate": "on_hit",
+      "amount": { "flat": 4, "scaling_stat": "magic", "multiplier": 1.1 },
+      "damage_type": "arcane",
+      "ignores_defense": false,
+      "can_crit": true
+    }
+  ]
+}

@@ -14,6 +14,8 @@ This table routes the first-playable, data/combat, UI, and project-context sourc
 | `final-runtime-data-design.md` | Versioned runtime supplement and validated optional bundle; promotion into native consumers requires reviewed policy and interfaces | WS01 contract review; WS02/WS04 policy; WS06 integration |
 | `first-playable-rules.md` | Existing slice mechanics and historical balance evidence; does not independently approve native parity | WS02 reference behavior; WS06 acceptance |
 | `combat-architecture.md` | Scene-independent state/RNG, deterministic resolver authority, ordered identified events, no animation/UI rules, candidate-event list not scope expansion | WS02 contracts; WS03 consumes; WS06 replay evidence |
+| `final-data-entities/skills-and-effects.md` | Isolated next-runtime v1 skill/effect/targeting schemas and fixtures; no automatic migration of slice definitions | WS02 contract review; WS01 references; WS06 regression |
+| `combat/combat-event-contract.md` | Strict action commands and ordered resolved-event batches; lifecycle extensions remain explicit future work | WS02 contracts; WS03 consumes after integration; WS06 acceptance |
 | `hud-spec.md` | All nine module responsibilities, used states, inspectable unavailable actions, one-step cancel/lock/result handoff, exact numbers and non-hover accessibility | WS03 |
 | `ui-style-guide.md` | Redundant color, explicit values/state, spacing/borders/tabular numerals, contrast 4.5:1, 48 dp touch targets, focus/tap help and reduced motion | WS03; WS05 visual review; WS06 QA |
 | `visual-reference-brief.md` | Restrained material/silhouette/contrast, prompt subject/purpose/framing/palette/negative constraints, approved handoff not speculative image sizes | WS05; WS03 implementation |
