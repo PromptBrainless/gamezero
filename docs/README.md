@@ -60,6 +60,7 @@ Retain only deliberately selected, non-sensitive evidence, not incidental logs.
 |---|---|
 | [`milestones.md`](milestones.md) | Sequential gates: Docs Final, First Playable Build, Post-Slice Expansion |
 | [`implementation-board.md`](implementation-board.md) | Ordered tracks, deliverables, dependencies, review focus |
+| [`mobile-first-playable-plan.md`](mobile-first-playable-plan.md) | Evidence-based mobile baseline audit, ordered gates, balance and device/export acceptance |
 | [`vertical-slice-implementation-plan.md`](vertical-slice-implementation-plan.md) | Scope, build sequence, slice done criteria |
 | [`runtime-data-plan.md`](runtime-data-plan.md) | JSON loading, validation, registries, encounter resolution |
 | [`first-playable-ui-plan.md`](first-playable-ui-plan.md) | Combat HUD foundation and screen flow |
