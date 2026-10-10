@@ -3,3 +3,6 @@ node_modules/
 .github_repo
 .env
 .env.*
+godot/.godot/
+godot/data/content_bundle.json
+godot/data/content_bundle.json.*.stage

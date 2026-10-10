@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "content_revision": "slice_1",
+  "rules": {
+    "turn_order": "player_then_enemies",
+    "damage_rounding": "nearest_min_one",
+    "resource_regen": { "stamina": 4, "focus": 3 },
+    "recovery_bonus": { "stamina": 6, "focus": 4 },
+    "enemy_cost_policy": "free",
+    "progression": "victory_level",
+    "encounter_reset": "full_restore",
+    "rewards": "consumables_next_encounter"
+  },
+  "careers": [
+    {
+      "career": "mercenary",
+      "max_level": 4,
+      "unlocks": [
+        { "level": 1, "skills": ["shield_bash", "hold_the_line"] },
+        { "level": 2, "skills": ["rending_cut"] }
+      ]
+    },
+    {
+      "career": "duelist",
+      "max_level": 4,
+      "unlocks": [
+        { "level": 1, "skills": ["riposte", "precise_thrust"] },
+        { "level": 2, "skills": ["quick_feint"] }
+      ]
+    },
+    {
+      "career": "scholar_mage",
+      "max_level": 4,
+      "unlocks": [
+        { "level": 1, "skills": ["arcane_bolt", "frost_sigil"] },
+        { "level": 2, "skills": ["focused_mind"] }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "skill": "shield_bash",
+      "selection": { "team": "opponent", "count": 1, "life_state": "alive", "range": "any_slot" },
+      "execution": "manual"
+    },
+    {
+      "skill": "hold_the_line",
+      "selection": { "team": "self", "count": 1, "life_state": "alive", "range": "any_slot" },
+      "execution": "manual"
+    },
+    {
+      "skill": "rending_cut",
+      "selection": { "team": "opponent", "count": 1, "life_state": "alive", "range": "any_slot" },
+      "execution": "manual"
+    },
+    {
+      "skill": "riposte",
+      "selection": { "team": "opponent", "count": 1, "life_state": "alive", "range": "any_slot" },
+      "execution": "reaction",
+      "reaction_hook": "after_melee_hit"
+    },
+    {
+      "skill": "precise_thrust",
+      "selection": { "team": "opponent", "count": 1, "life_state": "alive", "range": "any_slot" },
+      "execution": "manual"
+    },
+    {
+      "skill": "quick_feint",
+      "selection": { "team": "self", "count": 1, "life_state": "alive", "range": "any_slot" },
+      "execution": "manual"
+    },
+    {
+      "skill": "arcane_bolt",
+      "selection": { "team": "opponent", "count": 1, "life_state": "alive", "range": "any_slot" },
+      "execution": "manual"
+    },
+    {
+      "skill": "frost_sigil",
+      "selection": { "team": "opponent", "count": 1, "life_state": "alive", "range": "any_slot" },
+      "execution": "manual"
+    },
+    {
+      "skill": "focused_mind",
+      "selection": { "team": "self", "count": 1, "life_state": "alive", "range": "any_slot" },
+      "execution": "manual"
+    },
+    {
+      "skill": "iron_command",
+      "selection": { "team": "opponent", "count": 1, "life_state": "alive", "range": "any_slot" },
+      "execution": "manual"
+    }
+  ],
+  "statuses": [
+    {
+      "status": "bleeding",
+      "duration_clock": "owner_action",
+      "reapply": "keep_longer_duration",
+      "stack_mode": "add_capped",
+      "expiration": "after_tick",
+      "cleanseable": true
+    },
+    {
+      "status": "chilled",
+      "duration_clock": "owner_action",
+      "reapply": "keep_longer_duration",
+      "stack_mode": "replace",
+      "expiration": "after_tick",
+      "cleanseable": true
+    },
+    {
+      "status": "exposed",
+      "duration_clock": "owner_action",
+      "reapply": "keep_longer_duration",
+      "stack_mode": "replace",
+      "expiration": "after_tick",
+      "cleanseable": true
+    },
+    {
+      "status": "focused",
+      "duration_clock": "owner_action",
+      "reapply": "keep_longer_duration",
+      "stack_mode": "replace",
+      "expiration": "after_tick",
+      "cleanseable": true
+    },
+    {
+      "status": "guarded",
+      "duration_clock": "owner_action",
+      "reapply": "keep_longer_duration",
+      "stack_mode": "replace",
+      "expiration": "after_tick",
+      "cleanseable": true
+    },
+    {
+      "status": "stunned",
+      "duration_clock": "owner_action",
+      "reapply": "keep_longer_duration",
+      "stack_mode": "replace",
+      "expiration": "after_tick",
+      "cleanseable": true
+    }
+  ],
+  "archetypes": [
+    {
+      "id": "cutthroat_striker",
+      "combatant": { "collection": "enemies", "id": "alley_cutthroat" },
+      "role": "striker",
+      "resource_policy": "free",
+      "selection_policy": "uniform_available"
+    },
+    {
+      "id": "deserter_defender",
+      "combatant": { "collection": "enemies", "id": "rusted_deserter" },
+      "role": "defender",
+      "resource_policy": "free",
+      "selection_policy": "uniform_available"
+    },
+    {
+      "id": "cultist_controller",
+      "combatant": { "collection": "enemies", "id": "hedge_cultist" },
+      "role": "controller",
+      "resource_policy": "free",
+      "selection_policy": "uniform_available"
+    },
+    {
+      "id": "captain_boss",
+      "combatant": { "collection": "bosses", "id": "iron_captain" },
+      "role": "boss",
+      "resource_policy": "free",
+      "selection_policy": "telegraph_first"
+    }
+  ],
+  "stages": [
+    {
+      "id": "alley_dusk",
+      "name": "Gasse im Abendlicht",
+      "layout": "side_view",
+      "player_slots": [{ "id": "player_1", "x": 0.2, "y": 0.65 }],
+      "enemy_slots": [
+        { "id": "enemy_1", "x": 0.7, "y": 0.65 },
+        { "id": "enemy_2", "x": 0.85, "y": 0.65 }
+      ],
+      "layers": [
+        { "id": "background", "depth": -1, "parallax": 0.3 },
+        { "id": "arena", "depth": 0, "parallax": 1 },
+        { "id": "foreground", "depth": 1, "parallax": 1.1 }
+      ]
+    },
+    {
+      "id": "ruined_road",
+      "name": "Verfallene Heerstraße",
+      "layout": "side_view",
+      "player_slots": [{ "id": "player_1", "x": 0.2, "y": 0.65 }],
+      "enemy_slots": [
+        { "id": "enemy_1", "x": 0.7, "y": 0.65 },
+        { "id": "enemy_2", "x": 0.85, "y": 0.65 }
+      ],
+      "layers": [
+        { "id": "background", "depth": -1, "parallax": 0.3 },
+        { "id": "arena", "depth": 0, "parallax": 1 },
+        { "id": "foreground", "depth": 1, "parallax": 1.1 }
+      ]
+    },
+    {
+      "id": "hedge_clearing",
+      "name": "Lichtung in den Hecken",
+      "layout": "side_view",
+      "player_slots": [{ "id": "player_1", "x": 0.2, "y": 0.65 }],
+      "enemy_slots": [
+        { "id": "enemy_1", "x": 0.7, "y": 0.65 },
+        { "id": "enemy_2", "x": 0.85, "y": 0.65 }
+      ],
+      "layers": [
+        { "id": "background", "depth": -1, "parallax": 0.3 },
+        { "id": "arena", "depth": 0, "parallax": 1 },
+        { "id": "foreground", "depth": 1, "parallax": 1.1 }
+      ]
+    },
+    {
+      "id": "fortress_gate",
+      "name": "Tor der Nordwacht",
+      "layout": "side_view",
+      "player_slots": [{ "id": "player_1", "x": 0.2, "y": 0.65 }],
+      "enemy_slots": [
+        { "id": "enemy_1", "x": 0.7, "y": 0.65 },
+        { "id": "enemy_2", "x": 0.85, "y": 0.65 }
+      ],
+      "layers": [
+        { "id": "background", "depth": -1, "parallax": 0.3 },
+        { "id": "arena", "depth": 0, "parallax": 1 },
+        { "id": "foreground", "depth": 1, "parallax": 1.1 }
+      ]
+    }
+  ],
+  "encounters": [
+    {
+      "encounter": "first_blood",
+      "stage": "alley_dusk",
+      "waves": [
+        {
+          "id": "wave_1",
+          "trigger": "encounter_start",
+          "spawns": [
+            { "instance_id": "cutthroat_1", "archetype": "cutthroat_striker", "slot": "enemy_1" }
+          ]
+        }
+      ],
+      "narrative": { "before": "first_blood_before", "victory": "first_blood_victory" }
+    },
+    {
+      "encounter": "deserters_toll",
+      "stage": "ruined_road",
+      "waves": [
+        {
+          "id": "wave_1",
+          "trigger": "encounter_start",
+          "spawns": [
+            { "instance_id": "deserter_1", "archetype": "deserter_defender", "slot": "enemy_1" }
+          ]
+        }
+      ],
+      "narrative": { "before": "deserters_toll_before", "victory": "deserters_toll_victory" }
+    },
+    {
+      "encounter": "cult_in_the_hedges",
+      "stage": "hedge_clearing",
+      "waves": [
+        {
+          "id": "wave_1",
+          "trigger": "encounter_start",
+          "spawns": [
+            { "instance_id": "cultist_1", "archetype": "cultist_controller", "slot": "enemy_1" },
+            { "instance_id": "cutthroat_1", "archetype": "cutthroat_striker", "slot": "enemy_2" }
+          ]
+        }
+      ],
+      "narrative": {
+        "before": "cult_in_the_hedges_before",
+        "victory": "cult_in_the_hedges_victory"
+      }
+    },
+    {
+      "encounter": "gate_of_the_north_watch",
+      "stage": "fortress_gate",
+      "waves": [
+        {
+          "id": "wave_1",
+          "trigger": "encounter_start",
+          "spawns": [{ "instance_id": "captain_1", "archetype": "captain_boss", "slot": "enemy_1" }]
+        }
+      ],
+      "narrative": {
+        "before": "gate_of_the_north_watch_before",
+        "victory": "gate_of_the_north_watch_victory"
+      }
+    }
+  ],
+  "equipment": {
+    "slots": ["weapon", "offhand", "armor", "trinket"],
+    "duplicate_policy": "one_per_slot",
+    "consumable_policy": "separate_inventory"
+  },
+  "dialogue": [
+    {
+      "id": "first_blood_before",
+      "entry": "opening",
+      "nodes": [
+        {
+          "id": "opening",
+          "speaker": "narrator",
+          "text": "Die Gasse verengt sich. Eine blanke Klinge versperrt den Weg."
+        }
+      ]
+    },
+    {
+      "id": "first_blood_victory",
+      "entry": "opening",
+      "nodes": [
+        {
+          "id": "opening",
+          "speaker": "narrator",
+          "text": "Das Messer fällt auf den Stein. Hinter den Dächern wartet die Heerstraße."
+        }
+      ]
+    },
+    {
+      "id": "deserters_toll_before",
+      "entry": "opening",
+      "nodes": [
+        {
+          "id": "opening",
+          "speaker": "Deserteur",
+          "text": "Die Nordwacht schützt hier niemanden mehr. Den Wegzoll nehme jetzt ich."
+        }
+      ]
+    },
+    {
+      "id": "deserters_toll_victory",
+      "entry": "opening",
+      "nodes": [
+        {
+          "id": "opening",
+          "speaker": "narrator",
+          "text": "Der Schild sinkt. Zwischen den Hecken führt eine Spur zur alten Wacht."
+        }
+      ]
+    },
+    {
+      "id": "cult_in_the_hedges_before",
+      "entry": "opening",
+      "nodes": [
+        {
+          "id": "opening",
+          "speaker": "narrator",
+          "text": "Ein Flüstern steigt aus der Lichtung. Im Schatten wartet eine zweite Klinge."
+        }
+      ]
+    },
+    {
+      "id": "cult_in_the_hedges_victory",
+      "entry": "opening",
+      "nodes": [
+        {
+          "id": "opening",
+          "speaker": "narrator",
+          "text": "Das Flüstern verstummt. Über den Hecken erhebt sich das Tor der Nordwacht."
+        }
+      ]
+    },
+    {
+      "id": "gate_of_the_north_watch_before",
+      "entry": "opening",
+      "nodes": [
+        {
+          "id": "opening",
+          "speaker": "Eiserner Hauptmann",
+          "text": "Solange ich stehe, bleibt dieses Tor geschlossen.",
+          "next": "resolve"
+        },
+        {
+          "id": "resolve",
+          "speaker": "narrator",
+          "text": "Der Hauptmann hebt seinen Schild. Die letzte Formation hält."
+        }
+      ]
+    },
+    {
+      "id": "gate_of_the_north_watch_victory",
+      "entry": "opening",
+      "nodes": [
+        {
+          "id": "opening",
+          "speaker": "narrator",
+          "text": "Der große Schild liegt still. Das Tor ist offen; der Weg durch die Nordwacht beginnt."
+        }
+      ]
+    }
+  ]
+}

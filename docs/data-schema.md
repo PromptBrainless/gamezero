@@ -129,4 +129,11 @@ Competing names from earlier drafts and their canonical form:
 
 ## Out of scope
 
-Regions, reward tables as separate files, career progression tracks (`progression[]`), localization keys, save data. Add them here first, with runtime support, before authoring content for them.
+Regions, reward tables as separate files, career progression tracks (`progression[]`) inside base career records, localization keys, save data. Add them here first, with runtime support, before authoring content for them.
+
+The approved [final runtime data design](final-runtime-data-design.md) adds a
+separately versioned supplement at `data/runtime/slice.json` for explicit slice
+unlocks, targeting, status lifecycle, archetypes, stages/waves and narrative
+hooks. It does not change these seven base record shapes. Its validator and
+Godot exporter run alongside base validation; presentation/narrative metadata
+does not imply those features already execute in combat.

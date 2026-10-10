@@ -11,7 +11,7 @@ Diese Regeln gelten fuer den neuen 2D-Slice unter der Hauptroute. Das alte W100-
 - Jeder Sieg erhoeht fuer die naechste Begegnung die Stufe um eins. Die vorhandenen `stat_growth`-Werte werden entsprechend addiert.
 - Ab Stufe 2 steht der gesamte Karriere-Faehigkeitspool zur Verfuegung.
 - Jede Begegnung startet mit vollen Lebenspunkten und Ressourcen. Kein permanenter Tod, keine Persistenz.
-- EP und garantierte Gegenstandsbelohnungen werden angezeigt. Belohnungsgegenstaende sind in dieser Version noch nicht nutzbar oder ausruestbar; keine Inventarsimulation behaupten.
+- EP und garantierte Gegenstandsbelohnungen werden angezeigt. Verbrauchsgegenstaende werden in die naechste Begegnung uebernommen und sind als Aktion nutzbar. Belohnungsausruestung bleibt Anzeige; es gibt keinen Ausruestungswechsel.
 
 ## Runden
 
@@ -37,7 +37,8 @@ Eine Faehigkeit mit Abklingzeit 2 bleibt fuer zwei nachfolgende eigene Aktionsge
 - Betäubung: naechste Aktionsgelegenheit auslassen.
 - Unterkuehlung: reduziert Ressourcenregeneration; Tempo hat noch keine Rundenreihenfolge-Wirkung.
 - Erfolgswahrscheinlichkeiten fuer Statusanwendungen nutzen einen deterministischen Seed.
-- Direkte Treffer sind sicher. Kritische Treffer, Initiative, Resistenzen und automatische Reaktionen sind noch nicht implementiert. Riposte ist in diesem Prototyp eine manuell gewaehlte Aktion, kein automatischer Konter.
+- Direkte Treffer sind sicher. Kritische Treffer, Initiative und Resistenzen sind noch nicht implementiert. Riposte ist ein automatischer Konter nach einem schadenverursachenden Nahkampftreffer, sofern der Spieler lebt, nicht betaeubt ist und Kosten/Abklingzeit die Reaktion erlauben. Riposte ist nicht manuell waehlbar.
+- Verbrauchsgegenstaende kosten eine Aktion: Heilung, Fokus, Statusentfernung und der Bonus auf den naechsten Angriff kommen aus `items.use`. Startverbrauchsgegenstaende sind nur zu Reisebeginn vorhanden; unverbrauchte Vorräte und garantierte Verbrauchsbelohnungen werden weitergereicht.
 - Sieg beendet sofort die Gegenaktionen; Niederlage bei 0 Lebenspunkten. Ein Wiederholungsversuch startet dieselbe Begegnung frisch.
 
 ## Gegner und Boss
@@ -63,4 +64,4 @@ Reproduzierbar: `npm run balance:slice -- 100`. Je Karriere und Begegnung 100 Se
 
 Ausgangslage ohne diese Prototypregeln: 0 % Bosssiege fuer alle Karrieren. Aenderungen: Boss von 220 LP / 10 Angriff / 8 Verteidigung auf 80 / 7 / 5; Soeldner-Verteidigung von 6 auf 4 und Verteidigungswachstum von 1 auf 0; Schildstoss-Abklingzeit von 2 auf 1. Fortschritt, Startausruestung, Regeneration, Bossvorwarnungen und gegnerische Abklingzeiten sind jetzt wirksam.
 
-Offene Balancefrage: Der Soeldner ist deutlich sicherer, der Magier schneller. Dies ist eine spielbare Baseline, keine finale Klassenparitaet. Fuer das naechste Balancing sind Gegenstandsnutzung, Reaktionen und weniger offensiv optimierte Strategien separat zu messen.
+Offene Balancefrage: Der Soeldner ist deutlich sicherer, der Magier schneller. Dies ist eine spielbare Baseline, keine finale Klassenparitaet. Die Tabelle ist eine historische Messung; nach Gegenstands- und Reaktionsintegration sind Ergebnisse neu zu messen, einschliesslich weniger offensiv optimierter Strategien.

@@ -25,6 +25,12 @@ data/
 
 Do not add separate `regions/` or `rewards/` directories, localization keys, or career `progression[]` until the schema and slice scope are explicitly changed.
 
+The approved [runtime supplement](final-runtime-data-design.md) lives outside
+the seven base collections at `data/runtime/slice.json`. `npm run data:check`
+validates both layers; `npm run data:export:godot` packages validated registries
+and metadata for Godot. The web loader still reads only base collections.
+Generated Godot data is not a second authoring source.
+
 ## Components
 
 | Component | Responsibility |

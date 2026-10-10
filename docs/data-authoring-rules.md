@@ -9,6 +9,7 @@ These rules implement [`data-schema.md`](data-schema.md). The schema owns valid 
 5. Put all gameplay-significant numeric values in fields; descriptions explain, but do not replace, mechanics.
 6. Cross-reference entities by ID only. Include every referenced entity in the same change and check that it resolves.
 7. Do not submit TODOs, placeholder descriptions, empty records, or stub arrays. Empty arrays are allowed only where the schema explicitly allows them.
-8. Keep authored content within the first-playable scope. Regions, localization keys, reward-table files, and career progression tracks are deferred unless the schema is deliberately revised.
+8. Keep authored content within the first-playable scope. Regions, localization keys, reward-table files, and progression inside base career records are deferred unless the schema is deliberately revised. The approved [runtime supplement](final-runtime-data-design.md) is authored as one versioned manifest at `data/runtime/slice.json`; do not duplicate base stats, costs, rewards or effects there.
 9. Treat all balance values as first-pass until reviewed and exercised. Do not apply numeric bounds or win-rate targets from draft PRs unless they are adopted by a future source-of-truth change.
 10. Before review, validate JSON syntax, filename/ID agreement, allowed fields, references, chance/range constraints, and consistency with this schema.
+11. Run `npm run data:check` for both base records and runtime metadata before Godot handoff. Regenerate with `npm run data:export:godot`; never author or commit the generated bundle.
