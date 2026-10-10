@@ -309,7 +309,11 @@ export function startLoopbackReceiver(expectedState, timeoutMs = LOGIN_TIMEOUT_M
     });
     timer = setTimeout(() => {
       server.close();
-      settle.rejectCode(new Error("Timed out waiting for the browser authorisation (5 minutes)."));
+      settle.rejectCode(
+        new Error(
+          `Timed out waiting for the browser authorisation (${Math.round(timeoutMs / 1000)} s).`,
+        ),
+      );
     }, timeoutMs);
     timer.unref?.();
     server.once("error", (error) => {
