@@ -22,6 +22,8 @@ func capture_screen(name: String) -> void:
 	var image := root.get_texture().get_image()
 	check(image.save_png(directory.path_join("godot-" + name + ".png")) == OK, "Visual reference captured")
 	check(main_content_width() <= root.size.x, "Responsive content stays within viewport")
+	check(root.get_node("Main").hud.size.x <= root.size.x, "Configured canvas root reflows without forced scale override")
+	check(root.content_scale_size == Vector2i(390, 720), "Visual test preserves configured mobile-first canvas size")
 
 func main_content_width() -> float:
 	var main = root.get_node("Main")
@@ -53,7 +55,6 @@ func run_tests() -> void:
 	root.add_child(main)
 	await process_frame
 	if capture_visuals:
-		root.content_scale_size = Vector2i.ZERO
 		root.size = Vector2i(390, 844)
 		await capture_screen("career-mobile")
 		root.size = Vector2i(1280, 720)
@@ -114,6 +115,9 @@ func run_tests() -> void:
 	check(main.interaction == "action_selected", "Invalid target is ignored")
 	main.choose_target(-1)
 	check(main.interaction == "preview", "Self target opens recovery preview")
+	var resource_preview: Dictionary = main.resolver.resource_preview(main.battle.player, main.registry)
+	check(visible_text(main.hud).contains("Recovery grant · Stamina: +%s · Focus: +%s" % [resource_preview.recovery_stamina, resource_preview.recovery_focus]), "Recovery preview uses public resolver grants")
+	check(visible_text(main.hud).contains("End-turn regeneration · Stamina: +%s · Focus: +%s" % [resource_preview.end_stamina, resource_preview.end_focus]), "Recovery preview shows computed end-turn grants")
 	check(main.hud.confirm_button != null, "Preview exposes confirmation")
 	main.cancel_action()
 	check(main.interaction == "action_selected", "Cancel preview moves back one step")

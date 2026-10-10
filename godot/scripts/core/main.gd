@@ -149,7 +149,7 @@ func validate_pack(value: Variant) -> PackedStringArray:
 					if collections.skills.has(skill_id) and collections.skills[skill_id].get("career") != id:
 						errors.append("[%s] skill_pool skill must match career." % id)
 				for item_id in record.starting_items:
-					if collections.items.has(item_id) and collections.items[item_id].has("career_tags") and id not in collections.items[item_id].career_tags:
+					if collections.items.has(item_id) and collections.items[item_id].has("career_tags") and (not collections.items[item_id].career_tags is Array or id not in collections.items[item_id].career_tags):
 						errors.append("[%s] starting item is not allowed for career." % id)
 			elif collection == "enemies":
 				check_refs(record.skills, collections.skills, "%s.skills" % id, errors)
@@ -165,18 +165,33 @@ func validate_pack(value: Variant) -> PackedStringArray:
 						errors.append("[%s] invalid phase thresholds." % id)
 					previous = phase.hp_threshold
 					check_refs(phase.skills, collections.skills, "%s.phases.skills" % id, errors)
+					if not phase.get("telegraphs", []) is Array or not phase.get("on_enter", []) is Array:
+						errors.append("[%s] telegraphs and on_enter must be arrays." % id)
+						continue
 					for telegraph in phase.get("telegraphs", []):
-						if not telegraph is Dictionary or not collections.skills.has(telegraph.get("skill", "")):
+						if not telegraph is Dictionary or not collections.skills.has(telegraph.get("skill", "")) or not natural_number(telegraph.get("warning_turns")) or telegraph.get("warning_turns", 0) < 1 or not telegraph.get("icon") is String:
 							errors.append("[%s] unresolved telegraph skill." % id)
 					for entry in phase.get("on_enter", []):
 						if not entry is Dictionary:
 							errors.append("[%s] phase on_enter must contain objects." % id)
 						elif entry.has("apply_status") and not collections.statuses.has(entry.apply_status):
 							errors.append("[%s] unresolved on_enter status." % id)
+						else:
+							if entry.has("apply_status") and (not natural_number(entry.get("duration")) or entry.get("duration", 0) < 1 or entry.get("target", "self") not in ["self", "enemy"]):
+								errors.append("[%s] invalid on_enter status duration or target." % id)
+							if not entry.get("stat_modifier", {}) is Dictionary:
+								errors.append("[%s] on_enter stat_modifier must be an object." % id)
+							else:
+								for stat in entry.get("stat_modifier", {}):
+									if not numeric(entry.stat_modifier[stat]):
+										errors.append("[%s] on_enter stat modifier must be numeric." % id)
 			if collection != "careers":
-				for loot in record.get("loot_table", []):
-					if not loot is Dictionary or not collections.items.has(loot.get("item", "")):
-						errors.append("[%s] unresolved loot item." % id)
+				if not record.get("loot_table", []) is Array:
+					errors.append("[%s] loot_table must be an array." % id)
+				else:
+					for loot in record.get("loot_table", []):
+						if not loot is Dictionary or not collections.items.has(loot.get("item", "")) or not numeric(loot.get("chance")) or loot.get("chance", 0) < 0 or loot.get("chance", 0) > 1:
+							errors.append("[%s] invalid loot item/chance." % id)
 				var ai = record.get("ai", {})
 				if not ai is Dictionary or not ai.get("weights", {}) is Dictionary:
 					errors.append("[%s] ai and weights must be objects." % id)
@@ -186,7 +201,7 @@ func validate_pack(value: Variant) -> PackedStringArray:
 						if phase is Dictionary and phase.get("skills") is Array:
 							actor_skills.append_array(phase.skills)
 					for skill_id in ai.get("weights", {}):
-						if not collections.skills.has(skill_id) or skill_id not in actor_skills:
+						if not collections.skills.has(skill_id) or skill_id not in actor_skills or not numeric(ai.weights[skill_id]) or ai.weights[skill_id] <= 0:
 							errors.append("[%s] AI weight references an unavailable skill." % id)
 	for id in collections.skills:
 		var skill: Dictionary = collections.skills[id]
@@ -194,6 +209,10 @@ func validate_pack(value: Variant) -> PackedStringArray:
 			errors.append("[%s] invalid skill target/cooldown." % id)
 		if skill.has("career") and not collections.careers.has(skill.career):
 			errors.append("[%s] unresolved career." % id)
+		if skill.has("trigger") and skill.trigger != "after_melee_hit":
+			errors.append("[%s] unsupported automatic trigger." % id)
+		if not skill.get("tags", []) is Array:
+			errors.append("[%s] tags must be an array." % id)
 		for cost in skill.cost:
 			if cost not in ["stamina", "focus"] or not (skill.cost[cost] is int or skill.cost[cost] is float) or skill.cost[cost] < 0:
 				errors.append("[%s] invalid resource cost." % id)
@@ -201,6 +220,8 @@ func validate_pack(value: Variant) -> PackedStringArray:
 			var damage = skill.damage
 			if not damage is Dictionary or not damage.get("damage_type") is String or damage.get("scaling_stat") not in ["attack", "magic"] or not (damage.get("flat") is float or damage.get("flat") is int) or not (damage.get("multiplier") is float or damage.get("multiplier") is int):
 				errors.append("[%s] invalid numeric damage definition." % id)
+			elif damage.flat != int(damage.flat) or damage.multiplier < 0:
+				errors.append("[%s] damage flat must be an integer and multiplier nonnegative." % id)
 		check_status_refs(skill, collections.statuses, id, errors)
 	for id in collections.items:
 		check_refs(collections.items[id].get("career_tags", []), collections.careers, "%s.career_tags" % id, errors)
@@ -226,6 +247,11 @@ func validate_pack(value: Variant) -> PackedStringArray:
 				errors.append("[%s] use must be an object." % id)
 			else:
 				check_status_refs(collections.items[id].use, collections.statuses, id, errors)
+				for field in ["heal_hp", "restore_focus", "next_attack_bonus", "max_stack"]:
+					if collections.items[id].use.has(field) and not natural_number(collections.items[id].use[field]):
+						errors.append("[%s] use.%s must be a nonnegative integer." % [id, field])
+				if collections.items[id].use.has("stackable") and not collections.items[id].use.stackable is bool:
+					errors.append("[%s] use.stackable must be boolean." % id)
 	for id in collections.statuses:
 		var status: Dictionary = collections.statuses[id]
 		if status.kind not in ["buff", "debuff"] or status.default_duration < 1 or status.max_stacks < 1:
@@ -265,6 +291,12 @@ func reject_nulls(value: Variant, path: String, errors: PackedStringArray) -> vo
 		for index in range(value.size()):
 			reject_nulls(value[index], "%s[%s]" % [path, index], errors)
 
+func numeric(value: Variant) -> bool:
+	return (value is int or value is float) and is_finite(float(value))
+
+func natural_number(value: Variant) -> bool:
+	return numeric(value) and value >= 0 and value == int(value)
+
 func check_refs(ids: Variant, collection: Dictionary, field: String, errors: PackedStringArray) -> void:
 	if not ids is Array:
 		errors.append("%s must be an ID array." % field)
@@ -279,10 +311,12 @@ func check_status_refs(record: Dictionary, statuses: Dictionary, id: String, err
 		errors.append("[%s] applies_statuses must be an array." % id)
 		return
 	for effect in record.get("applies_statuses", []):
-		if not effect is Dictionary or not statuses.has(effect.get("status", "")) or not (effect.get("duration") is float or effect.get("duration") is int) or effect.get("duration", 0) < 1:
+		if not effect is Dictionary or not statuses.has(effect.get("status", "")) or not natural_number(effect.get("duration")) or effect.get("duration", 0) < 1:
 			errors.append("[%s] unresolved status reference." % id)
 		elif not (effect.get("chance", 1.0) is float or effect.get("chance", 1.0) is int) or effect.get("chance", 1.0) < 0 or effect.get("chance", 1.0) > 1:
 			errors.append("[%s] status chance must be between zero and one." % id)
+		elif effect.get("target", "self") not in ["self", "enemy"]:
+			errors.append("[%s] status target must be self or enemy." % id)
 
 func reset_state() -> void:
 	career_id = ""
