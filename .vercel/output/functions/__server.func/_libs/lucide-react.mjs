@@ -82,12 +82,12 @@ var createLucideIcon = (iconName, iconNode) => {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var BookOpen = createLucideIcon("book-open", [["path", {
-	d: "M12 7v14",
-	key: "1akyts"
+var ArrowLeft = createLucideIcon("arrow-left", [["path", {
+	d: "m12 19-7-7 7-7",
+	key: "1l729n"
 }], ["path", {
-	d: "M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z",
-	key: "ruj8y"
+	d: "M19 12H5",
+	key: "x3x0zl"
 }]]);
 /**
 * @license lucide-react v0.510.0 - ISC
@@ -95,22 +95,65 @@ var BookOpen = createLucideIcon("book-open", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var Footprints = createLucideIcon("footprints", [
+var ArrowRight = createLucideIcon("arrow-right", [["path", {
+	d: "M5 12h14",
+	key: "1ays0h"
+}], ["path", {
+	d: "m12 5 7 7-7 7",
+	key: "xquz4c"
+}]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Check = createLucideIcon("check", [["path", {
+	d: "M20 6 9 17l-5-5",
+	key: "1gmf2c"
+}]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Flame = createLucideIcon("flame", [["path", {
+	d: "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z",
+	key: "96xj49"
+}]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Heart = createLucideIcon("heart", [["path", {
+	d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z",
+	key: "c3ymky"
+}]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Package = createLucideIcon("package", [
 	["path", {
-		d: "M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z",
-		key: "1dudjm"
+		d: "M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z",
+		key: "1a0edw"
 	}],
 	["path", {
-		d: "M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z",
-		key: "l2t8xc"
+		d: "M12 22V12",
+		key: "d0xqtd"
+	}],
+	["polyline", {
+		points: "3.29 7 12 12 20.71 7",
+		key: "ousv84"
 	}],
 	["path", {
-		d: "M16 17h4",
-		key: "1dejxt"
-	}],
-	["path", {
-		d: "M4 13h4",
-		key: "1bwh8b"
+		d: "m7.5 4.27 9 5.15",
+		key: "1c824w"
 	}]
 ]);
 /**
@@ -119,64 +162,12 @@ var Footprints = createLucideIcon("footprints", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var Orbit = createLucideIcon("orbit", [
-	["path", {
-		d: "M20.341 6.484A10 10 0 0 1 10.266 21.85",
-		key: "1enhxb"
-	}],
-	["path", {
-		d: "M3.659 17.516A10 10 0 0 1 13.74 2.152",
-		key: "1crzgf"
-	}],
-	["circle", {
-		cx: "12",
-		cy: "12",
-		r: "3",
-		key: "1v7zrd"
-	}],
-	["circle", {
-		cx: "19",
-		cy: "5",
-		r: "2",
-		key: "mhkx31"
-	}],
-	["circle", {
-		cx: "5",
-		cy: "19",
-		r: "2",
-		key: "v8kfzx"
-	}]
-]);
-/**
-* @license lucide-react v0.510.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var Pause = createLucideIcon("pause", [["rect", {
-	x: "14",
-	y: "4",
-	width: "4",
-	height: "16",
-	rx: "1",
-	key: "zuxfzm"
-}], ["rect", {
-	x: "6",
-	y: "4",
-	width: "4",
-	height: "16",
-	rx: "1",
-	key: "1okwgv"
-}]]);
-/**
-* @license lucide-react v0.510.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
-var Play = createLucideIcon("play", [["polygon", {
-	points: "6 3 20 12 6 21 6 3",
-	key: "1oa8hb"
+var RotateCcw = createLucideIcon("rotate-ccw", [["path", {
+	d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8",
+	key: "1357e3"
+}], ["path", {
+	d: "M3 3v5h5",
+	key: "1xhq8a"
 }]]);
 /**
 * @license lucide-react v0.510.0 - ISC
@@ -194,16 +185,61 @@ var Shield = createLucideIcon("shield", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var SkipForward = createLucideIcon("skip-forward", [["polygon", {
-	points: "5 4 15 12 5 20 5 4",
-	key: "16p6eg"
-}], ["line", {
-	x1: "19",
-	x2: "19",
-	y1: "5",
-	y2: "19",
-	key: "futhcm"
-}]]);
+var Sparkles = createLucideIcon("sparkles", [
+	["path", {
+		d: "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z",
+		key: "4pj2yx"
+	}],
+	["path", {
+		d: "M20 3v4",
+		key: "1olli1"
+	}],
+	["path", {
+		d: "M22 5h-4",
+		key: "1gvqau"
+	}],
+	["path", {
+		d: "M4 17v2",
+		key: "vumght"
+	}],
+	["path", {
+		d: "M5 18H3",
+		key: "zchphs"
+	}]
+]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Sword = createLucideIcon("sword", [
+	["polyline", {
+		points: "14.5 17.5 3 6 3 3 6 3 17.5 14.5",
+		key: "1hfsw2"
+	}],
+	["line", {
+		x1: "13",
+		x2: "19",
+		y1: "19",
+		y2: "13",
+		key: "1vrmhu"
+	}],
+	["line", {
+		x1: "16",
+		x2: "20",
+		y1: "16",
+		y2: "20",
+		key: "1bron3"
+	}],
+	["line", {
+		x1: "19",
+		x2: "21",
+		y1: "21",
+		y2: "19",
+		key: "13pww6"
+	}]
+]);
 /**
 * @license lucide-react v0.510.0 - ISC
 *
@@ -288,18 +324,18 @@ var TriangleAlert = createLucideIcon("triangle-alert", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var Volume2 = createLucideIcon("volume-2", [
+var Wind = createLucideIcon("wind", [
 	["path", {
-		d: "M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z",
-		key: "uqj9uw"
+		d: "M12.8 19.6A2 2 0 1 0 14 16H2",
+		key: "148xed"
 	}],
 	["path", {
-		d: "M16 9a5 5 0 0 1 0 6",
-		key: "1q6k2b"
+		d: "M17.5 8a2.5 2.5 0 1 1 2 4H2",
+		key: "1u4tom"
 	}],
 	["path", {
-		d: "M19.364 18.364a9 9 0 0 0 0-12.728",
-		key: "ijwkga"
+		d: "M9.8 4.4A2 2 0 1 1 11 8H2",
+		key: "75valh"
 	}]
 ]);
 /**
@@ -308,25 +344,12 @@ var Volume2 = createLucideIcon("volume-2", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var VolumeX = createLucideIcon("volume-x", [
-	["path", {
-		d: "M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z",
-		key: "uqj9uw"
-	}],
-	["line", {
-		x1: "22",
-		x2: "16",
-		y1: "9",
-		y2: "15",
-		key: "1ewh16"
-	}],
-	["line", {
-		x1: "16",
-		x2: "22",
-		y1: "9",
-		y2: "15",
-		key: "5ykzw1"
-	}]
-]);
+var X = createLucideIcon("x", [["path", {
+	d: "M18 6 6 18",
+	key: "1bl5f8"
+}], ["path", {
+	d: "m6 6 12 12",
+	key: "d8bk6v"
+}]]);
 //#endregion
-export { SkipForward as a, Pause as c, BookOpen as d, Swords as i, Orbit as l, Volume2 as n, Shield as o, TriangleAlert as r, Play as s, VolumeX as t, Footprints as u };
+export { Sword as a, RotateCcw as c, Flame as d, Check as f, Swords as i, Package as l, ArrowLeft as m, Wind as n, Sparkles as o, ArrowRight as p, TriangleAlert as r, Shield as s, X as t, Heart as u };
