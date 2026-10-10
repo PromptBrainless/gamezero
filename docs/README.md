@@ -40,6 +40,13 @@ Canonical entry point for the first playable vertical slice. Each subject has on
 | [`repo-consolidation-plan.md`](repo-consolidation-plan.md) | Baseline choices and source replacement rules |
 | [`pr-integration-review.md`](pr-integration-review.md) | Per-PR adoption/defer/exclusion decisions |
 
+## Tooling
+
+| Document | Owns |
+|---|---|
+| [`../tools/import/README.md`](../tools/import/README.md) | Google Drive importer: setup, dry run, import, mapping rules, manifest, safety |
+| [`../imports/drive/README.md`](../imports/drive/README.md) | Import output area (manifest, raw mirror, unsorted review queue) |
+
 ## Reading order
 
 1. `milestones.md` and `implementation-board.md`
