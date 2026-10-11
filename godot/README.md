@@ -36,3 +36,39 @@ the [handoff](../docs/workstreams/orchestration.md#repository-handoff-convention
 Use the command contract in `tests/canonical_inventory.json` for that check.
 Missing Godot means native checks are blocked/unverified, not passed.
 Do not commit `.godot/` caches or exported builds as source.
+
+## Standalone Linux game
+
+The `Linux` preset in `export_presets.cfg` embeds the canonical pack into one
+x86_64 executable. Install the matching official Godot export templates, then:
+
+```sh
+godot --headless --path godot --editor --import --quit
+godot --headless --path godot --export-release Linux /absolute/output/echo-bruch.x86_64
+```
+
+The output directory must already exist. Run the executable without Node or the
+checkout. On machines without Vulkan, use `--rendering-method gl_compatibility`.
+The preset explicitly includes the native host, HUD/stage/theme and detached
+combat scripts as well as the boot scene; keep that resource list current when
+adding a native dependency. Tests and legacy save/inventory stubs are excluded.
+`echo-bruch.x86_64 --headless -- --verify-packaged-boot` checks that packaged
+content loads and career selection is ready, then exits with a success/failure
+status. This is a boot check, not a full exported-game playthrough.
+The [Native playable workflow](../.github/workflows/native-game.yml) validates
+content/native tests, exports the game, checks packaged startup and uploads the
+`echo-bruch-linux-x86_64` archive. An artifact is available only after that job
+actually succeeds; Windows, Android and device acceptance are not implied.
+
+## Native presentation
+
+`scripts/ui/foundation/battle_stage.gd` draws the side-view arena and distinct
+career/opponent silhouettes procedurally from detached presentation snapshots.
+Its target clicks emit intents through the HUD; damage labels consume resolved
+events and never change battle state. City/forest/gate treatments are display
+choices, not gameplay metadata or final WS05 art approval.
+
+Career cards and combat panels reflow between narrow and wide layouts.
+Optional statistics and the ordered event log expand through focusable buttons.
+The movement toggle disables event animation. Critical numeric meters, target
+selection and confirmation remain textual and keyboard/touch accessible.

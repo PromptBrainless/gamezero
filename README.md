@@ -63,6 +63,12 @@ The generated pack is committed so the project can run without Node; edit
 [`docs/runtime-data-plan.md`](docs/runtime-data-plan.md) for runtime contracts
 and [`docs/implementation-board.md`](docs/implementation-board.md) for remaining gates.
 
+The native game now includes a procedural side-view battle stage and responsive
+career/combat panels. A standalone Linux export is configured; see
+[`godot/README.md`](godot/README.md#standalone-linux-game) for the build and
+downloadable workflow artifact. This is a bounded playable increment, not final
+art, mobile-device approval or a completed campaign.
+
 ## Relevant checks
 
 - `npm run test:slice` — reference combat, validation, and canonical content checks.

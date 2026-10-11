@@ -24,6 +24,11 @@ func capture_screen(name: String) -> void:
 	check(main_content_width() <= root.size.x, "Responsive content stays within viewport")
 	check(root.get_node("Main").hud.size.x <= root.size.x, "Configured canvas root reflows without forced scale override")
 	check(root.content_scale_size == Vector2i(390, 720), "Visual test preserves configured mobile-first canvas size")
+	var hud = root.get_node("Main").hud
+	for split_box in hud._responsive_boxes:
+		check(split_box.vertical == (hud.size.x < 900), "Combat panels reflow instead of scaling desktop columns")
+	for grid in hud._responsive_grids:
+		check(grid.columns == (3 if hud.size.x >= 1100 else 1), "Career cards reflow between mobile and desktop")
 
 func main_content_width() -> float:
 	var main = root.get_node("Main")
@@ -94,6 +99,14 @@ func run_tests() -> void:
 	check(visible_text(main.hud).contains(main.current_encounter().arena), "Arena is visible")
 	check(visible_text(main.hud).contains(main.reward_summary(main.current_encounter().rewards)), "Canonical rewards are visible")
 	main.start_encounter()
+	check(is_instance_valid(main.hud.battle_stage), "Native combat mounts an independent side-view stage")
+	check(main.hud.battle_stage.actors[0].id == main.battle.player.id, "Stage renders the real player instance")
+	check(main.hud.battle_stage.actors.size() == main.battle.enemies.size() + 1, "Stage renders all real opponent instances")
+	check(main.hud.battle_stage.encounter.id == main.current_encounter().id, "Stage uses the current canonical encounter identity")
+	var stage_snapshot: Dictionary = main.battle.duplicate(true)
+	main.hud.battle_stage.actors[0].hp = 0
+	check(main.battle == stage_snapshot, "Presentation snapshots cannot mutate combat state")
+	main.render()
 	await capture_screen("combat-mobile")
 	if capture_visuals:
 		root.size = Vector2i(1280, 720)
@@ -133,7 +146,14 @@ func run_tests() -> void:
 	if not skill_id.is_empty():
 		var previous: Dictionary = main.battle.duplicate(true)
 		main.choose_action(skill_id)
-		main.choose_target(0)
+		await process_frame
+		var stage_control: Control = main.hud.battle_stage
+		var target_click := InputEventMouseButton.new()
+		target_click.button_index = MOUSE_BUTTON_LEFT
+		target_click.pressed = true
+		target_click.position = (stage_control.actor_position(1) - Vector2(0, 100)) * Vector2(stage_control.size.x / 1000.0, stage_control.size.y / 360.0)
+		stage_control._gui_input(target_click)
+		check(main.selected_target == 0, "Pointer input on a living stage opponent selects the real target")
 		check(main.interaction == "preview", "Living opponent opens numeric skill preview")
 		check(visible_text(main.hud).contains("Preview damage:"), "Numeric resolver preview is visible")
 		check(main.battle == previous, "Action selection and preview never mutate battle")
@@ -143,9 +163,24 @@ func run_tests() -> void:
 		check(main.selected_action == skill_id, "Resolving ignores conflicting action input")
 		await process_frame
 		check(main.interaction == "idle", "Resolver round returns to idle")
+		check(main.hud.battle_stage._last_sequence == main.battle.seq, "Stage consumes resolved events without replaying earlier sequences")
+		check(not main.hud.log_label.visible, "Full combat log is initially compact")
+		for control in main.hud.column.get_children():
+			if control is Button and control.text.begins_with("Kampfprotokoll"):
+				control.pressed.emit()
+				check(main.hud.log_label.visible, "Log disclosure opens ordered event details")
+				control.pressed.emit()
+				check(not main.hud.log_label.visible, "Log disclosure closes ordered event details")
+				break
 		check(main.battle.round > previous.round or main.screen != "combat", "Confirmation invokes real resolver")
 		if main.screen != "combat":
 			main.reset_run()
+			main.hud.reduced_motion = true
+			main.choose_career(career_id)
+			main.start_encounter()
+			check(not main.hud.battle_stage.is_processing(), "Reduced-motion stage has no animation loop")
+			main.reset_run()
+			main.hud.reduced_motion = false
 			main.choose_career(career_id)
 			main.start_encounter()
 	var lost: Dictionary = main.battle.duplicate(true)

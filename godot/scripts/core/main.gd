@@ -33,7 +33,15 @@ func _ready() -> void:
 	hud.target_selected.connect(choose_target)
 	hud.confirm_requested.connect(confirm_action)
 	hud.cancel_requested.connect(cancel_action)
+	hud.motion_changed.connect(render)
 	load_pack()
+	if "--verify-packaged-boot" in OS.get_cmdline_user_args():
+		if registry.is_empty() or screen != "career_select":
+			push_error("Packaged boot failed: " + content_error)
+			get_tree().quit(1)
+		else:
+			print("Packaged boot verified: %s careers, %s encounters; career selection ready." % [registry.careers.size(), encounter_ids.size()])
+			get_tree().quit(0)
 
 func load_pack(path: String = PACK_PATH) -> bool:
 	registry.clear()
@@ -319,6 +327,8 @@ func check_status_refs(record: Dictionary, statuses: Dictionary, id: String, err
 			errors.append("[%s] status target must be self or enemy." % id)
 
 func reset_state() -> void:
+	if is_instance_valid(hud):
+		hud._presented_sequence = -1
 	career_id = ""
 	encounter_index = 0
 	total_xp = 0
@@ -500,14 +510,18 @@ func render() -> void:
 			hud.text(content_error)
 			hud.button("Retry loading", load_pack)
 		"career_select":
-			hud.heading("Choose your career")
-			hud.text("Four encounters. Every cost, effect and damage value stays visible. No saves, levels or unlocks in this slice.")
+			hud.heading("Wer zieht zur Nordwacht?")
+			hud.text("Drei Karrieren. Vier Begegnungen. Deine Entscheidungen zählen.")
+			hud.text("Wähle deinen Kampfstil. Fortschritt gilt für diese Reise; Lebenspunkte und Ressourcen werden vor jeder Begegnung wiederhergestellt.", hud.MUTED)
 			var ids: Array = registry.careers.keys()
 			ids.sort()
+			var career_cards: GridContainer = hud.cards()
 			for id in ids:
 				var career: Dictionary = registry.careers[id]
+				hud.column = hud.card(career_cards)
+				hud.stage({}, career, [])
 				hud.heading(career.name)
-				hud.button("Choose %s" % career.name, choose_career.bind(id))
+				hud.button("Mit %s aufbrechen →" % career.name, choose_career.bind(id))
 				hud.text("%s · Reaction: %s\n%s" % [career.role, career.reaction, career.description])
 				hud.text("Base stats · %s" % hud.values(career.base_stats))
 				hud.text("Starting skills")
@@ -522,25 +536,31 @@ func render() -> void:
 			hud.heading("%s / %s · %s" % [encounter_index + 1, encounter_ids.size(), encounter.name])
 			hud.text("%s\nArena: %s · Difficulty: %s / 5 · %s" % [encounter.description, encounter.arena, int(encounter.difficulty), encounter.type])
 			var collection: Dictionary = registry.bosses if encounter.type == "boss" else registry.enemies
+			var opponents: Array = []
+			for id in encounter.enemies:
+				opponents.append(collection[id])
+			hud.stage(encounter, registry.careers[career_id], opponents)
+			hud.text("Victory rewards · %s" % reward_summary(encounter.rewards))
+			hud.button("Start encounter", start_encounter)
+			hud.button("Return to career select · reset run", reset_run)
 			for id in encounter.enemies:
 				var opponent: Dictionary = collection[id]
 				hud.heading(opponent.name)
 				hud.text("%s\n%s" % [opponent.get("title", opponent.get("role", "")), hud.values(opponent.base_stats)])
 				hud.text(opponent.get("description", ""))
-			hud.text("Victory rewards · %s" % reward_summary(encounter.rewards))
-			hud.button("Start encounter", start_encounter)
-			hud.button("Return to career select · reset run", reset_run)
 		"reward":
 			hud.heading("Victory · %s" % current_encounter().name)
+			hud.stage(current_encounter(), battle.player, battle.enemies, -1, false, battle.get("events", []))
 			hud.text("Awarded once · %s" % reward_summary(current_encounter().rewards))
-			hud.render_log(combat_events, registry)
 			hud.button("Continue to progression", accept_reward)
+			hud.render_log(combat_events, registry)
 		"defeat":
 			hud.heading("Defeat · %s" % current_encounter().name)
+			hud.stage(current_encounter(), battle.player, battle.enemies, -1, false, battle.get("events", []))
 			hud.text("No rewards granted for this attempt. Retry the same encounter or reset your run and choose a career.")
-			hud.render_log(combat_events, registry)
 			hud.button("Retry encounter", start_encounter)
 			hud.button("Career select · reset run", reset_run)
+			hud.render_log(combat_events, registry)
 		"progression", "complete":
 			hud.heading("Run complete" if screen == "complete" else "Run progression")
 			hud.text("%s · Total earned XP: %s\nEncounters completed: %s / %s" % [registry.careers[career_id].name, total_xp, rewarded_encounters.size(), encounter_ids.size()])

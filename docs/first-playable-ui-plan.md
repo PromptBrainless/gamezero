@@ -65,6 +65,14 @@ handed into subsequent encounters. Random loot rolls and equipping earned gear
 remain follow-up scope, rather than duplicating inline reward grants.
 
 Native flow tests exercise transitions, rejected content, reward idempotence,
-defeat/retry and reset. Responsive career/combat views are checked at narrow
-portrait and wide sizes. Final side-view actor art, animation and device export
-remain production work; the functional HUD is not a claim of final presentation.
+defeat/retry and reset. Responsive career cards and two-column/stacked combat
+panels include a procedural side-view stage. Stage clicks route real target
+intents; event-driven damage labels use detached snapshots and sequence cursors.
+Statistics and the full ordered log can be disclosed without hiding primary
+actions behind the log. The movement toggle disables event animation.
+
+Narrow portrait and wide native reference captures are retained in
+`screenshots/godot-*.png`; exact results and limits are in the
+[execution log](project-history-and-execution-log.md#2026-10-11-native-presentation-and-linux-export).
+Final actor/environment art and physical-device acceptance remain production
+work. Procedural presentation does not satisfy the WS05 art approval gates.

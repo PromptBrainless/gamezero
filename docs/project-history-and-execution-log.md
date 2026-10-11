@@ -218,3 +218,66 @@ absent-tooling/resume statements without rewriting the original evidence.
   distinguishes repository Drive intake from viewer request-scoped connectors,
   anchors existing code/configuration, and records safe secret/blocker handling.
   No external authentication, grants, or credential provisioning is claimed.
+
+## 2026-10-11 Native presentation and Linux export
+
+- **Scope:** bounded WS03/WS04/WS06 follow-up on baseline `1be252b`.
+  Changed paths: `godot/scripts/ui/foundation/battle_stage.gd`,
+  `godot/scripts/ui/combat_hud.gd`, `godot/scripts/core/main.gd`,
+  `godot/tests/flow_test.gd`, `godot/export_presets.cfg`,
+  `.github/workflows/native-game.yml`, root/native READMEs, this log and
+  `first-playable-ui-plan.md`; four deliberate native screenshots below.
+  No canonical content, resolver policy, browser source or historical ledger
+  changes. The existing complete run is preserved, not newly claimed as a campaign.
+- **Decisions:** procedural side-view silhouettes and city/forest/gate scenery
+  are presentation, not a second content catalog or final WS05 artwork.
+  [Native UI owner](first-playable-ui-plan.md#native-implementation) describes
+  responsive cards/panels, detached stage snapshots, target intents, compact
+  ordered log and reduced-motion controls. The
+  [Linux export guide](../godot/README.md#standalone-linux-game) owns packaging.
+  The preset explicitly packages dependencies and canonical JSON, excludes
+  native tests/legacy stubs and embeds its pack in one executable.
+- **Native validation:** official Godot 4.4.1 Linux engine and export template
+  were downloaded outside the checkout and verified against published SHA-512
+  sums. `GODOT=/tmp/gamezero-tools/Godot_v4.4.1-stable_linux.x86_64 npm run
+  test:godot` passed: 243 combat checks and the updated flow suite. The final
+  visual flow run passed **169 checks**, including snapshot isolation, real
+  stage pointer targeting, log disclosure, reduced motion and responsive layout.
+  The native full-run heuristic completed Söldner in 51 rounds, 238 XP;
+  Duellant reached the boss then lost. This is not proof all careers can win.
+- **Visual evidence:** command:
+  `GODOT_SCREENSHOT_DIR=<checkout>/screenshots xvfb-run -a godot --path godot
+  --rendering-method gl_compatibility --audio-driver Dummy --script
+  res://tests/flow_test.gd -- --visual` (using the verified engine above).
+  [Career wide](../screenshots/godot-career-desktop.png),
+  [career narrow](../screenshots/godot-career-mobile.png),
+  [combat wide](../screenshots/godot-combat-desktop.png),
+  [combat narrow](../screenshots/godot-combat-mobile.png).
+  Actual viewports: 1280×720 and 390×844, Xvfb/Mesa llvmpipe. Screenshot inspection
+  found readable silhouettes/contrast; scrollable lower content is outside the
+  initial viewport, not a claim that all controls fit simultaneously. VSync is
+  unsupported in this software renderer; no runtime script errors in final run.
+- **Packaging:** `godot --headless --path godot --editor --import --quit`,
+  followed by `godot --headless --path godot --export-release Linux
+  /tmp/gamezero-tools/echo-bruch.x86_64`, succeeded.
+  From `/tmp/gamezero-tools` (outside the checkout), the executable with
+  `--headless --audio-driver Dummy -- --verify-packaged-boot` exited 0 and
+  reported **3 careers, 4 encounters; career selection ready**.
+  Two imported-scene UID warnings fell back to valid explicit resource paths;
+  packaging readiness passed, not a full exported-game input playthrough.
+  Binary/template caches stay outside version control.
+- **Other checks:** `npm run test:slice` passed 18 checks; `npm run data:check`,
+  `npm run typecheck`, `npm run build` and `git diff --check` passed.
+  `npm test` has 293 passes / 9 existing failures: eight PWA/share-card
+  expectations and one source-coverage expectation for
+  `mobile-first-playable-plan.md`. Isolated rerun of the two unchanged suites
+  reproduced 49 passes / 9 failures. Generated web output was restored.
+  GitHub workflow inspection found no failed jobs in the prior cancelled run;
+  this increment's new artifact workflow has not yet been observed completing.
+- **Blocked/unverified:** gameplay owner must review the existing Duellant
+  boss/balance limitation, not add levels or change balance silently.
+  Final WS05 art approval, physical touch/device/orientation, Windows/Android,
+  native supplement integration and full exported-game playthrough remain open.
+  Integration owner next: inspect the new workflow artifact and play the
+  exported executable through the same four encounters on an actual target
+  device; retain evidence before closing the first-playable release gate.
