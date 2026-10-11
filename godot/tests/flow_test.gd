@@ -104,6 +104,12 @@ func run_tests() -> void:
 	check(main.hud.battle_stage.actors.size() == main.battle.enemies.size() + 1, "Stage renders all real opponent instances")
 	check(main.hud.battle_stage.encounter.id == main.current_encounter().id, "Stage uses the current canonical encounter identity")
 	var stage_snapshot: Dictionary = main.battle.duplicate(true)
+	var player_id: String = main.battle.player.id
+	main.hud.battle_stage.present(main.current_encounter(), main.battle.player, main.battle.enemies, -1, false, [
+		{"seq": 100, "type": "damage", "target": player_id, "payload": {"amount": 4}},
+		{"seq": 101, "type": "damage", "target": player_id, "payload": {"amount": 7}}
+	])
+	check(main.hud.battle_stage._impacts.size() == 2 and main.hud.battle_stage._impacts[0].line != main.hud.battle_stage._impacts[1].line, "Multiple resolved hits on one actor have separate readable damage lines")
 	main.hud.battle_stage.actors[0].hp = 0
 	check(main.battle == stage_snapshot, "Presentation snapshots cannot mutate combat state")
 	main.render()

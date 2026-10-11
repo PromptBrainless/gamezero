@@ -46,6 +46,10 @@ func present(record: Dictionary, player: Dictionary, opponents: Array, target: i
 		_last_sequence = sequence
 	if reduced_motion:
 		_impacts.clear()
+	var hit_counts: Dictionary = {}
+	for impact in _impacts:
+		impact.line = hit_counts.get(impact.actor, 0)
+		hit_counts[impact.actor] = impact.line + 1
 	_elapsed = 0.0
 	set_process(not reduced_motion and not _impacts.is_empty())
 	queue_redraw()
@@ -124,7 +128,7 @@ func _draw() -> void:
 			stroke([Vector2(-74, -170), Vector2(-74, -190), Vector2(-53, -190)], Tokens.HIGHLIGHT, 2)
 			stroke([Vector2(53, -190), Vector2(74, -190), Vector2(74, -170)], Tokens.HIGHLIGHT, 2)
 	for impact in _impacts:
-		var position := actor_position(impact.actor) + Vector2(-20, -220 - _elapsed * 35)
+		var position := actor_position(impact.actor) + Vector2(-20, -190 - impact.line * 32 - _elapsed * 35)
 		draw_set_transform(position * Vector2(size.x / 1000.0, size.y / 360.0), 0, Vector2(size.x / 1000.0, size.y / 360.0))
 		draw_string(ThemeDB.fallback_font, Vector2.ZERO, "−%s" % impact.amount, HORIZONTAL_ALIGNMENT_LEFT, -1, 32, Tokens.HIGHLIGHT)
 	draw_set_transform(Vector2.ZERO)

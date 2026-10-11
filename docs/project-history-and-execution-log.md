@@ -273,7 +273,16 @@ absent-tooling/resume statements without rewriting the original evidence.
   `mobile-first-playable-plan.md`. Isolated rerun of the two unchanged suites
   reproduced 49 passes / 9 failures. Generated web output was restored.
   GitHub workflow inspection found no failed jobs in the prior cancelled run;
-  this increment's new artifact workflow has not yet been observed completing.
+  this increment's   new artifact workflow reports `action_required`:
+  [run 38165869392](https://github.com/PromptBrainless/gamezero/actions/runs/38165869392).
+  A maintainer must authorize execution before a downloadable artifact exists.
+- **Review:** CodeQL Actions found zero alerts. Automated code review could not
+  execute because its configured model was unavailable; a separate read-only
+  review identified overlapping damage labels on multiple same-target hits.
+  Labels now occupy separate lines with a focused native regression test.
+  Final headless flow suite: **150 checks, zero failures**; the reviewed Linux
+  executable was re-exported and its packaged-readiness check again exited 0.
+  GDScript is not analyzed by CodeQL.
 - **Blocked/unverified:** gameplay owner must review the existing Duellant
   boss/balance limitation, not add levels or change balance silently.
   Final WS05 art approval, physical touch/device/orientation, Windows/Android,
