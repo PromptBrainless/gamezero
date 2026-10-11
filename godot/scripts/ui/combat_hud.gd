@@ -5,6 +5,10 @@ signal action_selected(id: String)
 signal target_selected(index: int)
 signal confirm_requested
 signal cancel_requested
+signal motion_changed
+
+const StageScript = preload("res://scripts/ui/foundation/battle_stage.gd")
+const Tokens = preload("res://scripts/ui/foundation/hud_theme.gd")
 
 const BACKGROUND = Color("#17201c")
 const SURFACE = Color("#26332b")
@@ -25,6 +29,13 @@ var target_buttons: Dictionary = {}
 var log_label: Label
 var _first_button: Button
 var _focus_preference: Button
+var _root_column: VBoxContainer
+var _responsive_boxes: Array[BoxContainer] = []
+var _responsive_grids: Array[GridContainer] = []
+var _stages: Array[Control] = []
+var battle_stage: Control
+var reduced_motion := false
+var _presented_sequence := -1
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -49,10 +60,12 @@ func _ready() -> void:
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	column.add_theme_constant_override("separation", SPACING)
 	scroll.add_child(column)
+	_root_column = column
+	resized.connect(_reflow)
 
 func make_theme() -> Theme:
 	var result := Theme.new()
-	result.default_font_size = 18
+	result.default_font_size = 16
 	result.set_color("font_color", "Label", INK)
 	result.set_color("font_color", "Button", INK)
 	result.set_color("font_hover_color", "Button", INK)
@@ -74,7 +87,74 @@ func make_theme() -> Theme:
 		result.set_stylebox(state, "Button", style)
 	return result
 
+func _reflow() -> void:
+	for box in _responsive_boxes:
+		if is_instance_valid(box):
+			box.vertical = size.x < 900
+	for grid in _responsive_grids:
+		if is_instance_valid(grid):
+			grid.columns = 3 if size.x >= 1100 else 1
+	for view in _stages:
+		if is_instance_valid(view):
+			view.custom_minimum_size.y = 180 if view.actors.size() == 1 else 280 if size.x >= 900 else 180
+
+func split() -> Array:
+	var box := BoxContainer.new()
+	box.vertical = size.x < 900
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	box.add_theme_constant_override("separation", SPACING)
+	column.add_child(box)
+	_responsive_boxes.append(box)
+	var sections: Array = []
+	for index in range(2):
+		var section := VBoxContainer.new()
+		section.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		section.add_theme_constant_override("separation", 8)
+		box.add_child(section)
+		sections.append(section)
+	return sections
+
+func cards() -> GridContainer:
+	var grid := GridContainer.new()
+	grid.columns = 3 if size.x >= 1100 else 1
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.add_theme_constant_override("h_separation", SPACING)
+	grid.add_theme_constant_override("v_separation", SPACING)
+	column.add_child(grid)
+	_responsive_grids.append(grid)
+	return grid
+
+func card(parent: Node = null) -> VBoxContainer:
+	var panel := PanelContainer.new()
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var style := Tokens.panel(SURFACE, BORDER)
+	style.content_margin_left = SPACING
+	style.content_margin_right = SPACING
+	style.content_margin_top = SPACING
+	style.content_margin_bottom = SPACING
+	panel.add_theme_stylebox_override("panel", style)
+	(parent if parent != null else column).add_child(panel)
+	var section := VBoxContainer.new()
+	section.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	section.add_theme_constant_override("separation", 8)
+	panel.add_child(section)
+	return section
+
+func stage(encounter: Dictionary, player: Dictionary, opponents: Array, target: int = -1, selectable: bool = false, events: Array = []) -> void:
+	battle_stage = StageScript.new()
+	battle_stage.name = "BattleStage"
+	battle_stage.reduced_motion = reduced_motion
+	battle_stage.custom_minimum_size.y = 180 if opponents.is_empty() else 280 if size.x >= 900 else 180
+	battle_stage._last_sequence = _presented_sequence
+	battle_stage.present(encounter, player, opponents, target, selectable, events)
+	_presented_sequence = battle_stage._last_sequence
+	battle_stage.target_selected.connect(func(index: int): target_selected.emit(index))
+	column.add_child(battle_stage)
+	_stages.append(battle_stage)
+	_reflow()
+
 func begin_screen(brand: String, step: String) -> void:
+	column = _root_column
 	for child in column.get_children():
 		column.remove_child(child)
 		child.queue_free()
@@ -86,10 +166,20 @@ func begin_screen(brand: String, step: String) -> void:
 	log_label = null
 	action_buttons.clear()
 	target_buttons.clear()
+	_responsive_boxes.clear()
+	_responsive_grids.clear()
+	_stages.clear()
+	battle_stage = null
 	text("%s  /  %s" % [brand, step], MUTED)
+	button("Bewegung: reduziert" if reduced_motion else "Bewegung: an", func():
+		reduced_motion = not reduced_motion
+		motion_changed.emit()
+	)
 	scroll.scroll_vertical = 0
 
 func finish_screen() -> void:
+	column = _root_column
+	_reflow()
 	var focus := _focus_preference if is_instance_valid(_focus_preference) else _first_button
 	if is_instance_valid(focus):
 		call_deferred("_focus_if_current", focus)
@@ -153,12 +243,17 @@ func skill_details(skill: Dictionary) -> String:
 
 func render_combat(battle: Dictionary, registry: Dictionary, encounter: Dictionary, resolver: Variant, action: String, target: int, stage: String) -> void:
 	begin_screen("ECHO//BRUCH", "COMBAT · ROUND %s · %s" % [battle.round, stage.replace("_", " ").to_upper()])
+	if battle.round == 1 and battle.get("seq", 0) < _presented_sequence:
+		_presented_sequence = -1
 	heading(encounter.name)
 	text("Arena: %s · Difficulty: %s / 5" % [encounter.arena, int(encounter.difficulty)], MUTED)
 	var player: Dictionary = battle.player
 	var record: Dictionary = registry.items.get(action.trim_prefix("item:"), {}) if action.begins_with("item:") else registry.skills.get(action, {})
 	var self_action: bool = action == "" or action.begins_with("item:") or record.get("target") == "self"
 	var selecting := stage in ["action_selected", "preview"]
+	self.stage(encounter, player, battle.enemies, target, selecting and not self_action, battle.get("events", []))
+	var sections := split()
+	column = sections[0]
 	heading("YOUR SIDE")
 	render_actor(player, registry, resolver)
 	if selecting and self_action:
@@ -175,6 +270,7 @@ func render_combat(battle: Dictionary, registry: Dictionary, encounter: Dictiona
 			target_buttons[index] = target_button
 			if enemy.hp > 0 and _focus_preference == null:
 				_focus_preference = target_button
+	column = sections[1]
 	heading("CHOOSE ACTION")
 	text("Choose action → choose a living target (or self) → inspect exact preview → confirm.", MUTED)
 	for id in player.skills:
@@ -238,16 +334,22 @@ func render_combat(battle: Dictionary, registry: Dictionary, encounter: Dictiona
 		cancel_button = button("Back · target selection" if stage == "preview" else "Cancel action", func(): cancel_requested.emit(), stage == "resolving")
 	if stage == "resolving":
 		text("Resolving round… Inputs locked.", ACCENT)
+	column = _root_column
 	render_log(battle.get("events", []), registry)
 	finish_screen()
 
 func render_actor(actor: Dictionary, registry: Dictionary, resolver: Variant = null) -> void:
+	var parent := column
+	column = card()
 	heading("%s · %s" % [actor.name, "Defeated" if actor.hp <= 0 else "Living"])
 	meter("HP", actor.hp, actor.stats.get("hp", actor.hp))
 	for resource in ["stamina", "focus"]:
-		if actor.has(resource):
+		if actor.has(resource) and actor.stats.get(resource, 0) > 0:
 			meter(resource.capitalize(), actor[resource], actor.stats.get(resource, actor[resource]))
-	text(values(actor.stats), MUTED)
+	text("Angriff %s · Verteidigung %s · Magie %s" % [actor.stats.attack, actor.stats.defense, actor.stats.magic], MUTED)
+	var stats := text(values(actor.stats), MUTED)
+	stats.visible = false
+	button("Werte und Regelhinweise · anzeigen / schließen", func(): stats.visible = not stats.visible)
 	if resolver != null and resolver.has_method("resource_preview"):
 		var cadence: Dictionary = resolver.resource_preview(actor, registry)
 		text("Own end-turn regeneration · Stamina: +%s · Focus: +%s (capped at maximum; active status modifiers included)" % [cadence.end_stamina, cadence.end_focus], MUTED)
@@ -269,6 +371,7 @@ func render_actor(actor: Dictionary, registry: Dictionary, resolver: Variant = n
 		var details := "%s\n%s\nDuration: %s turns · Stacks: %s\n%s" % [status.get("name", effect.id), status.get("description", ""), int(effect.duration), int(effect.stacks), values(status.get("effect", {}))]
 		var chip := button(label, func(): show_detail(details))
 		chip.focus_entered.connect(func(): show_detail(details))
+	column = parent
 
 func meter(label: String, current: Variant, maximum: Variant) -> void:
 	text("%s: %s / %s" % [label, current, maximum])
@@ -292,7 +395,7 @@ func show_detail(value: String) -> void:
 		scroll.ensure_control_visible(detail_label)
 
 func render_log(events: Array, registry: Dictionary) -> void:
-	heading("COMBAT LOG · ORDERED EVENTS")
+	button("Kampfprotokoll · %s Ereignisse · anzeigen / schließen" % events.size(), func(): log_label.visible = not log_label.visible)
 	var ordered: Array = events.duplicate(true)
 	ordered.sort_custom(func(a, b): return a.get("seq", 0) < b.get("seq", 0))
 	var lines: PackedStringArray = []
@@ -302,6 +405,7 @@ func render_log(events: Array, registry: Dictionary) -> void:
 		var payload: Dictionary = event.get("payload", {})
 		lines.append("#%s · Round %s · %s · %s → %s\n%s" % [event.get("seq", "?"), event.get("turn", "?"), str(event.get("type", "event")).replace("_", " "), source, target, values(payload)])
 	log_label = text("\n\n".join(lines) if not lines.is_empty() else "No events yet.", MUTED)
+	log_label.visible = false
 
 func entity_name(id: String, registry: Dictionary) -> String:
 	for collection in ["careers", "enemies", "bosses", "skills", "items", "statuses"]:
