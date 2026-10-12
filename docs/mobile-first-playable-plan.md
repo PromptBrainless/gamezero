@@ -2,7 +2,7 @@
 
 **Target:** Godot 4.4+, mobile-first, turn-based 2D side-view RPG  
 **Scope:** One complete first-playable slice using the existing three careers and four canonical encounters.  
-**Status:** Plan and baseline audit only. No engine execution has been performed as part of this audit; all runtime/export gates below remain unverified until their commands run in a recorded environment.
+**Status:** The original audit below is historical. The [2026-10-12 issue sweep](#2026-10-12-issue-sweep) records real Godot headless execution and Linux packaged boot. Rendered/manual play, device acceptance, approved asset integration and release-candidate acceptance remain unverified.
 
 ## Repository baseline reviewed
 
@@ -69,3 +69,162 @@ The slice is accepted only when Gates 0–4 have recorded evidence, all three ca
 ## Out of scope for this increment
 
 Save/load, shop, overworld, deep inventory/equipment management, new careers/regions, networking, extensive content catalogs, and final cinematic/VFX polish. Finish and verify the connected slice before expanding scope.
+
+## 2026-10-12 issue sweep
+
+### Current scope and order
+
+GitHub's live open-issue query returned exactly **#37, #38, #39, #40, #41,
+#42 and #43**, with no further page. #42 is additional to the supplied list.
+The checkout started clean on `main`, revision `aca5f62`; the open PRs were
+#18, #20, #23 and #26, none on the checked-out branch. They were not merged.
+
+| Order | Issue | Dependency and result |
+|---|---|---|
+| 1 | #37 native QA | Real Godot import, combat and host-flow tests executed. Automated Mercenary/Mage runs complete; Duelist fails at the boss. Rendered/manual acceptance still blocked. |
+| 2 | #38, #42, #43 asset audit | One shared [manifest](../artifacts/art/asset-audit.json), reproducible scanner and reference checks. Archive inspection is separate from loose/runtime files; no unreviewed assets enabled. |
+| 3 | #39 balance | Native 100-seed matrix and exact seed-42 trace reproduce the failure. No tuning or new progression policy approved; issue remains open. |
+| 3 | #40 feedback | Fixed duplicated DoT damage numbers; native feedback regression passes. Audio and rendered timing review remain blocked. |
+| 4 | #41 release | Depends on the preceding gates. Clean staged Linux export and packaged boot passed, not a release-candidate approval. |
+| 5 | publication | Commit only scoped reviewed changes. GitHub CLI and Git remote access lack authentication in this session; issue updates and push are not claimed. |
+
+### Native evidence and balance
+
+Environment: Linux x86_64, Node `v24.21.0`, npm `11.19.0`,
+Godot `4.4.1.stable.official.49a5bc7b6`. Engine and templates came from the
+official URLs and SHA-512 checks already pinned in
+[the native workflow](../.github/workflows/native-game.yml).
+The workflow uses Node 22; this local result does not replace that CI run.
+
+Selected machine-readable results are retained in
+[native evidence](../artifacts/qa/native-2026-10-12.json).
+Actual checks:
+
+- `godot --headless --path godot --editor --import --quit`: initial import
+  exited 0 with no script/import errors.
+- `npm run test:slice`: 18 reference/content checks passed.
+- `GODOT=/path/to/verified/godot timeout 600 npm run test:godot`:
+  **243 combat checks and 151 flow checks passed**. The initial combined
+  180-second attempt timed out after combat passed; the workflow budget is
+  now 600 seconds, still bounded by its 20-minute job limit.
+- `npm run test:godot:balance`: **6 diagnostic checks passed**. Passing means
+  reproducible defeat and replay, not acceptable balance.
+- `npm run test:godot:feedback`: reproduced 3 failures before the fix,
+  then **5 checks passed**. Only the resolver's `damage` event generates a
+  damage label; `status_tick` annotates that same hit.
+- `npm run typecheck`: passed on retry after an earlier terminated attempt.
+  Repository-wide Node failures outside this increment are recorded in the
+  [handoff](project-history-and-execution-log.md#2026-10-12-all-open-issues-increment).
+
+Starting-stat native matrix: 100 independent seeds **42-141** per cell, full
+starting resources/equipment, starting skills only, no level/stat growth.
+The offensive heuristic uses direct-damage previews and available healing.
+This is **not** a human playtest, optimum-strategy proof or target win rate.
+
+| Career | First blood | Deserter | Cult | Boss |
+|---|---:|---:|---:|---:|
+| Duelist | 100 wins / 0 losses | 100 / 0 | 95 / 5 | **0 / 100** |
+| Mercenary | 100 / 0 | 100 / 0 | 78 / 22 | 69 / 31 |
+| Scholar Mage | 100 / 0 | 99 / 1 | 100 / 0 | 30 / 70 |
+
+All 1,200 fights terminate. The actual host-flow heuristic (seeds 42, 43, 44,
+45; run inventory/rewards carried normally) completes Mercenary in 51 rounds
+and Scholar Mage in 21 rounds, each receiving 238 XP. Duelist reaches the
+fourth encounter and loses. The test now attempts **all three careers** instead
+of stopping at the first successful run.
+
+The isolated Duelist boss trace at seed 42 ends at round 14: player HP 0,
+boss HP 23, four automatic Ripostes. Stamina repeatedly returns to its cap;
+the trace does **not** support blaming missing reactions or simple resource
+starvation. `precise_thrust` is the only selectable starting attack; cooldown
+gaps, stuns and phase-two damage/bleeding contribute to insufficient offensive
+output and survival. A bounded alternative-action search also found no win,
+but that is not an exhaustive impossibility proof.
+
+Gameplay owner must review a minimal tuning change or the explicitly pending
+progression policy, then rerun this matrix and manual play. Do not import the
+browser's growth/unlocked skill pool just because its historical boss win rate
+is higher. Canonical values and live rules were unchanged in this increment.
+
+### Asset inventory and visual/sound pairing
+
+`npm run assets:audit` scans `git ls-files`; `npm run assets:audit:check`
+reproduces the committed manifest. Loose files: **257** (12 SVG, one PDF
+document, 244 raster files), including 87 build copies, 13 platform files,
+72 evidence/production inputs and 85 other source files. There are **no
+loose audio files**. Twelve ZIP inputs contain **3,649 non-resource-fork
+asset members, including 500 audio members**. These first-level counts exclude
+nested ZIP contents, whose containers are listed as an explicit inspection gap.
+These are not loaded Godot
+assets. Member paths/sizes and license candidates are listed; member
+dimensions/duration/codec, rights scope and duplicates still need inspection.
+The supplied archive families are incomplete (Worldassets part 05 and most
+demo-project parts are absent); do not assume a license in one part covers
+every other part.
+
+The scanner checks source runtime scenes/scripts/UI/themes and Godot project
+and export configuration. It found no missing *recognized literal* resource
+reference, and separately records seven browser dynamic-path expressions.
+Dynamic candidate status is not proof that every constructed path exists or
+loads. No loose file has been marked `freigegeben`; rights and runtime review
+are missing. Planned 36-icon filenames in the sprint manifest are production
+requirements, not existing runtime resources or automatically inferred
+placeholders.
+
+| Event | Current native visual / candidate | Sound candidate | Timing / level policy | Status |
+|---|---|---|---|---|
+| Menu | Existing textual panels; browser favicon/equipment atlas are not native menu art | Archived `neu3/Audio/back_001.ogg` for audition only | Single UI action; gain/loudness unmeasured | Native logic present; sound not loaded, rights/audition pending |
+| Character choice | Procedural career silhouettes and canonical accent colors | No approved candidate; reject announcer-style speech by default | Confirm selection, never autoplay voice | Headless selection checked; rendered/audio review pending |
+| Combat start | Procedural arena and encounter preview | No approved music; demo loop is not presumed suitable | Start only after encounter confirmation; loop boundaries/gain unmeasured | Transition checked; no native music |
+| Attack / ability | Ordered action log; no final attack animation | Archived `neu3/Audio/chop.ogg` for audition only | Once per resolved action, not preview/animation time | Logic checked; sound/duration/style unverified |
+| Hit / crit | Damage labels from `damage`; crit rolls are not implemented | Archived demo `sound_hit.wav` for audition only | Once per damage event; no invented crit sound | DoT duplicate fixed; audibility/rendering pending |
+| Boss phase | Phase/status/telegraph text and actor snapshot | No approved phase cue | Trigger from phase event, not HP recalculation in view | Native phase tests passed; rendered timing/audio pending |
+| Victory / defeat | Explicit reward/defeat screen and resolved actor state | Demo `gameover.wav` is a candidate for comparison, not a tonal recommendation | Once per terminal result; no reward-trigger replay | Accounting/retry checked; sound not loaded |
+| Reward | Canonical XP/items, awarded once | Demo `sound_coin.wav` for audition only | On accepted terminal result; level unmeasured | Accounting passed; no audio acceptance |
+| General UI | Focusable 48-logical-pixel controls, movement toggle | Same short UI-click audition candidate | Mute/reduced-motion independent; visual/text remains authoritative | Headless focus/motion checks; touch/device/audio pending |
+
+**Recommendation:** retain the current procedural native visual foundation
+until final art review, rather than copying browser/generated art with
+unverified rights or introducing cyberpunk/arcade assets into grounded dark
+fantasy. Audition only short, non-verbal archived UI/hit/reward sounds after
+per-file license confirmation. Filename alone cannot establish style fit,
+duration, loudness or loopability. Prefer Godot-supported WAV/OGG after codec
+verification; browser and mobile compatibility require separate tests.
+Never make sound the only signal. Native audio players/mixer/mute are not
+implemented; the browser prototype's synthesized Web Audio is not native
+audio acceptance.
+
+### Export and known release blockers
+
+The existing Linux x86_64 preset produced a 67 MiB executable outside the
+checkout. `echo-bruch.x86_64 --headless --audio-driver Dummy --
+--verify-packaged-boot`, executed from its output directory, exited 0:
+`Packaged boot verified: 3 careers, 4 encounters; career selection ready.`
+This verifies packaged startup without Node or parent-directory content.
+It does **not** verify a rendered exported playthrough.
+
+Known release gates and resolved export diagnostic:
+
+1. Duelist completion/tuning remains unresolved (#39); gameplay-owner action.
+2. No display server, Xvfb or device was available; genuine native screenshots,
+   animation/touch review and human exported playthrough are unverified (#37/#40/#41).
+3. Archived sound/graphics rights and member metadata are unresolved; no native
+   audio integration, audibility, mix or loop acceptance (#38/#42/#43/#40).
+4. The direct cached export initially exited 0 but logged
+   `ERROR: Can't open file from path ''.`; packaged boot nevertheless passed.
+   Rebuilding the generated editor filesystem cache removed the error.
+   `npm run export:godot:linux -- /absolute/output/echo-bruch.x86_64`
+   now stages fresh source inputs, excluding editor caches, and fails on
+   engine error logs even with exit 0. The final runtime was exported with
+   this wrapper, **without engine errors**, and packaged boot passed again.
+   Rendered exported-game acceptance remains open (#41).
+5. Only Linux diagnostic packaging is exercised. No Android/mobile preset,
+   device installation or supported-mobile release claim. Progress remains
+   in memory; save/load is outside this slice.
+6. Remote publication needs the existing Codespace/GitHub integration to grant
+   authenticated issue-write and Git-push capabilities. Do not fabricate
+   an issue update, uploaded artifact, successful push or CI run.
+
+Next bounded action: review the Duelist trace and approve one explicit tuning
+increment; then run the visual test path in
+a display-capable environment and play all three careers on the selected device.

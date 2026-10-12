@@ -8,6 +8,7 @@ on:
       - "data/**"
       - "src/game/slice/**"
       - "scripts/export-godot-content*"
+      - "scripts/export-godot-release*"
       - "package*.json"
       - ".github/workflows/native-game.yml"
   pull_request:
@@ -16,6 +17,7 @@ on:
       - "data/**"
       - "src/game/slice/**"
       - "scripts/export-godot-content*"
+      - "scripts/export-godot-release*"
       - "package*.json"
       - ".github/workflows/native-game.yml"
 
@@ -51,14 +53,15 @@ jobs:
       - name: Validate data and native combat/run flow
         run: |
           npm run test:slice
-          timeout 180 npm run test:godot
+          timeout 600 npm run test:godot
+          timeout 60 npm run test:godot:balance
+          timeout 30 npm run test:godot:feedback
       - name: Export standalone game and verify packaged boot
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/game"
-          "$GODOT" --headless --path godot --editor --import --quit
-          "$GODOT" --headless --path godot --export-release Linux "$RUNNER_TEMP/game/echo-bruch.x86_64"
+          npm run export:godot:linux -- "$RUNNER_TEMP/game/echo-bruch.x86_64"
           cd "$RUNNER_TEMP/game"
           timeout 30 ./echo-bruch.x86_64 --headless --audio-driver Dummy -- --verify-packaged-boot > boot.log 2>&1
           cat boot.log

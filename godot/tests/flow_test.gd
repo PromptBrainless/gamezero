@@ -357,8 +357,8 @@ func test_fresh_playthrough(main: Node) -> void:
 			completed = true
 			print("Fresh canonical playthrough: %s completed %s encounters in %s rounds, XP %s" % [career, main.rewarded_encounters.size(), rounds, main.total_xp])
 			check(main.rewarded_encounters.size() == main.encounter_ids.size(), "Fresh resolver sequence awards all four encounters")
-			break
-		print("Fresh playthrough attempt: %s reached encounter %s; result %s" % [career, main.encounter_index + 1, main.screen])
+		else:
+			print("Fresh playthrough attempt: %s reached encounter %s; result %s" % [career, main.encounter_index + 1, main.screen])
 	check(completed, "Fresh full encounter sequence is completable without levels or new mechanics")
 
 func finish(main: Node) -> void:

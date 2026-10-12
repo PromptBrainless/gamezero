@@ -39,7 +39,7 @@ func present(record: Dictionary, player: Dictionary, opponents: Array, target: i
 		var sequence := int(event.get("seq", 0))
 		if sequence <= _last_sequence:
 			continue
-		if event.get("type") in ["damage", "status_tick"]:
+		if event.get("type") == "damage":
 			for index in range(actors.size()):
 				if actors[index].get("id") == event.get("target"):
 					_impacts.append({"actor": index, "amount": event.payload.get("amount", 0)})

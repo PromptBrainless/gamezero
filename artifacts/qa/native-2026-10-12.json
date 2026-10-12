@@ -1,0 +1,59 @@
+{
+  "scope": "Diagnostic headless acceptance; not manual/device/release acceptance",
+  "source_revision": "aca5f62",
+  "working_tree": "Issue-sweep changes applied before testing; source revision is the clean starting checkout, not a published final commit",
+  "environment": {
+    "os": "Linux x86_64",
+    "node": "v24.21.0",
+    "npm": "11.19.0",
+    "godot": "4.4.1.stable.official.49a5bc7b6"
+  },
+  "checks": [
+    {"command": "godot --headless --path godot --editor --import --quit", "status": "passed", "engine_errors": 0},
+    {"command": "npm run test:slice", "status": "passed", "checks": 18},
+    {"command": "GODOT=/path/to/verified/godot timeout 600 npm run test:godot", "status": "passed", "combat_checks": 243, "flow_checks": 151},
+    {"command": "npm run test:godot:balance", "status": "passed diagnostic", "checks": 6},
+    {"command": "npm run test:godot:feedback", "status": "passed", "checks": 5, "before_fix_failures": 3},
+    {"command": "npm run typecheck", "status": "passed on retry"},
+    {"command": "node --test scripts/asset-audit.test.mjs scripts/export-godot-release.test.mjs scripts/workstream-docs.test.mjs", "status": "passed", "checks": 14},
+    {"command": "npm test", "status": "failed in unchanged PWA/share-card tests", "checks": 307, "passed": 299, "failed": 8},
+    {"command": "node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts", "status": "passed", "checks": 55},
+    {"command": "npm run assets:audit:check", "status": "passed"},
+    {"command": "npm run export:godot:linux -- /absolute/output/echo-bruch.x86_64", "status": "passed", "engine_errors": 0},
+    {"command": "echo-bruch.x86_64 --headless --audio-driver Dummy -- --verify-packaged-boot", "status": "passed", "exit": 0, "output": "Packaged boot verified: 3 careers, 4 encounters; career selection ready."}
+  ],
+  "matrix": {
+    "mode": "Native starting-stat offensive/healing heuristic; independent seeds 42-141; 100 per cell; no growth or added skills",
+    "columns": ["first_blood", "deserters_toll", "cult_in_the_hedges", "gate_of_the_north_watch"],
+    "wins": {
+      "duelist": [100, 100, 95, 0],
+      "mercenary": [100, 100, 78, 69],
+      "scholar_mage": [100, 99, 100, 30]
+    },
+    "unfinished": 0
+  },
+  "host_flow": [
+    {"career": "duelist", "status": "defeat at encounter 4"},
+    {"career": "mercenary", "status": "completed", "encounters": 4, "rounds": 51, "xp": 238},
+    {"career": "scholar_mage", "status": "completed", "encounters": 4, "rounds": 21, "xp": 238}
+  ],
+  "duelist_diagnostic": {
+    "seed": 42,
+    "result": "defeat",
+    "round": 14,
+    "player_hp": 0,
+    "boss_hp": 23,
+    "ripostes": 4,
+    "balance_values_changed": false
+  },
+  "linux_executable_sha256": "9145a91dff3a17773824e6d5e09a86f3a87bf0aaa04159e55dcfcae98f185678",
+  "unverified": [
+    "Rendered native screenshots and manual gameplay",
+    "Touch/device/mobile export acceptance",
+    "Duelist completion and approved tuning",
+    "Archive member dimensions/audio codec, nested archive inventory and per-file rights",
+    "Native audio loading/audibility/mix/looping",
+    "Rendered exported full playthrough",
+    "Remote issue updates, push and uploaded release artifact"
+  ]
+}
