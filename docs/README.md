@@ -88,6 +88,7 @@ Retain only deliberately selected, non-sensitive evidence, not incidental logs.
 | [`art-sprint-1-production-pack.md`](art-sprint-1-production-pack.md) | Sprint 1 HUD kit and exact 36-icon production brief |
 | [`art-sprint-1-task-checklist.md`](art-sprint-1-task-checklist.md) | Actionable phases and review gates |
 | [`art-sprint-1-prompt-sheet.md`](art-sprint-1-prompt-sheet.md) | Generator-ready HUD and per-icon prompts |
+| [`assets/asset-inventory-and-pairing.md`](assets/asset-inventory-and-pairing.md) | Issue #38/#42/#43 inventory scope and visual/audio pairing review plan; current evidence is in the [tracked asset manifest](../artifacts/art/asset-audit.json) |
 
 ## Post-slice data model planning
 
