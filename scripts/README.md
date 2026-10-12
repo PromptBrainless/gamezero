@@ -23,6 +23,20 @@ Current checks:
 | `npm test` | Repository Node suites; not native Godot acceptance |
 | `npm run data:godot` / `npm run data:godot:check` | Generate/check the canonical `godot/data/runtime_pack.json` used by the native host |
 | `npm run data:check` / `npm run data:export:godot` | Validate/generate the isolated versioned supplement `godot/data/content_bundle.json` |
+| `npm run assets:audit` / `npm run assets:audit:check` | Inventory tracked vector/raster/audio files and reproduce `artifacts/art/asset-audit.json`; literal references, dynamic candidates and build copies remain distinct |
+| `npm run export:godot:linux -- /absolute/output/echo-bruch.x86_64` | Validate canonical pack and export the existing Linux preset from fresh staged inputs; fail on engine error logs even with exit 0 |
+
+The asset audit is evidence preparation for issues #38, #42 and #43, not a
+license or native runtime approval. Run `node --test scripts/asset-audit.test.mjs`
+for its focused regression checks. Audio metadata uses `ffprobe` when available
+and explicitly records unverified metadata when that tool is absent. Rights,
+placeholder identification, sound level/loop quality and dynamically constructed
+paths still need review. ZIP containers are listed read-only with `unzip`, including
+member byte sizes, license candidates, nested containers and resource forks; archived members are
+not treated as loaded runtime assets. Do not enable assets based only on a static
+reference or an archive's license filename.
+Nested ZIP contents are not recursively extracted: those containers remain
+explicit audit gaps and are excluded from first-level asset counts.
 
 The two export paths have different envelopes and consumers; do not substitute
 one for the other. Supplement integration and exported-game acceptance remain

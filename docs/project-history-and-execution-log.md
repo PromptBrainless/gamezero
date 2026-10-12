@@ -290,3 +290,78 @@ absent-tooling/resume statements without rewriting the original evidence.
   Integration owner next: inspect the new workflow artifact and play the
   exported executable through the same four encounters on an actual target
   device; retain evidence before closing the first-playable release gate.
+
+## 2026-10-12 all-open-issues increment
+
+- **Scope and checkout:** started clean at `aca5f62` on `main`. A live,
+  fully paginated GitHub query found #37-#43, including previously omitted
+  #42. Open PRs #18/#20/#23/#26 were read, not merged. Prior dispatch IDs and
+  successful historical screenshots were not reused as current evidence.
+- **Ownership:** WS06 native tests/export and CI, WS03 resolved damage feedback,
+  WS05 tracked/archived asset inventory, existing acceptance/source-coverage
+  docs and tooling. Changed gameplay presentation only: DoT `status_tick` no
+  longer duplicates the matching `damage` label. No canonical values,
+  progression policies, credentials, browser runtime or authored assets changed.
+  Godot 4.4-generated `.gd.uid` sidecars preserve script identities; they are
+  source-side identity metadata, not `.godot/` caches.
+- **Priorities/dependencies/decisions:** the live issue inventory, 3x4 result
+  matrix, event/visual/audio pairing and known release gates are owned by
+  [the current acceptance record](mobile-first-playable-plan.md#2026-10-12-issue-sweep).
+  #38/#42/#43 share one audit, not three competing inventories.
+  [The manifest](../artifacts/art/asset-audit.json) inventories loose files and
+  first-level ZIP members; nested containers and per-asset rights/metadata
+  remain explicit gaps. No asset was approved or enabled from a filename.
+- **Native commands/results:** official checksum-verified Godot 4.4.1 import
+  passed without script errors. `npm run test:slice`: 18 passed.
+  `GODOT=/path/to/verified/godot timeout 600 npm run test:godot`: 243 combat
+  and 151 flow checks passed. Flow now attempts all three careers; Mercenary
+  and Mage complete, Duelist loses at the boss. The initial combined
+  180-second budget timed out; CI now allows 600 seconds.
+  `npm run test:godot:balance`: 6 replay/failure-diagnostic checks passed,
+  not a balance fix. `npm run test:godot:feedback`: 3 pre-fix failures became
+  5 passing checks. `npm run typecheck` passed after a terminated attempt.
+  [Selected native results](../artifacts/qa/native-2026-10-12.json) retain
+  version, commands, matrix and executable digest; transient raw logs remain
+  outside the repository.
+- **Export root cause and change:** Godot's cached editor dependency inventory
+  produced a blank exported file and an engine error despite exit 0. Clearing
+  the generated filesystem cache eliminated it. The clean export wrapper
+  [stages source inputs](../scripts/export-godot-release.mjs) without editor
+  caches, tests or uploaded archives; it rejects engine error logs with exit 0.
+  `npm run export:godot:linux -- /absolute/output/echo-bruch.x86_64` passed
+  without engine errors. The final 67 MiB Linux executable ran outside the
+  checkout with `--headless --audio-driver Dummy -- --verify-packaged-boot`,
+  exited 0 and loaded all three careers/four encounters. This is diagnostic
+  packaging, not a release candidate or rendered exported playthrough.
+- **Tooling/regression:** five asset/export unit checks passed;
+  `npm run assets:audit:check` reproduced 257 loose assets and 12 archive
+  containers, with 3,649 recognized first-level members / 500 audio members,
+  zero recognized missing literal runtime references and seven dynamic
+  expressions needing expansion review. Documentation/source-coverage tests
+  passed after mapping the now-updated mobile acceptance owner. The historical
+  source-coverage gap was tightly coupled to this documentation update.
+  Repository-wide PWA/share-card test failures remain unrelated to this
+  increment. Final `npm test`: **307 tests, 299 passed, 8 failed**, all eight
+  in the unchanged PWA/share-card expectations. The failed first runner
+  prevents npm's chained app-data/auth runner from starting; this is not a
+  fully green repository gate. Final focused asset/export/documentation run:
+  **14 passed**; manifest reproducibility and both diff whitespace checks passed.
+  The four app-data/auth test files were then invoked explicitly with
+  `node --experimental-strip-types --test`: **55 tests passed**.
+- **Unverified/blockers:** no current display server/Xvfb or physical device,
+  so no genuine new native screenshots, animation/audibility/manual/mobile
+  acceptance. Gameplay owner must approve and review Duelist tuning before
+  #39/#41 can close. Art owner must inspect nested packs and per-file rights,
+  duration/codec/style/mix before audio/art integration. No live supplement
+  integration or persistence implied. The existing GitHub connector has read
+  capability; `gh` and Git remote authentication are absent, and no issue-write
+  connector is exposed. Remote issue updates, push and uploaded artifacts are
+  not reported as successful.
+- **Resume:** approve one explicit Duelist tuning increment in canonical
+  content/rules and add a winning regression alongside the preserved native
+  failure trace. Rerun all-career host flow and the 100-seed matrix. Audition
+  individually licensed short UI/hit/reward sounds; keep visuals/text
+  authoritative. Run the visual flow test and exported manual/device matrix
+  in a display-capable environment, then publish through authenticated
+  repository permissions. Do not alter the historical orchestration ledger
+  for this independent issue sweep.

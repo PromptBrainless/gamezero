@@ -4,6 +4,12 @@
 **Sources:** [production pack §§1–9](../art-sprint-1-production-pack.md), [full phased checklist](../art-sprint-1-task-checklist.md), [global/HUD/per-icon prompts](../art-sprint-1-prompt-sheet.md), [visual brief](../visual-reference-brief.md), [style](../ui-style-guide.md).
 **Dependencies:** project approval of terminology and import constraints (Gate 0); WS03 realistic layouts.
 
+The [2026-10-12 asset audit and pairing matrix](../mobile-first-playable-plan.md#asset-inventory-and-visualsound-pairing)
+consolidates issues #38/#42/#43. Its [tracked-file manifest](../../artifacts/art/asset-audit.json)
+is inventory evidence, separate from the exact 36-icon production manifest.
+Archive members, dynamic candidates and license filenames are not runtime/art
+approval; Gate 0 and all visual review gates remain pending.
+
 ## Initial coding assignment and automation limit
 
 Create a complete 36-row machine-readable tracking manifest and canonical-schema semantic-gap report under `artifacts/art/sprint-1/`. Record exact ID/category/meaning, source prompt, required masters/exports/reviews and mapping status. Tracking entries are production work records, **not placeholder art**.

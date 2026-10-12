@@ -43,11 +43,16 @@ The `Linux` preset in `export_presets.cfg` embeds the canonical pack into one
 x86_64 executable. Install the matching official Godot export templates, then:
 
 ```sh
-godot --headless --path godot --editor --import --quit
-godot --headless --path godot --export-release Linux /absolute/output/echo-bruch.x86_64
+npm run export:godot:linux -- /absolute/output/echo-bruch.x86_64
 ```
 
-The output directory must already exist. Run the executable without Node or the
+The exporter checks canonical data, stages source inputs in a fresh temporary
+Godot project and rejects engine errors even if Godot exits 0. It never copies
+editor caches, uploaded ZIPs or tests into that staging project. This avoids the
+observed Godot 4.4.1 cached empty-dependency export error; source scripts and the
+existing Linux preset remain unchanged. Matching templates and `GODOT`/PATH
+are still required. The output directory is created when needed.
+Run the executable without Node or the
 checkout. On machines without Vulkan, use `--rendering-method gl_compatibility`.
 The preset explicitly includes the native host, HUD/stage/theme and detached
 combat scripts as well as the boot scene; keep that resource list current when
@@ -67,6 +72,16 @@ career/opponent silhouettes procedurally from detached presentation snapshots.
 Its target clicks emit intents through the HUD; damage labels consume resolved
 events and never change battle state. City/forest/gate treatments are display
 choices, not gameplay metadata or final WS05 art approval.
+Only `damage` events create damage labels; a preceding `status_tick` annotates
+the same DoT hit and must not create a second number. Run
+`npm run test:godot:feedback` to check this, event replay and reduced motion.
+
+`npm run test:godot:balance` reproduces the starting-stat Duelist boss defeat
+at seed 42 with an ordered native trace. A passing diagnostic means the failure
+was reproduced, not that balance is fixed. The flow suite attempts all three
+careers; it no longer stops after the first completed run. See the current
+[acceptance record](../docs/mobile-first-playable-plan.md#2026-10-12-issue-sweep)
+for separate automated, rendered, device and release gates.
 
 Career cards and combat panels reflow between narrow and wide layouts.
 Optional statistics and the ordered event log expand through focusable buttons.

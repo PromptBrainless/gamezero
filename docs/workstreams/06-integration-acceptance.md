@@ -5,6 +5,11 @@
 **Sources:** [milestones](../milestones.md), [slice acceptance](../vertical-slice-implementation-plan.md), [board review focus/exit](../implementation-board.md), [schema validation](../data-schema.md), [authoring review](../data-authoring-rules.md), [consolidation completion](../project-history-and-execution-log.md), [integration decisions](../pr-integration-review.md), [source replacement rules](../repo-consolidation-plan.md).
 **Dependencies:** WS01–WS04 for playable acceptance; WS05 separately for art-sprint completion.
 
+The [2026-10-12 issue sweep](../mobile-first-playable-plan.md#2026-10-12-issue-sweep)
+records real headless import/combat/flow evidence, the 3x4 balance matrix,
+feedback regression and diagnostic packaged boot. It does not close rendered,
+device, clean-export or release-candidate gates; keep the criteria below pending.
+
 ## Initial assignment
 
 Prepare native acceptance checks under `godot/tests/` for the canonical seven-collection inventory and documented IDs/order; inspect engine availability and define an honest runnable command/evidence contract. Do not claim a working game from counts or static checks. Do not change boot until other contracts are integrated.
