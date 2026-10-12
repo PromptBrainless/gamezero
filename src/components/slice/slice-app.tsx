@@ -2,9 +2,20 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Flame, Heart, Package, RotateCcw, Shield, Sparkles, Sword, Swords, Wind, X } from "lucide-react";
 import { createBattle, preview, resolveRound, unavailable, type Actor, type Battle } from "@/game/slice/combat";
 import { careers, encounters, items, registry, resolveEncounter, skills, statuses } from "@/game/slice/content";
-import { Figure, Scene } from "./scene";
+import { Figure, Scene, type SceneFx, type SceneHit } from "./scene";
 
 type Screen = "career" | "encounter" | "combat" | "reward" | "progress" | "finish";
+
+const idleFx: SceneFx = { seq: 0, action: null, target: 0, hits: [] };
+
+function actionKind(id: string | null, skipTurn: boolean): SceneFx["action"] {
+  if (skipTurn) return "skip";
+  if (!id) return "rest";
+  if (id.startsWith("item:")) return "item";
+  const skill = skills[id];
+  if (skill.target === "self") return skill.type === "defense" ? "guard" : "rest";
+  return skill.damage?.scaling_stat === "magic" ? "cast" : "strike";
+}
 
 export function SliceApp() {
   const [screen, setScreen] = useState<Screen>("career");
@@ -14,7 +25,8 @@ export function SliceApp() {
   const [battle, setBattle] = useState<Battle | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [target, setTarget] = useState(0);
-  const [impact, setImpact] = useState(0);
+  const [fx, setFx] = useState<SceneFx>(idleFx);
+  const [history, setHistory] = useState<string[]>([]);
   const [resolving, setResolving] = useState(false);
   const [supplies, setSupplies] = useState<Record<string, number> | null>(null);
   const career = careers[careerId];
@@ -31,7 +43,7 @@ export function SliceApp() {
     const timer = window.setTimeout(() => {
       setResolving(false);
       if (battle?.result === "victory") setScreen("reward");
-    }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450);
+    }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 900);
     return () => window.clearTimeout(timer);
   }, [resolving, battle]);
 
@@ -41,16 +53,26 @@ export function SliceApp() {
     setBattle(next);
     setTarget(0);
     setSelected(null);
+    setFx(idleFx);
+    setHistory([...next.log]);
     setScreen("combat");
   }
 
   function act() {
     if (!battle || resolving) return;
     const next = resolveRound(battle, battle.player.skipTurn ? null : selected, target, registry);
+    const hits: SceneHit[] = [];
+    next.enemies.forEach((enemy, index) => {
+      const lost = battle.enemies[index].hp - enemy.hp;
+      if (lost > 0) hits.push({ slot: index, amount: lost, kind: "damage" });
+    });
+    const playerDelta = battle.player.hp - next.player.hp;
+    if (playerDelta !== 0) hits.push({ slot: "player", amount: Math.abs(playerDelta), kind: playerDelta > 0 ? "damage" : "heal" });
     setBattle(next);
+    setFx((previous) => ({ seq: previous.seq + 1, action: actionKind(battle.player.skipTurn ? null : selected, battle.player.skipTurn), target, hits }));
+    setHistory((entries) => [...entries, `— Runde ${battle.round} —`, ...next.log]);
     setResolving(true);
     setSelected(null);
-    setImpact((value) => value + 1);
     if (next.enemies[target]?.hp <= 0) setTarget(Math.max(0, next.enemies.findIndex((enemy) => enemy.hp > 0)));
     if (next.result === "victory") {
       setXp((value) => value + encounter.rewards.xp);
@@ -61,7 +83,7 @@ export function SliceApp() {
   }
 
   function reset() {
-    setScreen("career"); setStep(0); setXp(0); setBattle(null); setSelected(null); setSupplies(null); setResolving(false);
+    setScreen("career"); setStep(0); setXp(0); setBattle(null); setSelected(null); setSupplies(null); setResolving(false); setFx(idleFx); setHistory([]);
   }
 
   return (
@@ -89,7 +111,8 @@ export function SliceApp() {
         </> : <>
           <div className="slice-title compact"><div><p>BEGEGNUNG {step + 1} / {encounters.length}</p><h1>{encounter.name}</h1></div><span>{screen === "combat" && battle ? `RUNDE ${battle.round}` : `${xp} EP`}</span></div>
           <section className="slice-stage" aria-label="Schlachtfeld">
-            <Scene career={careerId} opponents={encounter.enemies} selected={target} encounter={step} impact={impact} defeated={battle && screen === "combat" ? battle.enemies.map((enemy) => enemy.hp <= 0) : []} />
+            <Scene career={careerId} opponents={encounter.enemies} selected={target} encounter={step} fx={screen === "combat" ? fx : idleFx} defeated={battle && screen === "combat" ? battle.enemies.map((enemy) => enemy.hp <= 0) : []} telegraphs={battle && screen === "combat" ? battle.enemies.map((enemy) => enemy.hp > 0 && Boolean(enemy.pendingSkill)) : []} playerDown={screen === "combat" && battle?.result === "defeat"} />
+            {screen === "combat" && battle && fx.seq > 0 && battle.log.length > 0 && <div className="slice-feed" key={fx.seq} aria-live="polite">{battle.log.map((entry, index) => <p key={index} style={{ animationDelay: `${index * 0.14}s` }}>{entry}</p>)}</div>}
             <div className="slice-stage-caption"><span>{career.name}</span><span>{roster.map((enemy) => enemy.name).join(" + ")}</span></div>
           </section>
 
@@ -106,7 +129,7 @@ export function SliceApp() {
               </div>
               <div className="slice-preview"><div className="slice-preview-heading"><p className="slice-eyebrow">VORSCHAU</p><button type="button" className="slice-cancel" disabled={resolving || !selected} onClick={() => setSelected(null)} aria-label="Auswahl abbrechen" title="Auswahl abbrechen"><X size={16} /></button></div><h3>{battle.player.skipTurn ? "Betäubt" : skill?.name ?? item?.name ?? "Kraft sammeln"}</h3><p>{battle.player.skipTurn ? "Dein Zug entfällt. Danach handeln die Gegner." : skill?.description ?? item?.description ?? "Ressourcen auffüllen. Danach handeln die Gegner."}</p>{skill && !battle.player.skipTurn && <p className="slice-outcome">{recipient?.name}{damage > 0 ? ` · ${damage} Schaden` : " · Statuswirkung"}</p>}{item?.use && <p className="slice-outcome">{item.use.heal_hp ? `+${item.use.heal_hp} LP ` : ""}{item.use.restore_focus ? `+${item.use.restore_focus} Fokus ` : ""}{item.use.next_attack_bonus ? `+${item.use.next_attack_bonus} auf den nächsten Angriff` : ""}</p>}<button type="button" className="slice-button primary" disabled={Boolean(reason) || resolving} onClick={act}>{resolving ? "Auflösung …" : reason ?? (battle.player.skipTurn ? "Zug aussetzen" : "Aktion bestätigen")}<ArrowRight size={16} /></button></div>
             </section>}
-            <details className="slice-log"><summary>Kampfprotokoll · Runde {battle.round}</summary><div aria-live="polite">{battle.log.map((entry, index) => <p key={`${battle.round}-${index}`}>{entry}</p>)}</div></details>
+            <details className="slice-log"><summary>Kampfprotokoll · Runde {battle.round}</summary><div aria-live="polite">{history.map((entry, index) => <p key={index} className={entry.startsWith("—") ? "slice-log-round" : undefined}>{entry}</p>)}</div></details>
           </>}
 
           {screen === "reward" && <section className="slice-result"><p className="slice-eyebrow">BEGEGNUNG BESTANDEN</p><h2>Ein Schritt näher.</h2><div className="slice-reward"><span><Sparkles size={20} /> +{encounter.rewards.xp} EP</span>{encounter.rewards.items?.map((id) => <span key={id}><Package size={18} />{items[id].name}</span>)}</div><p>Gesammelt: {xp} EP.</p><button type="button" className="slice-button primary" onClick={() => setScreen(step === encounters.length - 1 ? "finish" : "progress")}>Reise fortsetzen <ArrowRight size={17} /></button></section>}
@@ -120,7 +143,8 @@ export function SliceApp() {
 }
 
 function ActorPanel({ actor }: { actor: Actor }) {
-  return <div className="slice-actor"><div className="slice-actor-heading"><strong>{actor.name}</strong><span><Heart size={13} />{actor.hp} / {actor.stats.hp}</span></div><div className="slice-meter" role="meter" aria-label={`${actor.name} Lebenspunkte`} aria-valuenow={actor.hp} aria-valuemin={0} aria-valuemax={actor.stats.hp}><span style={{ width: `${actor.hp / actor.stats.hp * 100}%` }} /></div><div className="slice-actor-resources">{actor.stats.stamina !== undefined && <span><Flame size={13} />{actor.stamina}/{actor.stats.stamina} Ausdauer</span>}{actor.stats.focus !== undefined && <span><Sparkles size={13} />{actor.focus}/{actor.stats.focus} Fokus</span>}</div>{actor.nextAttackBonus > 0 && <p className="slice-reaction">Nächster Angriff: +{actor.nextAttackBonus}</p>}<div className="slice-effects">{actor.effects.map((effect) => <details key={effect.id}><summary><StatusSymbol id={effect.id} />{statuses[effect.id]?.name} · {effect.duration} R · ×{effect.stacks}</summary><p>{statuses[effect.id]?.description}</p></details>)}</div></div>;
+  const ratio = `${actor.hp / actor.stats.hp * 100}%`;
+  return <div className="slice-actor"><div className="slice-actor-heading"><strong>{actor.name}</strong><span><Heart size={13} />{actor.hp} / {actor.stats.hp}</span></div><div className="slice-meter" role="meter" aria-label={`${actor.name} Lebenspunkte`} aria-valuenow={actor.hp} aria-valuemin={0} aria-valuemax={actor.stats.hp}><span className="slice-meter-ghost" style={{ width: ratio }} /><span style={{ width: ratio }} /></div><div className="slice-actor-resources">{actor.stats.stamina !== undefined && <span><Flame size={13} />{actor.stamina}/{actor.stats.stamina} Ausdauer</span>}{actor.stats.focus !== undefined && <span><Sparkles size={13} />{actor.focus}/{actor.stats.focus} Fokus</span>}</div>{actor.nextAttackBonus > 0 && <p className="slice-reaction">Nächster Angriff: +{actor.nextAttackBonus}</p>}<div className="slice-effects">{actor.effects.map((effect) => <details key={effect.id} className={`status-${effect.id}`}><summary><StatusSymbol id={effect.id} />{statuses[effect.id]?.name} · {effect.duration} R · ×{effect.stacks}</summary><p>{statuses[effect.id]?.description}</p></details>)}</div></div>;
 }
 
 function StatusSymbol({ id }: { id: string }) {

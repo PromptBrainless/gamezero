@@ -2,8 +2,8 @@ import { i as __toESM } from "../_runtime.mjs";
 import { K as require_react, b as require_jsx_runtime } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as Sword, c as RotateCcw, d as Flame, f as Check, i as Swords, l as Package, m as ArrowLeft, n as Wind, o as Sparkles, p as ArrowRight, s as Shield, t as X, u as Heart } from "../_libs/lucide-react.mjs";
 import { a as number, c as record, d as union, i as literal, l as strictObject, n as array, r as boolean, s as partialRecord, t as _enum, u as string } from "../_libs/zod.mjs";
-import "./router-BWpkqgxb.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-7E68AGGl.js
+import "./router-QHWY2JLP.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-SvPHCBjQ.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 function actor(record, skills) {
@@ -640,11 +640,23 @@ function resolveEncounter(index) {
 		rewards: encounter.rewards.items?.map((id) => items[id]) ?? []
 	};
 }
+var idleFx$1 = {
+	seq: 0,
+	action: null,
+	target: 0,
+	hits: []
+};
+var enemyPalette = {
+	alley_cutthroat: "#9e414c",
+	rusted_deserter: "#8a6f48",
+	hedge_cultist: "#6f4d84",
+	iron_captain: "#4f6878"
+};
 function Figure({ kind, enemy = false }) {
 	const mage = kind === "scholar_mage" || kind === "hedge_cultist";
 	const light = kind === "duelist" || kind === "alley_cutthroat";
 	const boss = kind === "iron_captain";
-	const cloak = enemy ? "#9e414c" : mage ? "#69aeae" : light ? "#d5b15e" : "#548e82";
+	const cloak = enemy ? enemyPalette[kind] ?? "#9e414c" : mage ? "#69aeae" : light ? "#d5b15e" : "#548e82";
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
 		transform: enemy ? "translate(160 0) scale(-1 1)" : void 0,
 		children: [
@@ -788,7 +800,485 @@ function Figure({ kind, enemy = false }) {
 		]
 	});
 }
-function Scene({ career, opponents, selected = 0, encounter = 0, impact = 0, defeated = [] }) {
+var arenas = [
+	{
+		sky: [
+			"#3a2340",
+			"#99543f",
+			"#d9a05f"
+		],
+		ground: ["#5d564a", "#231d20"],
+		far: "#43304a",
+		mid: "#352736",
+		stoneA: "#4f4344",
+		stoneB: "#6d5f55",
+		path: "#b09a7c"
+	},
+	{
+		sky: [
+			"#2e4350",
+			"#7d9697",
+			"#c2bb9b"
+		],
+		ground: ["#566753", "#1c2a2b"],
+		far: "#3e5660",
+		mid: "#32464e",
+		stoneA: "#45565a",
+		stoneB: "#6b7a6f",
+		path: "#a3ab8e"
+	},
+	{
+		sky: [
+			"#13302f",
+			"#3f6e5f",
+			"#9cb582"
+		],
+		ground: ["#3e6050", "#14272b"],
+		far: "#24473f",
+		mid: "#1d3a36",
+		stoneA: "#34504a",
+		stoneB: "#54705f",
+		path: "#8aa07e"
+	},
+	{
+		sky: [
+			"#0b1527",
+			"#1d3350",
+			"#415972"
+		],
+		ground: ["#3c4f63", "#101b2b"],
+		far: "#17293f",
+		mid: "#20374e",
+		stoneA: "#324256",
+		stoneB: "#4e6072",
+		path: "#8e9cab"
+	}
+];
+function enemyAnchor(index, count, kind) {
+	const boss = kind === "iron_captain";
+	const s = boss ? 1.24 : 1.04;
+	const x = count > 1 ? 605 + index * 170 : 685;
+	const y = boss ? 82 : 130;
+	return {
+		x,
+		y,
+		s,
+		cx: x + 80 * s,
+		cy: y + 125 * s,
+		top: y + 12 * s,
+		ground: y + 231 * s
+	};
+}
+var playerAnchor = {
+	x: 194,
+	y: 128,
+	s: 1.04,
+	cx: 277,
+	cy: 258,
+	top: 141,
+	ground: 368
+};
+function AlleyDusk() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+			cx: "500",
+			cy: "150",
+			r: "58",
+			fill: "#f3c17e",
+			opacity: ".85"
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+			cx: "500",
+			cy: "150",
+			r: "90",
+			fill: "#f3c17e",
+			opacity: ".12"
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+			fill: "#2c2030",
+			stroke: "#54404e",
+			strokeWidth: "2",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M0 330V96H58L70 72L84 96H128V330Z" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M128 330V180H196V150H238V330Z" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M818 330V120H872V88H906V120H1000V330Z" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M744 330V210H818V330Z" })
+			]
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+			fill: "#ffb45e",
+			className: "fx-window",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+					x: "24",
+					y: "128",
+					width: "16",
+					height: "22"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+					x: "76",
+					y: "128",
+					width: "16",
+					height: "22"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+					x: "150",
+					y: "200",
+					width: "14",
+					height: "19"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+					x: "846",
+					y: "146",
+					width: "16",
+					height: "22"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+					x: "922",
+					y: "160",
+					width: "16",
+					height: "22"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+					x: "770",
+					y: "236",
+					width: "14",
+					height: "18"
+				})
+			]
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+			d: "M128 110 Q400 180 744 128",
+			fill: "none",
+			stroke: "#1d1620",
+			strokeWidth: "3"
+		}),
+		[
+			240,
+			420,
+			590,
+			700
+		].map((x, index) => {
+			const y = 110 + Math.round(48 * Math.sin((x - 128) / 616 * Math.PI));
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: `M${x} ${y} v12`,
+					stroke: "#1d1620",
+					strokeWidth: "3"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+					x: x - 7,
+					y: y + 12,
+					width: "14",
+					height: "18",
+					rx: "3",
+					fill: "#3a2a2c",
+					stroke: "#54404e"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+					cx: x,
+					cy: y + 21,
+					r: "5",
+					fill: "#ffc46e",
+					className: "fx-lantern",
+					style: { animationDelay: `${index * .9}s` }
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+					cx: x,
+					cy: y + 21,
+					r: "16",
+					fill: "#ffc46e",
+					opacity: ".14",
+					className: "fx-lantern",
+					style: { animationDelay: `${index * .9}s` }
+				})
+			] }, x);
+		}),
+		Array.from({ length: 10 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+			className: "fx-mote",
+			style: {
+				animationDelay: `${-index * 1.3}s`,
+				animationDuration: `${8 + index % 4}s`
+			},
+			cx: (index * 137 + 60) % 1e3,
+			cy: 180 + index * 53 % 170,
+			r: index % 3 ? 1.6 : 2.4,
+			fill: "#f3cf96"
+		}, index))
+	] });
+}
+function RuinedRoad() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+			cx: "790",
+			cy: "100",
+			r: "40",
+			fill: "#e7e3c4",
+			opacity: ".7"
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+			fill: "#8d9489",
+			opacity: ".8",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M330 92 l9 -5 9 5 -9 2Z" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M380 74 l8 -4 8 4 -8 2Z" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M296 70 l7 -4 7 4 -7 2Z" })
+			]
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+			fill: "#50625f",
+			stroke: "#6d7f78",
+			strokeWidth: "3",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M60 335 V150 h42 V335 Z M210 335 V150 h42 V335 Z" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M48 162 Q156 74 264 162 L246 176 Q156 104 66 176 Z" }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: "M96 150 h120 l-8 -16 h-104 Z",
+					fill: "#43534f"
+				})
+			]
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+			d: "M560 318 L720 300 L724 322 L564 342 Z M736 296 L800 288 L803 308 L739 317 Z",
+			fill: "#5c6e68",
+			stroke: "#73857c",
+			strokeWidth: "3"
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("ellipse", {
+			cx: "640",
+			cy: "334",
+			rx: "96",
+			ry: "9",
+			fill: "#101e22",
+			opacity: ".35"
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+			d: "M884 338 V260 h34 l6 24 v54 Z",
+			fill: "#55675f",
+			stroke: "#73857c",
+			strokeWidth: "3"
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+			d: "M893 282 h16 M893 300 h16",
+			stroke: "#3b4c47",
+			strokeWidth: "3"
+		}),
+		Array.from({ length: 3 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ellipse", {
+			className: "fx-mist",
+			style: { animationDelay: `${-index * 4}s` },
+			cx: 200 + index * 320,
+			cy: 344 + index * 14,
+			rx: "190",
+			ry: "17",
+			fill: "#cfd8c2",
+			opacity: ".09"
+		}, index))
+	] });
+}
+function HedgeClearing() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
+		Array.from({ length: 12 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+			transform: `translate(${index * 97 - 20} ${index % 2 * 19})`,
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: "M43 332 L51 104 L68 100 L66 333Z",
+					fill: "#263f44"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: "M-12 206 L56 28 L117 212 L85 205 L130 257 L-27 255 L17 209Z",
+					fill: "#305959"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: "M17 183 L56 65 L95 185Z",
+					fill: "#406c62"
+				})
+			]
+		}, index)),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+			d: "M0 340 Q60 296 130 338 Q200 292 280 336 Q350 298 430 338 Q510 294 590 336 Q660 298 740 338 Q820 294 900 336 Q950 306 1000 338 V380 H0 Z",
+			fill: "#2c4f3f"
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+			d: "M0 348 Q80 318 170 348 Q260 316 360 348 Q460 318 560 348 Q660 316 760 348 Q860 318 1000 348 V386 H0 Z",
+			fill: "#234236",
+			opacity: ".9"
+		}),
+		Array.from({ length: 8 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+			className: "fx-firefly",
+			style: {
+				animationDelay: `${-index * 1.7}s`,
+				animationDuration: `${5 + index % 3}s`
+			},
+			cx: (index * 173 + 90) % 1e3,
+			cy: 240 + index * 67 % 110,
+			r: "2.4",
+			fill: "#d8f2a0"
+		}, index))
+	] });
+}
+function FortressGate() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+			cx: "812",
+			cy: "84",
+			r: "34",
+			fill: "#dfe8ef",
+			opacity: ".9"
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+			cx: "812",
+			cy: "84",
+			r: "58",
+			fill: "#dfe8ef",
+			opacity: ".1"
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+			fill: "#273d52",
+			stroke: "#3b5469",
+			strokeWidth: "3",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M0 350 V160 h92 v-26 h30 v26 h756 v-26 h30 v26 h92 V350 Z" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M110 160 V96 h26 v-18 h22 v18 h26 v64 Z M816 160 V96 h26 v-18 h22 v18 h26 v64 Z" })]
+		}),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+			d: "M0 160 h1000 M0 176 h1000",
+			stroke: "#1b2e40",
+			strokeWidth: "3",
+			opacity: ".7"
+		}),
+		Array.from({ length: 18 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+			x: index * 56 + 8,
+			y: 142,
+			width: "26",
+			height: "18",
+			fill: "#1b2e40"
+		}, index)),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+			d: "M430 350 V218 Q500 168 570 218 V350 Z",
+			fill: "#101c2b",
+			stroke: "#3b5469",
+			strokeWidth: "4"
+		}),
+		Array.from({ length: 5 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+			d: `M${452 + index * 24} 350 V${206 + Math.abs(index - 2) * 8}`,
+			stroke: "#45596c",
+			strokeWidth: "5"
+		}, index)),
+		/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+			d: "M430 262 H570",
+			stroke: "#45596c",
+			strokeWidth: "5"
+		}),
+		[86, 914].map((x, side) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+				d: `M${x - 5} 350 V268 h10 V350 Z`,
+				fill: "#22384c",
+				stroke: "#3b5469",
+				strokeWidth: "2"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+				d: `M${x - 20} 268 h40 l-7 -18 h-26 Z`,
+				fill: "#30465a",
+				stroke: "#3b5469",
+				strokeWidth: "2"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+				d: `M${x} 250 Q${x - 11} 232 ${x - 3} 216 Q${x + 2} 230 ${x + 9} 221 Q${x + 12} 240 ${x} 250`,
+				fill: "#f3a154",
+				className: "fx-flame",
+				style: { animationDelay: `${side * .4}s` }
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+				cx: x,
+				cy: 236,
+				r: "26",
+				fill: "#f3a154",
+				opacity: ".12",
+				className: "fx-lantern"
+			}),
+			Array.from({ length: 4 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+				className: "fx-ember",
+				style: { animationDelay: `${-index * 1.4 - side * .7}s` },
+				cx: x - 8 + index * 6,
+				cy: 240,
+				r: "1.8",
+				fill: "#ffc678"
+			}, index))
+		] }, x)),
+		Array.from({ length: 16 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+			className: "fx-snow",
+			style: {
+				animationDelay: `${-index * 1.1}s`,
+				animationDuration: `${7 + index % 5}s`
+			},
+			cx: (index * 131 + 45) % 1e3,
+			cy: "-12",
+			r: index % 3 ? 1.8 : 2.6,
+			fill: "#e8eef2",
+			opacity: ".8"
+		}, index))
+	] });
+}
+function ImpactFx({ action, cx, cy }) {
+	if (action === "strike") return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+		className: "fx-burst",
+		transform: `translate(${cx} ${cy})`,
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+				d: "M-58 -42 Q0 -72 58 -16",
+				fill: "none",
+				stroke: "#f6e6bd",
+				strokeWidth: "7",
+				strokeLinecap: "round"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+				d: "M-50 -10 Q0 -44 52 12",
+				fill: "none",
+				stroke: "#f2cf76",
+				strokeWidth: "4",
+				strokeLinecap: "round"
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+				d: "M-20 -58 l-8 22 M26 -52 l2 24 M48 8 l18 10 M-44 18 l-20 6",
+				stroke: "#fff3d6",
+				strokeWidth: "3",
+				strokeLinecap: "round"
+			})
+		]
+	});
+	if (action === "cast") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("g", {
+		transform: `translate(${cx} ${cy - 20})`,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+			className: "fx-cast",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+					r: "34",
+					fill: "none",
+					stroke: "#9fe6da",
+					strokeWidth: "5"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+					r: "14",
+					fill: "#c9f4ec",
+					opacity: ".8"
+				}),
+				Array.from({ length: 6 }, (_, index) => {
+					const angle = index * Math.PI / 3;
+					return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+						d: `M${Math.cos(angle) * 44} ${Math.sin(angle) * 44} l${Math.cos(angle) * 16} ${Math.sin(angle) * 16}`,
+						stroke: "#8cdccf",
+						strokeWidth: "4",
+						strokeLinecap: "round"
+					}, index);
+				})
+			]
+		})
+	});
+	return null;
+}
+function Scene({ career, opponents, selected = 0, encounter = 0, fx = idleFx$1, defeated = [], telegraphs = [], playerDown = false }) {
+	const arena = arenas[encounter] ?? arenas[0];
+	const targetAnchor = enemyAnchor(fx.target, opponents.length, opponents[fx.target] ?? "");
+	const playerHit = fx.hits.find((hit) => hit.slot === "player");
+	const offensive = fx.action === "strike" || fx.action === "cast";
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
 		className: "slice-scene",
 		viewBox: "0 0 1000 470",
@@ -797,28 +1287,28 @@ function Scene({ career, opponents, selected = 0, encounter = 0, impact = 0, def
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("defs", { children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-					id: "slice-sky",
+					id: `slice-sky-${encounter}`,
 					x2: "0",
 					y2: "1",
 					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", { stopColor: "#172e48" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", { stopColor: arena.sky[0] }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
 							offset: ".7",
-							stopColor: "#537c86"
+							stopColor: arena.sky[1]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
 							offset: "1",
-							stopColor: "#b2ba9d"
+							stopColor: arena.sky[2]
 						})
 					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-					id: "slice-ground",
+					id: `slice-ground-${encounter}`,
 					x2: "0",
 					y2: "1",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", { stopColor: "#506d63" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", { stopColor: arena.ground[0] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
 						offset: "1",
-						stopColor: "#182d37"
+						stopColor: arena.ground[1]
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("pattern", {
@@ -836,94 +1326,156 @@ function Scene({ career, opponents, selected = 0, encounter = 0, impact = 0, def
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
 				width: "1000",
 				height: "470",
-				fill: "url(#slice-sky)"
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-				cx: "743",
-				cy: "92",
-				r: "42",
-				fill: "#e1dbac",
-				opacity: ".8"
+				fill: `url(#slice-sky-${encounter})`
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
 				d: "M0 252 L104 175 L189 223 L295 143 L404 228 L538 166 L663 216 L813 156 L1000 234 V470 H0Z",
-				fill: "#35576a"
+				fill: arena.far
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
 				d: "M0 285 L135 242 L267 285 L424 230 L598 278 L725 244 L866 279 L1000 243 V470 H0Z",
-				fill: "#294754"
+				fill: arena.mid
 			}),
-			encounter === 2 ? Array.from({ length: 12 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
-				transform: `translate(${index * 97 - 20} ${index % 2 * 19})`,
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-						d: "M43 332 L51 104 L68 100 L66 333Z",
-						fill: "#263f44"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-						d: "M-12 206 L56 28 L117 212 L85 205 L130 257 L-27 255 L17 209Z",
-						fill: "#305959"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-						d: "M17 183 L56 65 L95 185Z",
-						fill: "#406c62"
-					})
-				]
-			}, index)) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
-				fill: "#354f56",
-				stroke: "#607a76",
-				strokeWidth: "2",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M0 328V109H69V91H92V173H137V328Z" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M824 335V112H847V85H875V112H966V82H993V116H1000V335Z" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M315 316V155H342V140H365V155H391V318H369V196Q354 173 339 196V318Z" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M611 316V204H638V185H664V210H692V317Z" }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-						d: "M17 141H50V177H17Z M895 152H918V188H895Z",
-						fill: "#172f3c"
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-						d: "M10 208H73 M840 229H977 M323 235H382",
-						fill: "none"
-					})
-				]
-			}),
+			encounter === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlleyDusk, {}) : encounter === 1 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RuinedRoad, {}) : encounter === 2 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(HedgeClearing, {}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FortressGate, {}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
 				d: "M0 351 Q177 319 377 344 T1000 331V470H0Z",
-				fill: "url(#slice-ground)"
+				fill: `url(#slice-ground-${encounter})`
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
 				d: "M0 384 Q287 345 513 386 T1000 365",
 				fill: "none",
-				stroke: "#97a38b",
+				stroke: arena.path,
 				strokeWidth: "3",
 				opacity: ".3"
 			}),
 			Array.from({ length: 24 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
 				d: `M${index * 47} ${409 + index % 4 * 12}l18 -3 13 5 -22 5Z`,
-				fill: index % 2 ? "#3e5960" : "#607572",
+				fill: index % 2 ? arena.stoneA : arena.stoneB,
 				opacity: ".6"
 			}, index)),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("g", {
-				className: "slice-idle",
-				transform: "translate(194 128) scale(1.04)",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Figure, { kind: career })
+				transform: `translate(${playerAnchor.x} ${playerAnchor.y}) scale(1.04)`,
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("g", {
+					className: playerDown ? "fx-fall" : playerHit ? "fx-hit-l" : fx.action === "strike" ? "fx-lunge" : fx.action === "cast" ? "fx-channel" : "slice-idle",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Figure, { kind: career })
+				}, `stance-${offensive || playerHit ? fx.seq : "idle"}`)
 			}),
-			opponents.map((kind, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
-				transform: `translate(${opponents.length > 1 ? 605 + index * 170 : 685} ${kind === "iron_captain" ? 82 : 130}) scale(${kind === "iron_captain" ? 1.24 : 1.04})`,
-				opacity: defeated[index] ? .2 : selected === index ? 1 : .68,
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Figure, {
-					kind,
-					enemy: true
-				}), selected === index && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-					d: "M60 244 L80 254 L100 244",
+			fx.action === "guard" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+				className: "fx-guard",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: "M332 170 Q364 228 332 300",
+					fill: "none",
+					stroke: "#9fe6da",
+					strokeWidth: "8",
+					strokeLinecap: "round"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: "M318 184 Q344 228 318 284",
+					fill: "none",
+					stroke: "#c9f4ec",
+					strokeWidth: "4",
+					strokeLinecap: "round",
+					opacity: ".7"
+				})]
+			}, `guard-${fx.seq}`),
+			(fx.action === "item" || fx.action === "rest") && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("g", { children: Array.from({ length: 3 }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("g", {
+				className: "fx-wisp",
+				style: { animationDelay: `${index * .14}s` },
+				transform: `translate(${playerAnchor.cx - 26 + index * 26} ${playerAnchor.cy - 20 - index % 2 * 14})`,
+				children: fx.action === "item" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: "M-6 0 h12 M0 -6 v12",
+					stroke: "#9fe3a8",
+					strokeWidth: "5",
+					strokeLinecap: "round"
+				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+					r: "5",
+					fill: "#b5d78e"
+				})
+			}, index)) }, `aid-${fx.seq}`),
+			opponents.map((kind, index) => {
+				const anchor = enemyAnchor(index, opponents.length, kind);
+				const hit = fx.hits.find((entry) => entry.slot === index);
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("g", {
+					transform: `translate(${anchor.x} ${anchor.y}) scale(${anchor.s})`,
+					opacity: defeated[index] ? void 0 : selected === index ? 1 : .72,
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("g", {
+						className: defeated[index] ? "fx-fall" : hit ? "fx-hit-r" : "slice-sway",
+						style: defeated[index] || hit ? void 0 : { animationDelay: `${-index * 1.3}s` },
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Figure, {
+							kind,
+							enemy: true
+						})
+					}, `state-${defeated[index] ? "down" : hit ? fx.seq : "idle"}`)
+				}, `${kind}-${index}`);
+			}),
+			opponents.map((kind, index) => {
+				const anchor = enemyAnchor(index, opponents.length, kind);
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", { children: [selected === index && !defeated[index] && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ellipse", {
+					className: "fx-ring",
+					cx: anchor.cx,
+					cy: anchor.ground,
+					rx: 62 * anchor.s,
+					ry: 10 * anchor.s,
 					fill: "none",
 					stroke: "#f2cf76",
 					strokeWidth: "3"
+				}), telegraphs[index] && !defeated[index] && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+					className: "fx-telegraph",
+					transform: `translate(${anchor.cx} ${anchor.top - 26})`,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+						d: "M0 -15 L11 0 L0 15 L-11 0 Z",
+						fill: "#1a201e",
+						stroke: "#f2cf76",
+						strokeWidth: "2.5"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+						d: "M0 -7 v8 M0 7 v.5",
+						stroke: "#f2cf76",
+						strokeWidth: "3",
+						strokeLinecap: "round"
+					})]
+				})] }, `marks-${kind}-${index}`);
+			}),
+			fx.seq > 0 && offensive && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("g", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ImpactFx, {
+				action: fx.action,
+				cx: targetAnchor.cx,
+				cy: targetAnchor.cy
+			}) }, `impact-${fx.seq}`),
+			fx.seq > 0 && playerHit && playerHit.kind === "damage" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+				className: "fx-burst",
+				transform: `translate(${playerAnchor.cx} ${playerAnchor.cy})`,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: "M48 -38 Q0 -62 -46 -10",
+					fill: "none",
+					stroke: "#e8795f",
+					strokeWidth: "6",
+					strokeLinecap: "round"
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+					d: "M20 -50 l4 20 M-34 -26 l-14 12",
+					stroke: "#f0a18b",
+					strokeWidth: "3",
+					strokeLinecap: "round"
 				})]
-			}, `${kind}-${index}`)),
+			}, `counter-${fx.seq}`),
+			fx.seq > 0 && fx.hits.map((hit) => {
+				const anchor = hit.slot === "player" ? playerAnchor : enemyAnchor(hit.slot, opponents.length, opponents[hit.slot] ?? "");
+				const fill = hit.kind === "heal" ? "#9fe3a8" : hit.slot === "player" ? "#ff937b" : "#ffd98a";
+				return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("text", {
+					className: "fx-float",
+					x: anchor.cx,
+					y: anchor.top - 8,
+					textAnchor: "middle",
+					fill,
+					stroke: "#141a18",
+					strokeWidth: "5",
+					paintOrder: "stroke",
+					fontSize: "34",
+					fontWeight: "700",
+					fontFamily: "Fraunces, serif",
+					children: hit.kind === "heal" ? `+${hit.amount}` : `−${hit.amount}`
+				}, `hit-${fx.seq}-${hit.slot}`);
+			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
-				fill: "#b8bc91",
+				fill: arena.path,
+				opacity: ".85",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M93 396l-11-27 16 19 5-32 6 28 16-15-12 28Z" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M906 395l-8-28 13 19 12-30-4 32 14-17-10 30Z" })]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
@@ -931,23 +1483,23 @@ function Scene({ career, opponents, selected = 0, encounter = 0, impact = 0, def
 				height: "470",
 				fill: "url(#slice-grain)",
 				pointerEvents: "none"
-			}),
-			impact > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
-				className: "slice-impact",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-					d: "M537 173l-12 60 44-28-31 61 36-7-68 70 19-54-37 12 31-47-31 7Z",
-					fill: "#f2cf76"
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-					cx: "534",
-					cy: "257",
-					r: "60",
-					fill: "none",
-					stroke: "#e7dbc0",
-					strokeWidth: "2"
-				})]
-			}, impact)
+			})
 		]
 	});
+}
+var idleFx = {
+	seq: 0,
+	action: null,
+	target: 0,
+	hits: []
+};
+function actionKind(id, skipTurn) {
+	if (skipTurn) return "skip";
+	if (!id) return "rest";
+	if (id.startsWith("item:")) return "item";
+	const skill = skills[id];
+	if (skill.target === "self") return skill.type === "defense" ? "guard" : "rest";
+	return skill.damage?.scaling_stat === "magic" ? "cast" : "strike";
 }
 function SliceApp() {
 	const [screen, setScreen] = (0, import_react.useState)("career");
@@ -957,7 +1509,8 @@ function SliceApp() {
 	const [battle, setBattle] = (0, import_react.useState)(null);
 	const [selected, setSelected] = (0, import_react.useState)(null);
 	const [target, setTarget] = (0, import_react.useState)(0);
-	const [impact, setImpact] = (0, import_react.useState)(0);
+	const [fx, setFx] = (0, import_react.useState)(idleFx);
+	const [history, setHistory] = (0, import_react.useState)([]);
 	const [resolving, setResolving] = (0, import_react.useState)(false);
 	const [supplies, setSupplies] = (0, import_react.useState)(null);
 	const career = careers[careerId];
@@ -973,7 +1526,7 @@ function SliceApp() {
 		const timer = window.setTimeout(() => {
 			setResolving(false);
 			if (battle?.result === "victory") setScreen("reward");
-		}, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450);
+		}, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 900);
 		return () => window.clearTimeout(timer);
 	}, [resolving, battle]);
 	function start() {
@@ -982,15 +1535,42 @@ function SliceApp() {
 		setBattle(next);
 		setTarget(0);
 		setSelected(null);
+		setFx(idleFx);
+		setHistory([...next.log]);
 		setScreen("combat");
 	}
 	function act() {
 		if (!battle || resolving) return;
 		const next = resolveRound(battle, battle.player.skipTurn ? null : selected, target, registry);
+		const hits = [];
+		next.enemies.forEach((enemy, index) => {
+			const lost = battle.enemies[index].hp - enemy.hp;
+			if (lost > 0) hits.push({
+				slot: index,
+				amount: lost,
+				kind: "damage"
+			});
+		});
+		const playerDelta = battle.player.hp - next.player.hp;
+		if (playerDelta !== 0) hits.push({
+			slot: "player",
+			amount: Math.abs(playerDelta),
+			kind: playerDelta > 0 ? "damage" : "heal"
+		});
 		setBattle(next);
+		setFx((previous) => ({
+			seq: previous.seq + 1,
+			action: actionKind(battle.player.skipTurn ? null : selected, battle.player.skipTurn),
+			target,
+			hits
+		}));
+		setHistory((entries) => [
+			...entries,
+			`— Runde ${battle.round} —`,
+			...next.log
+		]);
 		setResolving(true);
 		setSelected(null);
-		setImpact((value) => value + 1);
 		if (next.enemies[target]?.hp <= 0) setTarget(Math.max(0, next.enemies.findIndex((enemy) => enemy.hp > 0)));
 		if (next.result === "victory") {
 			setXp((value) => value + encounter.rewards.xp);
@@ -1007,6 +1587,8 @@ function SliceApp() {
 		setSelected(null);
 		setSupplies(null);
 		setResolving(false);
+		setFx(idleFx);
+		setHistory([]);
 	}
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
 		className: "slice-app",
@@ -1128,17 +1710,30 @@ function SliceApp() {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 						className: "slice-stage",
 						"aria-label": "Schlachtfeld",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scene, {
-							career: careerId,
-							opponents: encounter.enemies,
-							selected: target,
-							encounter: step,
-							impact,
-							defeated: battle && screen === "combat" ? battle.enemies.map((enemy) => enemy.hp <= 0) : []
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "slice-stage-caption",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: career.name }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: roster.map((enemy) => enemy.name).join(" + ") })]
-						})]
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Scene, {
+								career: careerId,
+								opponents: encounter.enemies,
+								selected: target,
+								encounter: step,
+								fx: screen === "combat" ? fx : idleFx,
+								defeated: battle && screen === "combat" ? battle.enemies.map((enemy) => enemy.hp <= 0) : [],
+								telegraphs: battle && screen === "combat" ? battle.enemies.map((enemy) => enemy.hp > 0 && Boolean(enemy.pendingSkill)) : [],
+								playerDown: screen === "combat" && battle?.result === "defeat"
+							}),
+							screen === "combat" && battle && fx.seq > 0 && battle.log.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "slice-feed",
+								"aria-live": "polite",
+								children: battle.log.map((entry, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									style: { animationDelay: `${index * .14}s` },
+									children: entry
+								}, index))
+							}, fx.seq),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "slice-stage-caption",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: career.name }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: roster.map((enemy) => enemy.name).join(" + ") })]
+							})
+						]
 					}),
 					screen === "encounter" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 						className: "slice-encounter",
@@ -1328,7 +1923,10 @@ function SliceApp() {
 							className: "slice-log",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: ["Kampfprotokoll · Runde ", battle.round] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								"aria-live": "polite",
-								children: battle.log.map((entry, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: entry }, `${battle.round}-${index}`))
+								children: history.map((entry, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: entry.startsWith("—") ? "slice-log-round" : void 0,
+									children: entry
+								}, index))
 							})]
 						})
 					] }),
@@ -1428,6 +2026,7 @@ function SliceApp() {
 	});
 }
 function ActorPanel({ actor }) {
+	const ratio = `${actor.hp / actor.stats.hp * 100}%`;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "slice-actor",
 		children: [
@@ -1440,14 +2039,17 @@ function ActorPanel({ actor }) {
 					actor.stats.hp
 				] })]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "slice-meter",
 				role: "meter",
 				"aria-label": `${actor.name} Lebenspunkte`,
 				"aria-valuenow": actor.hp,
 				"aria-valuemin": 0,
 				"aria-valuemax": actor.stats.hp,
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { width: `${actor.hp / actor.stats.hp * 100}%` } })
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "slice-meter-ghost",
+					style: { width: ratio }
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { width: ratio } })]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "slice-actor-resources",
@@ -1471,14 +2073,17 @@ function ActorPanel({ actor }) {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "slice-effects",
-				children: actor.effects.map((effect) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(StatusSymbol, { id: effect.id }),
-					statuses[effect.id]?.name,
-					" · ",
-					effect.duration,
-					" R · ×",
-					effect.stacks
-				] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: statuses[effect.id]?.description })] }, effect.id))
+				children: actor.effects.map((effect) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", {
+					className: `status-${effect.id}`,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(StatusSymbol, { id: effect.id }),
+						statuses[effect.id]?.name,
+						" · ",
+						effect.duration,
+						" R · ×",
+						effect.stacks
+					] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: statuses[effect.id]?.description })]
+				}, effect.id))
 			})
 		]
 	});
