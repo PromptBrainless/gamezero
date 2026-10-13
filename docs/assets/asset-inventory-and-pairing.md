@@ -78,3 +78,37 @@ Der Abschluss-PR enthält das ausgefüllte Manifest, den reproduzierbaren Scan, 
 - Rekursives Nested-ZIP-Inventar (optional, ohne ungeprüfte Aktivierung)
 - Rechte/Attribution + Metadaten für Archive-Members
 - Keine Assets als `freigegeben` markiert
+
+## ZIP-Parts-Übersicht (Stand 2026-10-13)
+
+Kompakte Übersicht der gesplitteten Archive. Nur erste Ebene; nested Inhalte nicht extrahiert. Keine Assets freigegeben.
+
+### Demo-Projects (root)
+| Part | Größe | Assets (Ebene 1) | Nested | Lizenz-Kandidaten |
+|------|-------|------------------|--------|-------------------|
+| part01-of15.zip | 21.1 MB | 288 | 0 | 2 (LICENSE.txt / LICENSE) |
+| part02-of15.zip | 17.3 MB | 41 | 0 | 7 (*.LICENSE.md) |
+| part04-of15.zip | 2.5 MB | 17 | 0 | 3 (*.LICENSE.md) |
+
+*Fehlend laut Audit: parts 03, 05–15.*
+
+### Worldassets (godot/)
+| Part | Größe | Assets (Ebene 1) | Nested | Lizenz-Kandidaten / Nested-Beispiel |
+|------|-------|------------------|--------|-------------------------------------|
+| part01-of10.zip | 14.4 MB | 436 | 1 | — / hologram_interface.zip |
+| part02-of10.zip | 12.3 MB | 82 | 2 | public-license.txt / cyberpunk + dark_forest |
+| part03-of10.zip | 14.0 MB | 0 | **10** | — / kenney_*.zip (cartography, ui, sounds, …) |
+| part04-of10.zip | 3.5 MB | 46 | 2 | 12× License*.txt / kenney_voiceover |
+| part06-of10.zip | 14.4 MB | 14 | 0 | — |
+| part07-of10.zip | 15.4 MB | 49 | 0 | — |
+| part08-of10.zip | 15.0 MB | 496 | 1 | license.txt / parallax-industrial-pack |
+| part09-of10.zip | 13.9 MB | 1109 | 1 | — / skymon-icons.zip |
+| part10-of10.zip | 5.5 MB | 1079 | 0 | — |
+
+*Fehlend: part05-of10.zip.*
+
+### Lizenz-Kandidaten (Pfade, keine Inhalte geprüft)
+- Demo: `godot-demo-projects-master/.../LICENSE`, `*.LICENSE.md`
+- Worldassets: `neu3/License*.txt`, `neu3/cyberpunk-street-files/public-license.txt`, `neu3/parallax-industrial-pack/license.txt`
+
+**Status:** Alle Nested-ZIPs und Member-Metadaten (Codec, Dauer, Maße) sowie Rechte-Prüfung bleiben offen. Keine Extraktion oder Aktivierung vorgenommen.
