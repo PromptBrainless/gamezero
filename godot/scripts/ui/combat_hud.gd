@@ -39,7 +39,7 @@ var _presented_sequence := -1
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	theme = make_theme()
+	theme = Tokens.create()
 	var backdrop := ColorRect.new()
 	backdrop.color = BACKGROUND
 	backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -63,7 +63,7 @@ func _ready() -> void:
 	_root_column = column
 	resized.connect(_reflow)
 
-func make_theme() -> Theme:
+func make_theme() -> Theme:  # legacy fallback – prefer Tokens.create()
 	var result := Theme.new()
 	result.default_font_size = 16
 	result.set_color("font_color", "Label", INK)

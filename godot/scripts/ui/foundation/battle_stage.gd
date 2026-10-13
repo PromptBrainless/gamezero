@@ -32,7 +32,7 @@ func _ready() -> void:
 	clip_contents = true
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if target_selection else Control.CURSOR_ARROW
 	resized.connect(queue_redraw)
-	set_process(not reduced_motion and not _impacts.is_empty())
+	set_process(not reduced_motion)
 	_preload_textures()
 
 func _preload_textures() -> void:
@@ -73,7 +73,7 @@ func present(record: Dictionary, player: Dictionary, opponents: Array, target: i
 		impact.line = hit_counts.get(impact.actor, 0)
 		hit_counts[impact.actor] = impact.line + 1
 	_elapsed = 0.0
-	set_process(not reduced_motion and not _impacts.is_empty())
+	set_process(not reduced_motion)
 	queue_redraw()
 
 func _process(delta: float) -> void:
@@ -173,8 +173,8 @@ func draw_actor(actor: Dictionary, enemy: bool) -> void:
 		var frame := int(_anim_time / _frame_duration) % _frame_count
 		var frame_w := sheet.get_width() / float(_frame_count)
 		var region := Rect2(frame * frame_w, 0, frame_w, sheet.get_height())
-		var dest_size := Vector2(frame_w, sheet.get_height()) * 0.55
-		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 10, dest_size.x, dest_size.y)
+		var dest_size := Vector2(frame_w, sheet.get_height()) * 1.35
+		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 28, dest_size.x, dest_size.y)
 		var facing := -1.0 if enemy else 1.0
 		if facing < 0:
 			draw_texture_rect_region(sheet, dest, region, Color.WHITE, false)
@@ -187,8 +187,8 @@ func draw_actor(actor: Dictionary, enemy: bool) -> void:
 	var tex: Texture2D = _texture_cache.get(id)
 	if tex:
 		var facing := -1.0 if enemy else 1.0
-		var dest_size := Vector2(tex.get_width(), tex.get_height()) * 0.55
-		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 10, dest_size.x, dest_size.y)
+		var dest_size := Vector2(tex.get_width(), tex.get_height()) * 1.35
+		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 28, dest_size.x, dest_size.y)
 		if facing < 0:
 			draw_texture_rect_region(tex, dest, Rect2(0, 0, tex.get_width(), tex.get_height()), Color.WHITE, false)
 		else:
