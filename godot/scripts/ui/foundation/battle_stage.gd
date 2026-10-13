@@ -173,8 +173,8 @@ func draw_actor(actor: Dictionary, enemy: bool) -> void:
 		var frame := int(_anim_time / _frame_duration) % _frame_count
 		var frame_w := sheet.get_width() / float(_frame_count)
 		var region := Rect2(frame * frame_w, 0, frame_w, sheet.get_height())
-		var dest_size := Vector2(frame_w, sheet.get_height()) * 1.35
-		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 28, dest_size.x, dest_size.y)
+		var dest_size := Vector2(frame_w, sheet.get_height()) * 1.6
+		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 18, dest_size.x, dest_size.y)
 		var facing := -1.0 if enemy else 1.0
 		if facing < 0:
 			draw_texture_rect_region(sheet, dest, region, Color.WHITE, false)
@@ -187,8 +187,8 @@ func draw_actor(actor: Dictionary, enemy: bool) -> void:
 	var tex: Texture2D = _texture_cache.get(id)
 	if tex:
 		var facing := -1.0 if enemy else 1.0
-		var dest_size := Vector2(tex.get_width(), tex.get_height()) * 1.35
-		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 28, dest_size.x, dest_size.y)
+		var dest_size := Vector2(tex.get_width(), tex.get_height()) * 1.6
+		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 18, dest_size.x, dest_size.y)
 		if facing < 0:
 			draw_texture_rect_region(tex, dest, Rect2(0, 0, tex.get_width(), tex.get_height()), Color.WHITE, false)
 		else:
