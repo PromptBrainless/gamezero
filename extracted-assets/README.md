@@ -1,16 +1,21 @@
 # Extracted Assets
 
-Die vorhandenen ZIP-Archive wurden lokal extrahiert (Stand 2026-10-13).
+Die vorhandenen ZIP-Archive wurden extrahiert (Stand 2026-10-13).
 
-## Extrahierte Ordner (lokal, ~183 MB)
+## Enthalten (~183 MB, ~7900 Dateien)
 
-- `abacktools-godot-demo-projects-master-part01-of15/`
-- `abacktools-godot-demo-projects-master-part02-of15/`
-- `abacktools-godot-demo-projects-master-part04-of15/`
-- `abacktools-Worldassets-part01-of10/` … `part10-of10/` (ohne part05)
+- Demo-Projects: parts 01, 02, 04
+- Worldassets: parts 01–04, 06–10
+- Nested ZIPs (Kenney-Packs, Voiceovers, Hologram-Interface etc.) ebenfalls entpackt
 
-Nested ZIPs (Kenney-Packs, etc.) wurden ebenfalls entpackt.
+## Fehlende Parts
 
-**Hinweis:** Die vollständigen extrahierten Dateien sind zu groß für ein normales Git-Commit (~183 MB). Sie liegen lokal vor. Fehlende Parts (Demo 03/05–15, Worldassets part05) müssen separat beschafft werden.
+**Demo-Projects:** part03, part05–15  
+→ Vollständiger Satz verfügbar unter: https://github.com/godotengine/godot-demo-projects (offizielles Repo, ~530 MB)
 
-Keine Assets sind als `freigegeben` markiert. Rechte/Lizenzen müssen vor Integration geprüft werden.
+**Worldassets:** part05-of10.zip  
+→ Keine öffentliche Quelle gefunden. Möglicherweise custom/abacktools-Pack.
+
+## Status
+
+Keine Assets als `freigegeben` markiert. Rechte/Lizenzen müssen vor Integration geprüft werden.
