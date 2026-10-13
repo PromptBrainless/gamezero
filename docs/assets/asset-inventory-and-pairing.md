@@ -112,3 +112,32 @@ Kompakte Übersicht der gesplitteten Archive. Nur erste Ebene; nested Inhalte ni
 - Worldassets: `neu3/License*.txt`, `neu3/cyberpunk-street-files/public-license.txt`, `neu3/parallax-industrial-pack/license.txt`
 
 **Status:** Alle Nested-ZIPs und Member-Metadaten (Codec, Dauer, Maße) sowie Rechte-Prüfung bleiben offen. Keine Extraktion oder Aktivierung vorgenommen.
+
+## Liste der fehlenden / unvollständigen Assets
+
+### Fehlende ZIP-Parts (vollständig abwesend)
+
+**Demo-Projects** (`abacktools-godot-demo-projects-master-partXX-of15.zip`):  
+Vorhanden: 01, 02, 04  
+**Fehlend:** part03, part05–part15 (12 Parts)
+
+**Worldassets** (`godot/abacktools-Worldassets-partXX-of10.zip`):  
+Vorhanden: 01–04, 06–10  
+**Fehlend:** part05-of10.zip
+
+### Nested-ZIP-Inhalte (vorhanden, aber nicht inventarisiert)
+
+Diese inneren ZIPs sind gelistet, aber nicht extrahiert:
+
+- Worldassets-part01: `neu3/1._free_hologram_interface_wenrexa.zip`
+- Worldassets-part02: `neu3/cyberpunk-street-files.zip`, `neu3/dark_forest.zip`
+- Worldassets-part03: 10× Kenney-Packs (`kenney_cartography-pack.zip`, `kenney_fantasy-ui-borders.zip`, `kenney_impact-sounds.zip`, `kenney_interface-sounds.zip`, `kenney_minimap-pack.zip`, `kenney_new-platformer-pack-1.1.zip`, `kenney_rpg-audio.zip`, `kenney_sketch-desert.zip`, `kenney_sketch-town-expansion.zip`, `kenney_ui-audio.zip`)
+- Worldassets-part04: `kenney_voiceover-pack-fighter.zip`, `kenney_voiceover-pack.zip`
+- Worldassets-part08: `neu3/parallax-industrial-pack.zip`
+- Worldassets-part09: `neu3/skymon-icons-free-v250329.zip`
+
+### Dynamische Referenzen (unbestätigt, nicht fehlend)
+
+7 Template-Ausdrücke in `src/components/echo/` (siehe oben) – Kandidaten existieren, Laufzeit-Load ungeprüft.
+
+**Hinweis:** Extraktion der vorhandenen ZIPs in eigene Ordner erfolgt separat; fehlende Parts müssen beschafft werden. Keine ungeprüften Assets werden als freigegeben markiert.
