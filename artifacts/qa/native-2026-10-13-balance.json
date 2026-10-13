@@ -1,0 +1,119 @@
+{
+  "scope": "Diagnostic Godot starting-stat balance rerun; not manual, device, or release acceptance",
+  "recorded_on": "2026-10-13",
+  "base_revision": "70bf735b8b43567512b73551506153f813df990c",
+  "working_tree": "Measured after the documented data/test changes in this increment; the base revision is not the tuned source revision.",
+  "environment": {
+    "os": "Linux x86_64",
+    "node": "v24.21.0",
+    "npm": "11.19.0",
+    "godot": "4.4.1.stable.official.49a5bc7b6"
+  },
+  "tuning": {
+    "precise_thrust_before": {
+      "damage_multiplier": 1.1,
+      "cooldown": 2
+    },
+    "precise_thrust_after": {
+      "damage_multiplier": 1.6,
+      "cooldown": 1
+    },
+    "alley_cutthroat_skills_before": [
+      "precise_thrust",
+      "rending_cut"
+    ],
+    "alley_cutthroat_skills_after": [
+      "rending_cut"
+    ],
+    "reason": "The Alley Cutthroat reused this Duelist skill; tuning its shared damage/cooldown also changed enemy attacks."
+  },
+  "seed_42_reproduction": {
+    "configuration": "Duelist vs iron_captain, seed 42, starting stats/equipment/skills/items, direct-damage and healing-item heuristic",
+    "before": {
+      "result": "defeat",
+      "round": 14,
+      "player_hp": 0,
+      "boss_hp": 23,
+      "automatic_ripostes": 4
+    },
+    "after": {
+      "result": "victory",
+      "round": 13,
+      "player_hp": 11,
+      "boss_hp": 0
+    }
+  },
+  "matrix": {
+    "seed_range_inclusive": [
+      42,
+      141
+    ],
+    "seeds_per_cell": 100,
+    "mode": "Starting stats/equipment/skills, no growth; strongest available direct attack and available healing items",
+    "unfinished_fights": 0,
+    "before": {
+      "duelist": {
+        "first_blood": 100,
+        "deserters_toll": 100,
+        "cult_in_the_hedges": 95,
+        "gate_of_the_north_watch": 0
+      },
+      "mercenary": {
+        "first_blood": 100,
+        "deserters_toll": 100,
+        "cult_in_the_hedges": 78,
+        "gate_of_the_north_watch": 69
+      },
+      "scholar_mage": {
+        "first_blood": 100,
+        "deserters_toll": 99,
+        "cult_in_the_hedges": 100,
+        "gate_of_the_north_watch": 30
+      }
+    },
+    "after": {
+      "duelist": {
+        "first_blood": 100,
+        "deserters_toll": 100,
+        "cult_in_the_hedges": 100,
+        "gate_of_the_north_watch": 53
+      },
+      "mercenary": {
+        "first_blood": 100,
+        "deserters_toll": 100,
+        "cult_in_the_hedges": 84,
+        "gate_of_the_north_watch": 69
+      },
+      "scholar_mage": {
+        "first_blood": 100,
+        "deserters_toll": 99,
+        "cult_in_the_hedges": 100,
+        "gate_of_the_north_watch": 30
+      }
+    },
+    "interpretation": "Heuristic outcomes are diagnostic only; no target win rate or human-strategy claim is established."
+  },
+  "checks": [
+    {
+      "command": "GODOT=/tmp/gamezero-tools/Godot_v4.4.1-stable_linux.x86_64 npm run test:godot:balance",
+      "status": "passed",
+      "checks": 10
+    },
+    {
+      "command": "timeout 600 env GODOT=/tmp/gamezero-tools/Godot_v4.4.1-stable_linux.x86_64 npm run test:godot",
+      "status": "passed",
+      "combat_checks": 155,
+      "flow_checks": 151,
+      "note": "The no-item host-flow heuristic still loses as Duelist at the boss."
+    },
+    {
+      "command": "npm run data:godot:check",
+      "status": "passed"
+    }
+  ],
+  "unverified": [
+    "Manual play with real player action and item choices",
+    "Whether the remaining 47/100 Duelist boss losses warrant another tuning decision",
+    "Device, mobile export, and rendered acceptance"
+  ]
+}

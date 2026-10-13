@@ -365,3 +365,55 @@ absent-tooling/resume statements without rewriting the original evidence.
   in a display-capable environment, then publish through authenticated
   repository permissions. Do not alter the historical orchestration ledger
   for this independent issue sweep.
+
+## 2026-10-13 asset audit and Duelist balance increment
+
+- **Scope/evidence:** started from `70bf735b8b43567512b73551506153f813df990c`.
+  Updated `data/skills/precise_thrust.json`,
+  `data/enemies/alley_cutthroat.json`, generated
+  `godot/data/runtime_pack.json`, and native regression assertions in
+  `godot/tests/balance_test.gd` and `godot/tests/combat_test.gd`. Refreshed the
+  asset status in `docs/assets/asset-inventory-and-pairing.md`; updated the
+  current balance owner/board and this handoff; retained summarized native
+  results in `artifacts/qa/native-2026-10-13-balance.json`. The existing asset
+  scanner manifest did not need regeneration changes: `assets:audit:check`
+  confirmed it is current.
+- **Decision:** the seed-42 baseline reproduces a round-14 defeat (player 0 HP,
+  boss 23 HP, four automatic Ripostes). The canonical `precise_thrust`
+  multiplier is now 1.6 (from 1.1) and cooldown 1 (from 2). Since this
+  Duelist skill was also used by Alley Cutthroat, that enemy now uses its
+  existing `rending_cut` only, preventing the player tuning from increasing
+  unrelated enemy attacks. No new skill, career growth, combat formula, or
+  supplement field was added. The same seed-42 diagnostic now wins at round 13
+  with 11 player HP. Across seeds 42–141, the Duelist boss heuristic result is
+  53/100 versus the 0/100 baseline; this remains a diagnostic, not a win-rate
+  target. The no-item host-flow heuristic still loses at the boss. The
+  [acceptance owner](mobile-first-playable-plan.md#2026-10-13-duelist-tuning-increment)
+  documents the full matrix and open gates.
+- **Asset evidence:** `npm run assets:audit:check` passed. The manifest still
+  records 257 loose files, 12 archives / 3,649 first-level members (500 audio),
+  no loose audio, zero recognized missing literal references, and seven
+  unverified dynamic paths. Rights, nested archive contents, asset approval
+  and genuine runtime/render checks remain open; no archived asset was enabled.
+- **Validation:** `npm run data:godot` and `npm run data:godot:check` passed;
+  `GODOT=/tmp/gamezero-tools/Godot_v4.4.1-stable_linux.x86_64 npm run
+  test:godot:balance` passed 10 checks; `timeout 600 env
+  GODOT=/tmp/gamezero-tools/Godot_v4.4.1-stable_linux.x86_64 npm run
+  test:godot` passed 155 combat and 151 flow checks. The matrix terminated all
+  1,200 fights. `npm run test:slice` passed 18 checks;
+  `node --test scripts/asset-audit.test.mjs scripts/workstream-docs.test.mjs`
+  passed 15; `npm run typecheck` passed. `npm test` still has eight unrelated
+  PWA/share-card expectation failures. `npm run lint` reports 18 existing
+  errors in untouched legacy/browser files. The docs do not treat either
+  repository-wide result as green.
+- **Unverified/blockers:** no human Duelist playthrough, device/export
+  acceptance, or approved win-rate expectation; the heuristic still loses
+  47/100 boss attempts and the no-item host-flow sample still fails. Asset
+  rights/metadata and manual/runtime review remain pending. No relevant native
+  GitHub workflow result was observed for this increment; an older unrelated
+  cloud-agent run failed from its monthly quota, not from game tests.
+- **Resume:** manually play all three careers with real skills and available
+  consumables, record Duelist choices and remaining failure causes, then decide
+  whether a further explicit balance change is warranted. Separately resolve
+  archive provenance/metadata and perform approved visual/audio review. Do not
+  close the asset or native acceptance gates from these static/headless checks.

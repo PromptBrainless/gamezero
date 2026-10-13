@@ -1,6 +1,16 @@
 # Asset-Inventur und Visual-Sound-Pairing
 
-Status: Arbeitsplan. Dies ist keine Behauptung, dass bereits alle Dateien inventarisiert oder Laufzeittests durchgeführt wurden.
+Status: Die statische Inventur ist im [getrackten Manifest](../../artifacts/art/asset-audit.json) erfasst und am 2026-10-13 reproduzierbar geprüft. Sie ist keine Laufzeit-, Lizenz- oder visuelle Freigabe.
+
+## Aktueller Inventurstand (2026-10-13)
+
+- `npm run assets:audit:check` bestätigt, dass das Manifest dem getrackten Checkout entspricht.
+- Das Manifest enthält 257 lose Dateien: 12 SVGs, ein PDF und 244 Rasterdateien; lose Audiodateien wurden nicht gefunden.
+- Zwölf ZIP-Archive enthalten 3.649 erkannte Assets auf der ersten Ebene, darunter 500 Audioeinträge. Verschachtelte ZIP-Inhalte sind nicht enthalten.
+- Der Scanner fand keine fehlenden erkannten literalen Runtime-Referenzen. Sieben dynamische Pfadausdrücke bleiben unbestätigte Kandidaten und benötigen Laufzeitprüfung.
+- Keine Datei ist durch den Scan als `freigegeben` bestätigt. Rechte/Herkunft sowie Archiv-Metadaten (einschließlich Codec und Dauer) bleiben offen; Archive und Kandidaten sind nicht integriert.
+
+Diese Zählungen beschreiben den Scanumfang, nicht geladene oder für das Spiel zugelassene Assets. Die manifestierte Einzeldatei bleibt die maßgebliche Inventur; der Scan ergänzt weder fehlende Lizenznachweise noch manuelle Laufzeit-/Darstellungsprüfungen.
 
 ## Inventur
 - Alle versionierten Vektor-Dateien (mindestens SVG) und Audio-Dateien (WAV, OGG, MP3, M4A, WEBM sowie tatsächlich vorhandene weitere Formate) scannen.
