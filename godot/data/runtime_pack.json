@@ -274,14 +274,14 @@
           "focus": 4,
           "stamina": 8
         },
-        "cooldown": 2,
+        "cooldown": 1,
         "target": "enemy",
         "description": "Fügt präzisen körperlichen Schaden zu und legt Schwachstellen des Ziels frei.",
         "career": "duelist",
         "damage": {
           "damage_type": "physical",
           "scaling_stat": "attack",
-          "multiplier": 1.1,
+          "multiplier": 1.6,
           "flat": 0
         },
         "applies_statuses": [
@@ -670,7 +670,6 @@
           "crit_chance": 0.05
         },
         "skills": [
-          "precise_thrust",
           "rending_cut"
         ],
         "description": "Flinker Straßenkämpfer mit Blutungsmessern.",
@@ -681,7 +680,6 @@
         "ai": {
           "pattern": "weighted_random",
           "weights": {
-            "precise_thrust": 1,
             "rending_cut": 1
           }
         },

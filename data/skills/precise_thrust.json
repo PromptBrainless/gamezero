@@ -7,12 +7,12 @@
     "stamina": 8,
     "focus": 4
   },
-  "cooldown": 2,
+  "cooldown": 1,
   "target": "enemy",
   "damage": {
     "damage_type": "physical",
     "scaling_stat": "attack",
-    "multiplier": 1.1,
+    "multiplier": 1.6,
     "flat": 0
   },
   "applies_statuses": [

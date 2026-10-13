@@ -10,23 +10,38 @@ func _initialize() -> void:
 		quit(1)
 		return
 	var registry: Dictionary = pack.collections
-	var initial := Resolver.create_battle(registry.careers.duelist, [registry.bosses.iron_captain], registry, 42)
-	var first := run_offensive(initial, registry)
-	var replay := run_offensive(initial, registry)
-	check(first == replay, "Seed 42 reproduces identical native state and ordered combat trace")
-	check(first.battle.result == "defeat", "Recorded starting-stat offensive Duelist failure remains reproducible; not a balance approval")
-	check(first.battle.enemies[0].hp > 0, "Duelist defeat leaves a surviving boss")
+	check(
+		registry.skills.precise_thrust.cooldown == 1 and registry.skills.precise_thrust.damage.multiplier == 1.6,
+		"Canonical precise thrust tuning is loaded"
+	)
+	check(
+		not registry.enemies.alley_cutthroat.skills.has("precise_thrust"),
+		"Duelist-tuned precise thrust is not reused by the Alley Cutthroat"
+	)
+	var baseline_registry: Dictionary = registry.duplicate(true)
+	baseline_registry.skills.precise_thrust.cooldown = 2
+	baseline_registry.skills.precise_thrust.damage.multiplier = 1.1
+	var initial := Resolver.create_battle(baseline_registry.careers.duelist, [baseline_registry.bosses.iron_captain], baseline_registry, 42)
+	var baseline := run_offensive(initial, baseline_registry)
+	check(baseline.battle.result == "defeat", "Pre-tuning seed 42 reproduces the recorded Duelist failure")
+	check(baseline.battle.round == 14 and baseline.battle.enemies[0].hp == 23, "Pre-tuning failure snapshot matches the recorded evidence")
 	check(initial.round == 1 and initial.player.hp == initial.player.stats.hp, "Diagnostic replay does not mutate initial state")
-	var reactions := 0
-	for turn in first.trace:
+	var baseline_reactions := 0
+	for turn in baseline.trace:
 		for event in turn.events:
 			if event.type == "reaction" and event.payload.get("skill") == "riposte":
-				reactions += 1
-	check(reactions == 4, "Canonical automatic Riposte executes four times; failure is not a missing reaction")
-	check(first.battle.round == 14 and first.battle.enemies[0].hp == 23, "Seed 42 failure snapshot is stable")
-	print("Duelist boss diagnostic seed 42: ", JSON.stringify(first.trace))
-	print("Duelist boss result: %s, player HP %s, boss HP %s, ripostes %s; no balance values changed." % [first.battle.result, first.battle.player.hp, first.battle.enemies[0].hp, reactions])
-	print("Balance diagnostic tests: 6 checks, %s failures" % failures)
+				baseline_reactions += 1
+	check(baseline_reactions == 4, "Pre-tuning Duelist failure includes four automatic Ripostes")
+	var tuned_initial := Resolver.create_battle(registry.careers.duelist, [registry.bosses.iron_captain], registry, 42)
+	var first := run_offensive(tuned_initial, registry)
+	var replay := run_offensive(tuned_initial, registry)
+	check(first == replay, "Tuned seed 42 reproduces identical native state and ordered combat trace")
+	check(first.battle.result == "victory" and first.battle.enemies[0].hp == 0, "Tuned starting-stat Duelist defeats the boss at seed 42")
+	check(first.battle.player.hp > 0, "Duelist survives the tuned seed-42 boss fight")
+	check(tuned_initial.round == 1 and tuned_initial.player.hp == tuned_initial.player.stats.hp, "Tuned diagnostic replay does not mutate initial state")
+	print("Duelist boss seed 42 baseline: %s at round %s, player HP %s, boss HP %s, Ripostes %s." % [baseline.battle.result, baseline.battle.round, baseline.battle.player.hp, baseline.battle.enemies[0].hp, baseline_reactions])
+	print("Duelist boss seed 42 tuned: %s at round %s, player HP %s, boss HP %s." % [first.battle.result, first.battle.round, first.battle.player.hp, first.battle.enemies[0].hp])
+	print("Balance regression tests: 10 checks, %s failures" % failures)
 	quit(0 if failures == 0 else 1)
 
 func check(condition: bool, message: String) -> void:

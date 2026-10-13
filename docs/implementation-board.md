@@ -142,18 +142,10 @@ Remaining release gates: review the complete encounter run for all careers,
 mobile device/export testing, final side-view presentation, and asset review.
 Save/load, shops, overworld and extensive catalogs remain post-slice work.
 
-Native no-growth simulation completes the four encounters for mercenary and
-mage with carried consumables. The offensive/item heuristic has not beaten the
-boss as duelist across seeds 42–141; that is a tuning/review signal, not proof
-that the fight is impossible. Do not mark the all-career balance gate complete
-or compensate with undocumented levels/stat bonuses.
-
-The native starting-stat matrix (100 seeds per career/encounter; strongest
-affordable attack, recovery and starting healing items) terminates all 1,200
-fights. Win counts are a diagnostic, not a release acceptance target:
-
-| Career | First blood | Deserters | Cult | Boss |
-|---|---:|---:|---:|---:|
-| Duelist | 100 | 100 | 95 | 0 |
-| Mercenary | 100 | 100 | 78 | 69 |
-| Mage | 100 | 99 | 100 | 30 |
+The 2026-10-12 native baseline and 2026-10-13 Duelist tuning/matrix are recorded
+in the [mobile first-playable acceptance owner](mobile-first-playable-plan.md#2026-10-13-duelist-tuning-increment)
+and its [machine-readable evidence](../artifacts/qa/native-2026-10-13-balance.json).
+The Duelist boss diagnostic improved from 0/100 to 53/100 under the same
+starting-stat heuristic, but the no-item host-flow attempt still loses at the
+boss. Win counts are diagnostics, not release targets; manual play and the
+all-career balance gate remain open. Do not add undocumented levels or bonuses.

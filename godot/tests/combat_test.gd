@@ -193,12 +193,12 @@ func _test_statuses_cooldowns() -> void:
 	enemy_cooldown.player.hp = 1000
 	enemy_cooldown.player.stats.hp = 1000
 	enemy_cooldown = Resolver.resolve_round(enemy_cooldown, "", 0, registry)
-	_check(enemy_cooldown.enemies[0].cooldowns.precise_thrust == 2, "Enemy cooldown same semantics as player")
-	for index in range(2):
+	_check(enemy_cooldown.enemies[0].cooldowns.precise_thrust == 1, "Enemy cooldown follows precise thrust's canonical value")
+	for index in range(1):
 		enemy_cooldown = Resolver.resolve_round(enemy_cooldown, "", 0, registry)
-		_check(_events(enemy_cooldown, "action").is_empty() and _events(enemy_cooldown, "recovery").size() == 2, "Enemy waits/recoveries while cooldown blocked")
+		_check(_events(enemy_cooldown, "action").is_empty() and _events(enemy_cooldown, "recovery").size() == 2, "Enemy waits/recoveries for one blocked opportunity")
 	enemy_cooldown = Resolver.resolve_round(enemy_cooldown, "", 0, registry)
-	_check(_events(enemy_cooldown, "action").size() == 1, "Enemy acts after two blocked opportunities")
+	_check(_events(enemy_cooldown, "action").size() == 1, "Enemy acts after one blocked opportunity")
 
 func _test_phases_telegraphs() -> void:
 	var battle := _battle("mercenary", "iron_captain")

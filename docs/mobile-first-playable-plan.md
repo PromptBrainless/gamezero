@@ -116,10 +116,12 @@ Actual checks:
   Repository-wide Node failures outside this increment are recorded in the
   [handoff](project-history-and-execution-log.md#2026-10-12-all-open-issues-increment).
 
-Starting-stat native matrix: 100 independent seeds **42-141** per cell, full
-starting resources/equipment, starting skills only, no level/stat growth.
-The offensive heuristic uses direct-damage previews and available healing.
-This is **not** a human playtest, optimum-strategy proof or target win rate.
+Baseline starting-stat native matrix before the tuning below: 100 independent
+seeds **42-141** per cell, full starting resources/equipment, starting skills
+only, no level/stat growth. The offensive heuristic uses direct-damage previews
+and available healing. This is **not** a human playtest, optimum-strategy proof
+or target win rate. The rerun and its baseline/tuned comparison are recorded in
+[`native-2026-10-13-balance.json`](../artifacts/qa/native-2026-10-13-balance.json).
 
 | Career | First blood | Deserter | Cult | Boss |
 |---|---:|---:|---:|---:|
@@ -127,11 +129,11 @@ This is **not** a human playtest, optimum-strategy proof or target win rate.
 | Mercenary | 100 / 0 | 100 / 0 | 78 / 22 | 69 / 31 |
 | Scholar Mage | 100 / 0 | 99 / 1 | 100 / 0 | 30 / 70 |
 
-All 1,200 fights terminate. The actual host-flow heuristic (seeds 42, 43, 44,
-45; run inventory/rewards carried normally) completes Mercenary in 51 rounds
-and Scholar Mage in 21 rounds, each receiving 238 XP. Duelist reaches the
-fourth encounter and loses. The test now attempts **all three careers** instead
-of stopping at the first successful run.
+All 1,200 baseline fights terminate. In the 2026-10-12 host-flow heuristic
+(seeds 42, 43, 44, 45; run inventory/rewards carried normally), Mercenary
+completed in 51 rounds and Scholar Mage in 21 rounds, each receiving 238 XP.
+Duelist reached the fourth encounter and lost. The test attempts **all three
+careers** instead of stopping at the first successful run.
 
 The isolated Duelist boss trace at seed 42 ends at round 14: player HP 0,
 boss HP 23, four automatic Ripostes. Stamina repeatedly returns to its cap;
@@ -141,10 +143,38 @@ gaps, stuns and phase-two damage/bleeding contribute to insufficient offensive
 output and survival. A bounded alternative-action search also found no win,
 but that is not an exhaustive impossibility proof.
 
-Gameplay owner must review a minimal tuning change or the explicitly pending
-progression policy, then rerun this matrix and manual play. Do not import the
-browser's growth/unlocked skill pool just because its historical boss win rate
-is higher. Canonical values and live rules were unchanged in this increment.
+### 2026-10-13 Duelist tuning increment
+
+The reproduced trace justified a narrowly scoped canonical adjustment:
+`precise_thrust` damage multiplier **1.1 → 1.6** and cooldown **2 → 1**.
+Because the Alley Cutthroat also referenced this career skill, its skill/AI
+lists now use its existing `rending_cut` only; this prevents Duelist-specific
+tuning from also increasing that enemy's attacks. No new skill, progression
+policy, combat formula, or runtime supplement field was added. The generated
+Godot pack was regenerated from `data/`.
+
+The native seed-42 regression preserves the previous values as a baseline and
+compares them against the canonical tuned record using the same direct-damage
+and starting-heal heuristic:
+
+| Configuration | Result | Round | Player HP | Boss HP | Ripostes |
+|---|---|---:|---:|---:|---:|
+| Before tuning (`1.1`, cooldown `2`) | Defeat | 14 | 0 | 23 | 4 |
+| Tuned (`1.6`, cooldown `1`) | Victory | 13 | 11 | 0 | — |
+
+The same 100-seed starting-stat matrix (42–141) now records Duelist victories
+of **100/100 First Blood, 100/100 Deserters' Toll, 100/100 Cult, and 53/100
+boss**. Mercenary's Cult result is 84/100 and Mage's remains 100/100; the other
+cells are retained in the evidence JSON. All fights terminated. These
+heuristics are diagnostics, not a target win rate or human strategy proof.
+
+`npm run test:godot` passes 155 combat and 151 flow checks. Its separate
+no-item host-flow heuristic still loses as Duelist at the boss; this is not a
+manual playthrough, but it keeps the all-career flow gate open. The seed matrix
+still has 47 Duelist boss losses, so this increment is a measured improvement,
+not final balance approval. Manual play for each career, strategy review, device
+testing, and any product win-rate expectation remain unverified. Do not import
+the browser's growth/unlocked skill pool as a substitute for that review.
 
 ### Asset inventory and visual/sound pairing
 
@@ -205,7 +235,9 @@ It does **not** verify a rendered exported playthrough.
 
 Known release gates and resolved export diagnostic:
 
-1. Duelist completion/tuning remains unresolved (#39); gameplay-owner action.
+1. Duelist tuning improved the 100-seed boss matrix from 0/100 to 53/100, but
+   the no-item host-flow heuristic still loses and manual balance acceptance
+   remains open (#39); gameplay owner to review whether further tuning is needed.
 2. No display server, Xvfb or device was available; genuine native screenshots,
    animation/touch review and human exported playthrough are unverified (#37/#40/#41).
 3. Archived sound/graphics rights and member metadata are unresolved; no native
@@ -225,6 +257,8 @@ Known release gates and resolved export diagnostic:
    authenticated issue-write and Git-push capabilities. Do not fabricate
    an issue update, uploaded artifact, successful push or CI run.
 
-Next bounded action: review the Duelist trace and approve one explicit tuning
-increment; then run the visual test path in
-a display-capable environment and play all three careers on the selected device.
+Next bounded action: manually play all three careers with the actual combat
+controls and available consumables; record Duelist action/item use and decide
+whether the remaining diagnostic losses merit another explicit tuning change.
+Then run the visual test path in a display-capable environment and play all
+three careers on the selected device.
