@@ -32,10 +32,17 @@ static func create() -> Theme:
 	var button_normal_tex: Texture2D = null
 	var button_hover_tex: Texture2D = null
 	var panel_tex: Texture2D = null
-	if ResourceLoader.exists("res://assets/art/ui/button_normal.png"):
+	if ResourceLoader.exists("res://assets/art/ui/button_3d_normal.png"):
+		button_normal_tex = load("res://assets/art/ui/button_3d_normal.png")
+	elif ResourceLoader.exists("res://assets/art/ui/button_normal.png"):
 		button_normal_tex = load("res://assets/art/ui/button_normal.png")
-	if ResourceLoader.exists("res://assets/art/ui/button_hover.png"):
+	if ResourceLoader.exists("res://assets/art/ui/button_3d_hover.png"):
+		button_hover_tex = load("res://assets/art/ui/button_3d_hover.png")
+	elif ResourceLoader.exists("res://assets/art/ui/button_hover.png"):
 		button_hover_tex = load("res://assets/art/ui/button_hover.png")
+	var button_pressed_tex: Texture2D = null
+	if ResourceLoader.exists("res://assets/art/ui/button_3d_pressed.png"):
+		button_pressed_tex = load("res://assets/art/ui/button_3d_pressed.png")
 	if ResourceLoader.exists("res://assets/art/ui/panel_bg.png"):
 		panel_tex = load("res://assets/art/ui/panel_bg.png")
 
@@ -62,7 +69,13 @@ static func create() -> Theme:
 	else:
 		result.set_stylebox("normal", "Button", panel(RAISED))
 	result.set_stylebox("hover", "Button", panel(RAISED, FOREGROUND))
-	result.set_stylebox("pressed", "Button", panel(SURFACE, HIGHLIGHT, 2))
+	if button_pressed_tex:
+		var sb := StyleBoxTexture.new()
+		sb.texture = button_pressed_tex
+		sb.set_texture_margin_all(12)
+		result.set_stylebox("pressed", "Button", sb)
+	else:
+		result.set_stylebox("pressed", "Button", panel(SURFACE, HIGHLIGHT, 2))
 	result.set_stylebox("disabled", "Button", panel(SURFACE))
 	var focus := panel(Color.TRANSPARENT, HIGHLIGHT, 2)
 	focus.draw_center = false
