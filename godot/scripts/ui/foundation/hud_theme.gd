@@ -29,6 +29,16 @@ static func panel(color: Color, border: Color = MUTED, width: int = 1) -> StyleB
 
 
 static func create() -> Theme:
+	var button_normal_tex: Texture2D = null
+	var button_hover_tex: Texture2D = null
+	var panel_tex: Texture2D = null
+	if ResourceLoader.exists("res://assets/art/ui/button_normal.png"):
+		button_normal_tex = load("res://assets/art/ui/button_normal.png")
+	if ResourceLoader.exists("res://assets/art/ui/button_hover.png"):
+		button_hover_tex = load("res://assets/art/ui/button_hover.png")
+	if ResourceLoader.exists("res://assets/art/ui/panel_bg.png"):
+		panel_tex = load("res://assets/art/ui/panel_bg.png")
+
 	var result := Theme.new()
 	result.default_font_size = FONT_SIZE
 	result.set_color("font_color", "Label", FOREGROUND)
@@ -37,8 +47,20 @@ static func create() -> Theme:
 		result.set_color("font_%s_color" % state, "Button", FOREGROUND)
 	result.set_constant("separation", "VBoxContainer", SPACE)
 	result.set_constant("separation", "HBoxContainer", SPACE)
-	result.set_stylebox("panel", "PanelContainer", panel(SURFACE))
-	result.set_stylebox("normal", "Button", panel(RAISED))
+	if panel_tex:
+		var sb := StyleBoxTexture.new()
+		sb.texture = panel_tex
+		sb.set_texture_margin_all(16)
+		result.set_stylebox("panel", "PanelContainer", sb)
+	else:
+		result.set_stylebox("panel", "PanelContainer", panel(SURFACE))
+	if button_normal_tex:
+		var sb := StyleBoxTexture.new()
+		sb.texture = button_normal_tex
+		sb.set_texture_margin_all(12)
+		result.set_stylebox("normal", "Button", sb)
+	else:
+		result.set_stylebox("normal", "Button", panel(RAISED))
 	result.set_stylebox("hover", "Button", panel(RAISED, FOREGROUND))
 	result.set_stylebox("pressed", "Button", panel(SURFACE, HIGHLIGHT, 2))
 	result.set_stylebox("disabled", "Button", panel(SURFACE))
