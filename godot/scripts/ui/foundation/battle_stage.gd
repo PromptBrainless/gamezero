@@ -17,6 +17,7 @@ var reduced_motion := false
 var _elapsed := 0.0
 var _last_sequence := -1
 var _impacts: Array = []
+var _texture_cache: Dictionary = {}
 
 func _init() -> void:
 	custom_minimum_size.y = 200
@@ -27,6 +28,14 @@ func _ready() -> void:
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if target_selection else Control.CURSOR_ARROW
 	resized.connect(queue_redraw)
 	set_process(not reduced_motion and not _impacts.is_empty())
+	_preload_textures()
+
+func _preload_textures() -> void:
+	var ids := ["mercenary", "duelist", "scholar_mage", "iron_captain", "hedge_cultist", "alley_cutthroat"]
+	for id in ids:
+		var path := "res://assets/art/characters/%s.png" % id
+		if ResourceLoader.exists(path):
+			_texture_cache[id] = load(path)
 
 func present(record: Dictionary, player: Dictionary, opponents: Array, target: int = -1, selectable: bool = false, events: Array = []) -> void:
 	encounter = record.duplicate(true)
@@ -135,6 +144,20 @@ func _draw() -> void:
 
 func draw_actor(actor: Dictionary, enemy: bool) -> void:
 	var id: String = actor.get("content_id", actor.get("id", ""))
+	var tex: Texture2D = _texture_cache.get(id)
+	if tex:
+		var facing := -1.0 if enemy else 1.0
+		var dest_size := Vector2(tex.get_width(), tex.get_height()) * 0.55
+		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 10, dest_size.x, dest_size.y)
+		if facing < 0:
+			draw_texture_rect_region(tex, dest, Rect2(0, 0, tex.get_width(), tex.get_height()), Color.WHITE, false)
+		else:
+			draw_set_transform(Vector2.ZERO, 0, Vector2(-1, 1))
+			draw_texture_rect(tex, Rect2(-dest_size.x * 0.5, -dest_size.y + 10, dest_size.x, dest_size.y), false)
+			draw_set_transform(Vector2.ZERO, 0, Vector2(1, 1))
+		draw_ellipse_shadow()
+		return
+	# Fallback to procedural drawing if no sprite available
 	var mage := id in ["scholar_mage", "hedge_cultist"]
 	var light := id in ["duelist", "alley_cutthroat"]
 	var boss := id == "iron_captain"
