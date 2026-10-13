@@ -18,6 +18,7 @@ var _elapsed := 0.0
 var _last_sequence := -1
 var _impacts: Array = []
 var _texture_cache: Dictionary = {}
+var _bg_cache: Dictionary = {}
 
 func _init() -> void:
 	custom_minimum_size.y = 200
@@ -31,11 +32,16 @@ func _ready() -> void:
 	_preload_textures()
 
 func _preload_textures() -> void:
-	var ids := ["mercenary", "duelist", "scholar_mage", "iron_captain", "hedge_cultist", "alley_cutthroat"]
+	var ids := ["mercenary", "duelist", "scholar_mage", "iron_captain", "hedge_cultist", "alley_cutthroat", "rusted_deserter"]
 	for id in ids:
 		var path := "res://assets/art/characters/%s.png" % id
 		if ResourceLoader.exists(path):
 			_texture_cache[id] = load(path)
+	var bgs := ["hedges", "ruins", "boss_gate"]
+	for bg in bgs:
+		var path := "res://assets/art/backgrounds/%s.png" % bg
+		if ResourceLoader.exists(path):
+			_bg_cache[bg] = load(path)
 
 func present(record: Dictionary, player: Dictionary, opponents: Array, target: int = -1, selectable: bool = false, events: Array = []) -> void:
 	encounter = record.duplicate(true)
@@ -95,37 +101,47 @@ func _draw() -> void:
 	if size.x <= 0 or size.y <= 0:
 		return
 	draw_set_transform(Vector2.ZERO, 0, Vector2(size.x / 1000.0, size.y / 360.0))
-	draw_rect(Rect2(0, 0, 1000, 360), SKY)
-	draw_circle(Vector2(800, 65), 34, Color("#c6c5a1"))
-	draw_circle(Vector2(812, 58), 32, SKY)
-	polygon([Vector2(0, 150), Vector2(100, 95), Vector2(250, 155), Vector2(405, 78), Vector2(620, 155), Vector2(800, 110), Vector2(1000, 170), Vector2(1000, 340), Vector2(0, 340)], DISTANCE)
-	var forest: bool = encounter.get("arena", "").contains("hedge") or encounter.get("id") == "cult_in_the_hedges"
-	if forest:
-		for index in range(15):
-			var x := float(index * 77 - 20)
-			polygon([Vector2(x, 282), Vector2(x + 12, 48), Vector2(x + 28, 25), Vector2(x + 26, 282)], SHADOW)
-			stroke([Vector2(x + 18, 120), Vector2(x - 35, 70), Vector2(x - 48, 18)], SHADOW, 10)
-			stroke([Vector2(x + 20, 170), Vector2(x + 55, 110), Vector2(x + 70, 55)], SHADOW, 7)
+	# Background
+	var bg_key := "ruins"
+	if encounter.get("arena", "").contains("hedge") or encounter.get("id") == "cult_in_the_hedges":
+		bg_key = "hedges"
+	elif encounter.get("type") == "boss":
+		bg_key = "boss_gate"
+	var bg: Texture2D = _bg_cache.get(bg_key)
+	if bg:
+		draw_texture_rect(bg, Rect2(0, 0, 1000, 360), false)
 	else:
-		for index in range(9):
-			var x := float(index * 125 - 35)
-			var height := float(110 + (index * 31) % 75)
-			draw_rect(Rect2(x, 265 - height, 105, height), DISTANCE.darkened(0.25))
-			for brick in range(4):
-				stroke([Vector2(x, 265 - height + brick * 38), Vector2(x + 105, 265 - height + brick * 38)], STONE.darkened(0.3), 1)
-			draw_rect(Rect2(x + 32, 288 - height, 30, 48), SHADOW)
-		if encounter.get("type") == "boss":
-			draw_rect(Rect2(380, 45, 225, 250), STONE.darkened(0.3))
-			draw_rect(Rect2(428, 100, 130, 195), SHADOW)
-			for x in range(438, 560, 20):
-				draw_line(Vector2(x, 100), Vector2(x, 285), STONE, 5)
-			polygon([Vector2(350, 45), Vector2(488, 12), Vector2(637, 45)], DISTANCE)
-	draw_rect(Rect2(0, 265, 1000, 95), EARTH)
-	polygon([Vector2(0, 325), Vector2(300, 280), Vector2(710, 278), Vector2(1000, 315), Vector2(1000, 360), Vector2(0, 360)], STONE.darkened(0.35))
-	for index in range(40):
-		var x := float((index * 83) % 1000)
-		var y := float(303 + (index * 17) % 54)
-		stroke([Vector2(x, y), Vector2(x + 26, y - 2)], EARTH.lightened(0.16), 2)
+		draw_rect(Rect2(0, 0, 1000, 360), SKY)
+		draw_circle(Vector2(800, 65), 34, Color("#c6c5a1"))
+		draw_circle(Vector2(812, 58), 32, SKY)
+		polygon([Vector2(0, 150), Vector2(100, 95), Vector2(250, 155), Vector2(405, 78), Vector2(620, 155), Vector2(800, 110), Vector2(1000, 170), Vector2(1000, 340), Vector2(0, 340)], DISTANCE)
+		var forest: bool = bg_key == "hedges"
+		if forest:
+			for index in range(15):
+				var x := float(index * 77 - 20)
+				polygon([Vector2(x, 282), Vector2(x + 12, 48), Vector2(x + 28, 25), Vector2(x + 26, 282)], SHADOW)
+				stroke([Vector2(x + 18, 120), Vector2(x - 35, 70), Vector2(x - 48, 18)], SHADOW, 10)
+				stroke([Vector2(x + 20, 170), Vector2(x + 55, 110), Vector2(x + 70, 55)], SHADOW, 7)
+		else:
+			for index in range(9):
+				var x := float(index * 125 - 35)
+				var height := float(110 + (index * 31) % 75)
+				draw_rect(Rect2(x, 265 - height, 105, height), DISTANCE.darkened(0.25))
+				for brick in range(4):
+					stroke([Vector2(x, 265 - height + brick * 38), Vector2(x + 105, 265 - height + brick * 38)], STONE.darkened(0.3), 1)
+				draw_rect(Rect2(x + 32, 288 - height, 30, 48), SHADOW)
+			if encounter.get("type") == "boss":
+				draw_rect(Rect2(380, 45, 225, 250), STONE.darkened(0.3))
+				draw_rect(Rect2(428, 100, 130, 195), SHADOW)
+				for x in range(438, 560, 20):
+					draw_line(Vector2(x, 100), Vector2(x, 285), STONE, 5)
+				polygon([Vector2(350, 45), Vector2(488, 12), Vector2(637, 45)], DISTANCE)
+		draw_rect(Rect2(0, 265, 1000, 95), EARTH)
+		polygon([Vector2(0, 325), Vector2(300, 280), Vector2(710, 278), Vector2(1000, 315), Vector2(1000, 360), Vector2(0, 360)], STONE.darkened(0.35))
+		for index in range(40):
+			var x := float((index * 83) % 1000)
+			var y := float(303 + (index * 17) % 54)
+			stroke([Vector2(x, y), Vector2(x + 26, y - 2)], EARTH.lightened(0.16), 2)
 	for index in range(actors.size()):
 		var actor: Dictionary = actors[index]
 		var position := actor_position(index)
