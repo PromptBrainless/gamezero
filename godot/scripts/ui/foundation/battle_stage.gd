@@ -18,6 +18,10 @@ var _elapsed := 0.0
 var _last_sequence := -1
 var _impacts: Array = []
 var _texture_cache: Dictionary = {}
+var _idle_sheets: Dictionary = {}
+var _anim_time := 0.0
+var _frame_count := 3
+var _frame_duration := 0.4
 var _bg_cache: Dictionary = {}
 
 func _init() -> void:
@@ -37,6 +41,9 @@ func _preload_textures() -> void:
 		var path := "res://assets/art/characters/%s.png" % id
 		if ResourceLoader.exists(path):
 			_texture_cache[id] = load(path)
+		var sheet_path := "res://assets/art/characters/%s_idle.png" % id
+		if ResourceLoader.exists(sheet_path):
+			_idle_sheets[id] = load(sheet_path)
 	var bgs := ["hedges", "ruins", "boss_gate"]
 	for bg in bgs:
 		var path := "res://assets/art/backgrounds/%s.png" % bg
@@ -70,6 +77,7 @@ func present(record: Dictionary, player: Dictionary, opponents: Array, target: i
 	queue_redraw()
 
 func _process(delta: float) -> void:
+	_anim_time += delta
 	_elapsed += minf(delta, 0.1)
 	if _elapsed >= 0.8:
 		_impacts.clear()
@@ -160,6 +168,22 @@ func _draw() -> void:
 
 func draw_actor(actor: Dictionary, enemy: bool) -> void:
 	var id: String = actor.get("content_id", actor.get("id", ""))
+	var sheet: Texture2D = _idle_sheets.get(id)
+	if sheet:
+		var frame := int(_anim_time / _frame_duration) % _frame_count
+		var frame_w := sheet.get_width() / float(_frame_count)
+		var region := Rect2(frame * frame_w, 0, frame_w, sheet.get_height())
+		var dest_size := Vector2(frame_w, sheet.get_height()) * 0.55
+		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 10, dest_size.x, dest_size.y)
+		var facing := -1.0 if enemy else 1.0
+		if facing < 0:
+			draw_texture_rect_region(sheet, dest, region, Color.WHITE, false)
+		else:
+			draw_set_transform(Vector2.ZERO, 0, Vector2(-1, 1))
+			draw_texture_rect_region(sheet, Rect2(-dest_size.x * 0.5, -dest_size.y + 10, dest_size.x, dest_size.y), region, Color.WHITE, false)
+			draw_set_transform(Vector2.ZERO, 0, Vector2(1, 1))
+		draw_ellipse_shadow()
+		return
 	var tex: Texture2D = _texture_cache.get(id)
 	if tex:
 		var facing := -1.0 if enemy else 1.0
