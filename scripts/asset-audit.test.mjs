@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import test from "node:test";
@@ -63,6 +64,30 @@ test("audit separates build copies, literal references, dynamic candidates and m
     assert.equal(result.missingReferences[0].expectedPath, "godot/assets/missing.svg");
     assert.equal(result.dynamicReferences.length, 2);
     assert.deepEqual(result, scanAssets(root, Object.keys(content).reverse()));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+
+
+
+test("recursive nested ZIP inventory marks contents as not approved and preserves paths", () => {
+  const root = mkdtempSync(join(tmpdir(), "gamezero-nested-"));
+  try {
+    execFileSync("python3", ["/tmp/make_nested_zip.py", root], { encoding: "utf8" });
+    const result = scanAssets(root, ["outer.zip"]);
+    const archive = result.archives[0];
+    assert.ok(archive, "archive present");
+    assert.equal(archive.path, "outer.zip");
+    const nestedPaths = archive.assets.map((a) => a.path);
+    assert.ok(nestedPaths.some((p) => p.includes("inner.zip") && p.includes("sound.wav")), "nested wav: " + nestedPaths.join(", "));
+    assert.ok(nestedPaths.some((p) => p.includes("inner.zip") && p.includes("icon.png")), "nested png");
+    assert.ok(nestedPaths.some((p) => p === "top.png"), "top-level");
+    const nestedAsset = archive.assets.find((a) => a.path.includes("sound.wav"));
+    assert.ok(nestedAsset && (nestedAsset.nested === true || String(nestedAsset.status).includes("nested")), "nested status");
+    assert.ok(archive.nestedArchives.length >= 1, "nestedArchives");
+    assert.deepEqual(result, scanAssets(root, ["outer.zip"]));
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

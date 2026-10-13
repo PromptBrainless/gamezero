@@ -5,12 +5,12 @@ Status: Die statische Inventur ist im [getrackten Manifest](../../artifacts/art/
 ## Aktueller Inventurstand (2026-10-13)
 
 - `npm run assets:audit:check` bestätigt, dass das Manifest dem getrackten Checkout entspricht.
-- Das Manifest enthält 257 lose Dateien: 12 SVGs, ein PDF und 244 Rasterdateien; lose Audiodateien wurden nicht gefunden.
-- Zwölf ZIP-Archive enthalten 3.649 erkannte Assets auf der ersten Ebene, darunter 500 Audioeinträge. Verschachtelte ZIP-Inhalte sind **nicht** rekursiv inventarisiert (siehe unten).
+- Das Manifest enthält 7.090 erkannte Asset-Dateien: 257 lose Dateien (12 SVGs, ein PDF und 244 Rasterdateien; kein loses Audio) sowie 6.833 Dateien aus den extrahierten Archiven. Insgesamt sind 986 Audio- und 890 Vektordateien erfasst.
+- Zwölf ZIP-Archive enthalten 6.817 inventarisierte Assets (davon 3.168 aus verschachtelten Archiven; 986 Audio). Verschachtelte ZIP-Inhalte werden rekursiv inventarisiert, bleiben aber ungeprüft und nicht freigegeben.
 - Der Scanner fand keine fehlenden erkannten literalen Runtime-Referenzen. Sieben dynamische Pfadausdrücke bleiben unbestätigte Kandidaten und benötigen Laufzeitprüfung (explizit unten aufgelistet).
 - Keine Datei ist durch den Scan als `freigegeben` bestätigt. Rechte/Herkunft sowie Archiv-Metadaten (einschließlich Codec und Dauer) bleiben offen; Archive und Kandidaten sind nicht integriert.
 
-Diese Zählungen beschreiben den Scanumfang, nicht geladene oder für das Spiel zugelassene Assets. Die manifestierte Einzeldatei bleibt die maßgebliche Inventur; der Scan ergänzt weder fehlende Lizenznachweise noch manuelle Laufzeit-/Darstellungsprüfungen.
+Diese Zählungen beschreiben den Scanumfang, nicht geladene oder für das Spiel zugelassene Assets. Archiv- und Extraktionsinventar erfassen überlappende Inhalte und dürfen nicht addiert werden. Die manifestierte Einzeldatei bleibt die maßgebliche Inventur; der Scan ergänzt weder fehlende Lizenznachweise noch manuelle Laufzeit-/Darstellungsprüfungen.
 
 ## Explizite dynamische Pfadausdrücke (runtime-review pending)
 
@@ -28,15 +28,15 @@ Der Scanner hat genau **7** dynamische Template-Ausdrücke erkannt. Diese sind K
 
 **Hinweis:** Diese Ausdrücke stammen aus dem Browser-Frontend (`src/components/echo/`). Sie sind nicht automatisch als native Godot-Loads bestätigt. Keine dieser Dateien wurde als `freigegeben` markiert.
 
-## Nested-ZIP-Lücke (explizit)
+## Nested-ZIP-Prüfung (explizit)
 
-Die Archive-Inventur listet nur die **erste Ebene**. Verschachtelte ZIP-Container werden als Gap erfasst, aber nicht rekursiv extrahiert oder inventarisiert. Beispiele aus dem aktuellen Manifest:
+Der Scanner inventarisiert verschachtelte ZIP-Container rekursiv (bis zu fünf Ebenen). Die verfügbaren Archive wurden zusätzlich nach `extracted-assets/` entpackt; diese Kopien und die Inventur sind keine Laufzeit-Integration oder Freigabe. Beispiele aus dem aktuellen Manifest:
 
-- `godot/abacktools-Worldassets-part03-of10.zip`: 10 nested Archives, 0 direkte Assets auf Ebene 1
-- `godot/abacktools-Worldassets-part09-of10.zip`: 1 nested, 1109 Assets auf Ebene 1
+- `godot/abacktools-Worldassets-part03-of10.zip`: 10 nested Archives, 0 direkte Medien-Assets auf Ebene 1
+- `godot/abacktools-Worldassets-part09-of10.zip`: 1 nested Archive, 1.109 direkte Medien-Assets auf Ebene 1
 - Mehrere weitere Worldassets- und Demo-Project-Zips enthalten nested Archive (siehe `nestedArchives` im Manifest)
 
-**Status:** Nested contents, Member-Metadaten (Maße, Dauer, Codec), Lizenz-/Attribution-Prüfung und Integration bleiben offen. Keine ungeprüften Archive-Inhalte wurden aktiviert oder als Runtime-Assets freigegeben.
+**Status:** Pro-Member-Metadaten (Maße, Dauer, Codec, Duplikate), Lizenz-/Attribution-Prüfung und Integration bleiben offen. Keine ungeprüften Archive-Inhalte wurden aktiviert oder als Runtime-Assets freigegeben.
 
 ## Inventur
 - Alle versionierten Vektor-Dateien (mindestens SVG) und Audio-Dateien (WAV, OGG, MP3, M4A, WEBM sowie tatsächlich vorhandene weitere Formate) scannen.
@@ -75,13 +75,12 @@ Der Abschluss-PR enthält das ausgefüllte Manifest, den reproduzierbaren Scan, 
 
 **Offene Punkte nach diesem Update:**
 - Laufzeitprüfung der 7 dynamischen Ausdrücke
-- Rekursives Nested-ZIP-Inventar (optional, ohne ungeprüfte Aktivierung)
 - Rechte/Attribution + Metadaten für Archive-Members
 - Keine Assets als `freigegeben` markiert
 
 ## ZIP-Parts-Übersicht (Stand 2026-10-13)
 
-Kompakte Übersicht der gesplitteten Archive. Nur erste Ebene; nested Inhalte nicht extrahiert. Keine Assets freigegeben.
+Kompakte Übersicht der gesplitteten Archive. Die Asset-Spalte enthält direkte Medien-Assets der ersten Ebene; verschachtelte Medien sind im rekursiven Manifest erfasst. Keine Assets freigegeben.
 
 ### Demo-Projects (root)
 | Part | Größe | Assets (Ebene 1) | Nested | Lizenz-Kandidaten |
@@ -95,7 +94,7 @@ Kompakte Übersicht der gesplitteten Archive. Nur erste Ebene; nested Inhalte ni
 ### Worldassets (godot/)
 | Part | Größe | Assets (Ebene 1) | Nested | Lizenz-Kandidaten / Nested-Beispiel |
 |------|-------|------------------|--------|-------------------------------------|
-| part01-of10.zip | 14.4 MB | 436 | 1 | — / hologram_interface.zip |
+| part01-of10.zip | 14.4 MB | 428 | 1 | — / hologram_interface.zip |
 | part02-of10.zip | 12.3 MB | 82 | 2 | public-license.txt / cyberpunk + dark_forest |
 | part03-of10.zip | 14.0 MB | 0 | **10** | — / kenney_*.zip (cartography, ui, sounds, …) |
 | part04-of10.zip | 3.5 MB | 46 | 2 | 12× License*.txt / kenney_voiceover |
@@ -111,7 +110,7 @@ Kompakte Übersicht der gesplitteten Archive. Nur erste Ebene; nested Inhalte ni
 - Demo: `godot-demo-projects-master/.../LICENSE`, `*.LICENSE.md`
 - Worldassets: `neu3/License*.txt`, `neu3/cyberpunk-street-files/public-license.txt`, `neu3/parallax-industrial-pack/license.txt`
 
-**Status:** Alle Nested-ZIPs und Member-Metadaten (Codec, Dauer, Maße) sowie Rechte-Prüfung bleiben offen. Keine Extraktion oder Aktivierung vorgenommen.
+**Status:** Rekursive Inventur und Extraktion in `extracted-assets/` sind erfolgt. Member-Metadaten (Codec, Dauer, Maße), Rechte-Prüfung und Integration bleiben offen; keine Assets sind freigegeben.
 
 ## Liste der fehlenden / unvollständigen Assets
 
@@ -125,9 +124,9 @@ Vorhanden: 01, 02, 04
 Vorhanden: 01–04, 06–10  
 **Fehlend:** part05-of10.zip
 
-### Nested-ZIP-Inhalte (vorhanden, aber nicht inventarisiert)
+### Nested-ZIP-Inhalte (inventarisiert und extrahiert, aber ungeprüft)
 
-Diese inneren ZIPs sind gelistet, aber nicht extrahiert:
+Diese inneren ZIPs sind rekursiv im Manifest inventarisiert und unter `extracted-assets/` entpackt. Die Dateien sind weiterhin ungeprüfte Kandidaten:
 
 - Worldassets-part01: `neu3/1._free_hologram_interface_wenrexa.zip`
 - Worldassets-part02: `neu3/cyberpunk-street-files.zip`, `neu3/dark_forest.zip`
@@ -140,4 +139,4 @@ Diese inneren ZIPs sind gelistet, aber nicht extrahiert:
 
 7 Template-Ausdrücke in `src/components/echo/` (siehe oben) – Kandidaten existieren, Laufzeit-Load ungeprüft.
 
-**Hinweis:** Extraktion der vorhandenen ZIPs in eigene Ordner erfolgt separat; fehlende Parts müssen beschafft werden. Keine ungeprüften Assets werden als freigegeben markiert.
+**Hinweis:** Die verfügbaren ZIPs wurden in eigene Ordner extrahiert (siehe [`extracted-assets/README.md`](../../extracted-assets/README.md)); fehlende Parts müssen beschafft werden. Keine ungeprüften Assets werden als freigegeben markiert.
