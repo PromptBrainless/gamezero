@@ -35,8 +35,7 @@ paths still need review. ZIP containers are listed read-only with `unzip`, inclu
 member byte sizes, license candidates, nested containers and resource forks; archived members are
 not treated as loaded runtime assets. Do not enable assets based only on a static
 reference or an archive's license filename.
-Nested ZIP contents are not recursively extracted: those containers remain
-explicit audit gaps and are excluded from first-level asset counts.
+Nested ZIP contents are recursively inventoried (inventory-only; not integrated or approved). Resource forks and extraction failures are explicitly marked. Nested media are included in archive asset counts but remain unapproved candidates.
 
 The two export paths have different envelopes and consumers; do not substitute
 one for the other. Supplement integration and exported-game acceptance remain
