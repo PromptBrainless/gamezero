@@ -6,7 +6,7 @@ Status: Die statische Inventur ist im [getrackten Manifest](../../artifacts/art/
 
 - `npm run assets:audit:check` bestätigt, dass das Manifest dem getrackten Checkout entspricht.
 - Das Manifest enthält 257 lose Dateien: 12 SVGs, ein PDF und 244 Rasterdateien; lose Audiodateien wurden nicht gefunden.
-- Zwölf ZIP-Archive enthalten 3.649 erkannte Assets auf der ersten Ebene, darunter 500 Audioeinträge. Verschachtelte ZIP-Inhalte sind nicht enthalten.
+- Zwölf ZIP-Archive enthalten 6817 inventarisierte Assets (davon 3168 aus verschachtelten Archiven; 986 Audio). Alle Archive-Inhalte bleiben ungeprüft und nicht freigegeben.
 - Der Scanner fand keine fehlenden erkannten literalen Runtime-Referenzen. Sieben dynamische Pfadausdrücke bleiben unbestätigte Kandidaten und benötigen Laufzeitprüfung.
 - Keine Datei ist durch den Scan als `freigegeben` bestätigt. Rechte/Herkunft sowie Archiv-Metadaten (einschließlich Codec und Dauer) bleiben offen; Archive und Kandidaten sind nicht integriert.
 

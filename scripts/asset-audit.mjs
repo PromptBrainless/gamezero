@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync, statSync } from "node:fs";
-import { extname, resolve } from "node:path";
+import { readFileSync, writeFileSync, statSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { extname, resolve, join } from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
@@ -132,42 +133,129 @@ export function archiveEntries(listing) {
   });
 }
 
+const MAX_ARCHIVE_DEPTH = 5;
+
+function listArchiveRecursive(archivePath, prefix = "", depth = 0) {
+  if (depth > MAX_ARCHIVE_DEPTH) {
+    return { entries: [], error: "max recursion depth exceeded" };
+  }
+  let listing;
+  try {
+    listing = execFileSync("unzip", ["-Z", "-l", archivePath], {
+      encoding: "utf8",
+      maxBuffer: 32 * 1024 * 1024,
+    });
+  } catch (err) {
+    return { entries: [], error: String(err.message || err) };
+  }
+  const rawEntries = archiveEntries(listing);
+  const entries = [];
+  for (const entry of rawEntries) {
+    const fullPath = prefix ? `${prefix}!${entry.path}` : entry.path;
+    if (entry.resourceFork) {
+      entries.push({ ...entry, path: fullPath, resourceFork: true });
+      continue;
+    }
+    if (entry.format === "zip") {
+      // Extract nested ZIP to temp and recurse
+      const tempDir = mkdtempSync(join(tmpdir(), "asset-audit-"));
+      const tempZip = join(tempDir, "nested.zip");
+      try {
+        const extract = spawnSync("unzip", ["-p", archivePath, entry.path], {
+          encoding: "buffer",
+          maxBuffer: 64 * 1024 * 1024,
+        });
+        if (extract.status !== 0 || !extract.stdout?.length) {
+          entries.push({
+            path: fullPath,
+            bytes: entry.bytes,
+            format: "zip",
+            resourceFork: false,
+            status: "nested archive extraction failed; inventory pending",
+            error: extract.stderr?.toString() || "extraction failed",
+          });
+          continue;
+        }
+        writeFileSync(tempZip, extract.stdout);
+        const nested = listArchiveRecursive(tempZip, fullPath, depth + 1);
+        entries.push({
+          path: fullPath,
+          bytes: entry.bytes,
+          format: "zip",
+          resourceFork: false,
+          nested: true,
+          nestedEntries: nested.entries,
+          nestedError: nested.error,
+          status: nested.error
+            ? "nested archive; inventory incomplete"
+            : "nested archive; members inventoried (not approved)",
+        });
+        // Flatten nested media into the parent listing for summary, but keep them marked
+        for (const ne of nested.entries) {
+          if (formats.has(`.${ne.format}`) || ne.format === "zip") {
+            entries.push({ ...ne, path: ne.path, nested: true });
+          }
+        }
+      } catch (err) {
+        entries.push({
+          path: fullPath,
+          bytes: entry.bytes,
+          format: "zip",
+          resourceFork: false,
+          status: "nested archive error",
+          error: String(err.message || err),
+        });
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    } else {
+      entries.push({ ...entry, path: fullPath });
+    }
+  }
+  return { entries };
+}
+
 function scanArchives(root, files) {
   return files
     .filter((path) => path.endsWith(".zip"))
     .map((path) => {
-      const listing = execFileSync("unzip", ["-Z", "-l", resolve(root, path)], {
-        encoding: "utf8",
-        maxBuffer: 16 * 1024 * 1024,
-      });
-      const entries = archiveEntries(listing);
+      const abs = resolve(root, path);
+      const { entries, error } = listArchiveRecursive(abs);
+      const media = entries.filter((e) => formats.has(`.${e.format}`) && !e.resourceFork);
+      const nestedZips = entries.filter((e) => e.format === "zip" && !e.resourceFork);
       return {
         path,
-        bytes: statSync(resolve(root, path)).size,
-        status: "archived input; not integrated or approved",
-        nestedArchives: entries
-          .filter((entry) => !entry.resourceFork && entry.format === "zip")
-          .map((entry) => ({
-            path: entry.path,
-            bytes: entry.bytes,
-            status: "nested archive; member inventory and license inspection pending",
-          })),
+        bytes: statSync(abs).size,
+        status: error
+          ? "archived input; listing error"
+          : "archived input; not integrated or approved",
+        error,
+        nestedArchives: nestedZips.map((e) => ({
+          path: e.path,
+          bytes: e.bytes,
+          status: e.status || "nested archive; members inventoried (not approved)",
+          error: e.error || e.nestedError,
+        })),
         licenseCandidates: entries
           .filter(
             (entry) =>
               !entry.resourceFork && /(?:license|licence|copyright|attribution)/i.test(entry.path),
           )
           .map((entry) => entry.path),
-        assets: entries
-          .filter((entry) => formats.has(`.${entry.format}`))
-          .map((entry) => ({
-            ...entry,
-            status: entry.resourceFork
-              ? "platform metadata; not a usable asset"
+        assets: media.map((entry) => ({
+          path: entry.path,
+          bytes: entry.bytes,
+          format: entry.format,
+          resourceFork: !!entry.resourceFork,
+          nested: !!entry.nested,
+          status: entry.resourceFork
+            ? "platform metadata; not a usable asset"
+            : entry.nested
+              ? "nested archived; not runtime-referenced / not approved"
               : "archived; not runtime-referenced",
-            metadata:
-              "Dimensions, duration, codec, content duplicates and rights require inspection of this archive member before integration.",
-          })),
+          metadata:
+            "Dimensions, duration, codec, content duplicates and rights require inspection of this archive member before integration. Nested contents are inventory-only.",
+        })),
       };
     });
 }
@@ -330,7 +418,7 @@ export function scanAssets(root, trackedFiles) {
     gaps: [
       "No automatic asset approval or placeholder inference.",
       "License/attribution, audio loudness/loopability and genuine rendered tests require separate evidence.",
-      "Nested ZIP containers are listed but not recursively extracted or inventoried; asset counts exclude their contents.",
+      "Nested ZIP containers are recursively inventoried (inventory-only; not integrated or approved). Resource forks and extraction failures are explicitly marked.",
       "Constructed paths outside the recognized template syntax require manual review.",
     ],
   };
