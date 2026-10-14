@@ -164,38 +164,42 @@ func _draw() -> void:
 		var position := actor_position(impact.actor) + Vector2(-20, -190 - impact.line * 32 - _elapsed * 35)
 		draw_set_transform(position * Vector2(size.x / 1000.0, size.y / 360.0), 0, Vector2(size.x / 1000.0, size.y / 360.0))
 		draw_string(ThemeDB.fallback_font, Vector2.ZERO, "−%s" % impact.amount, HORIZONTAL_ALIGNMENT_LEFT, -1, 32, Tokens.HIGHLIGHT)
-	draw_set_transform(Vector2.ZERO)
+	draw_set_transform(Vector2.ZERO, 0, Vector2.ONE)
+
+func _texture_drawable(tex: Texture2D) -> bool:
+	return tex != null and not (tex is PlaceholderTexture2D) and tex.get_width() > 0 and tex.get_height() > 0
+
+func _draw_sprite(tex: Texture2D, sheet: bool, enemy: bool) -> void:
+	var region := Rect2(0, 0, tex.get_width(), tex.get_height())
+	if sheet:
+		var frames := maxi(_frame_count, 1)
+		var frame_w := float(int(tex.get_width() / float(frames)))
+		if frame_w < 1.0:
+			return
+		var frame := int(_anim_time / _frame_duration) % frames
+		region = Rect2(frame * frame_w, 0.0, frame_w, tex.get_height())
+	# Full-rect draw of one frame. draw_texture_rect_region under the stage
+	# scale samples past the frame and fills the rest with the checkerboard.
+	var atlas := AtlasTexture.new()
+	atlas.atlas = tex
+	atlas.region = region
+	atlas.filter_clip = true
+	var dest_size := region.size * 1.6
+	var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 18.0, dest_size.x, dest_size.y)
+	if enemy:
+		dest = Rect2(dest_size.x * 0.5, -dest_size.y + 18.0, -dest_size.x, dest_size.y)
+	draw_texture_rect(atlas, dest, false)
+	draw_ellipse_shadow()
 
 func draw_actor(actor: Dictionary, enemy: bool) -> void:
 	var id: String = actor.get("content_id", actor.get("id", ""))
 	var sheet: Texture2D = _idle_sheets.get(id)
-	if sheet:
-		var frame := int(_anim_time / _frame_duration) % _frame_count
-		var frame_w := sheet.get_width() / float(_frame_count)
-		var region := Rect2(frame * frame_w, 0, frame_w, sheet.get_height())
-		var dest_size := Vector2(frame_w, sheet.get_height()) * 1.6
-		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 18, dest_size.x, dest_size.y)
-		var facing := -1.0 if enemy else 1.0
-		if facing < 0:
-			draw_texture_rect_region(sheet, dest, region, Color.WHITE, false)
-		else:
-			draw_set_transform(Vector2.ZERO, 0, Vector2(-1, 1))
-			draw_texture_rect_region(sheet, Rect2(-dest_size.x * 0.5, -dest_size.y + 10, dest_size.x, dest_size.y), region, Color.WHITE, false)
-			draw_set_transform(Vector2.ZERO, 0, Vector2(1, 1))
-		draw_ellipse_shadow()
+	if _texture_drawable(sheet):
+		_draw_sprite(sheet, true, enemy)
 		return
 	var tex: Texture2D = _texture_cache.get(id)
-	if tex:
-		var facing := -1.0 if enemy else 1.0
-		var dest_size := Vector2(tex.get_width(), tex.get_height()) * 1.6
-		var dest := Rect2(-dest_size.x * 0.5, -dest_size.y + 18, dest_size.x, dest_size.y)
-		if facing < 0:
-			draw_texture_rect_region(tex, dest, Rect2(0, 0, tex.get_width(), tex.get_height()), Color.WHITE, false)
-		else:
-			draw_set_transform(Vector2.ZERO, 0, Vector2(-1, 1))
-			draw_texture_rect(tex, Rect2(-dest_size.x * 0.5, -dest_size.y + 10, dest_size.x, dest_size.y), false)
-			draw_set_transform(Vector2.ZERO, 0, Vector2(1, 1))
-		draw_ellipse_shadow()
+	if _texture_drawable(tex):
+		_draw_sprite(tex, false, enemy)
 		return
 	# Fallback to procedural drawing if no sprite available
 	var mage := id in ["scholar_mage", "hedge_cultist"]
