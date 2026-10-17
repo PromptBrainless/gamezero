@@ -1,6 +1,6 @@
 # Pixel-Art Prompts — Gamezero Asset Pipeline
 
-Strukturierte Prompts für die Flux-API (EU-Client) und lokale Open-Weights-Workflows.
+Strukturierte Prompts für die kostenfreie Pollinations Classic API und lokale Open-Weights-Workflows.
 Ziel: konsistenter, lesbarer Pixel-Art-Stil für den mobile-first Tactical RPG (Side-View).
 
 **Stil-Anker (immer mitgeben):**
@@ -102,28 +102,44 @@ clean pixels, high contrast
 
 ---
 
-## Nutzung mit dem BFL-Client
+## Nutzung mit der kostenfreien Pollinations-API
 
 ```ts
-import { createBflClient } from "../lib/flux/bfl-client";
+import { generatePixelArt } from "@/lib/flux/generate-pixel-art.server";
 
-const client = createBflClient();
-const result = await client.generate({
-  model: "flux-2-klein-4b", // günstig für Iteration
-  prompt: `pixel art character, side view, agile duelist, light leather, short blade, readable silhouette, limited palette, clean pixel edges, dark fantasy, high contrast, mobile-readable`,
+const result = await generatePixelArt({
+  data: {
+    variant: "duelist",
+    width: 1024,
+    height: 1024,
+    // seed: 42,
+  },
+});
+// result.base64 ist das Bild (JPEG)
+```
+
+Oder direkt mit dem Client:
+
+```ts
+import { createPollinationsClient } from "@/lib/flux/pollinations-client";
+
+const client = createPollinationsClient();
+const buffer = await client.generate({
+  prompt: "pixel art character, side view, agile duelist, light leather, short blade, readable silhouette, limited palette, clean pixel edges, dark fantasy, high contrast, mobile-readable",
   width: 1024,
   height: 1024,
+  model: "flux",
+  nologo: true,
 });
-// result.sample sofort downloaden und in die Asset-Pipeline geben
 ```
 
 ## Konsistenz-Tipps
 
 - Immer denselben Stil-Anker voranstellen.
 - Seed merken und wiederverwenden für Varianten.
-- Für Character-Consistency: Referenzbild als `input_image` mitgeben und im Prompt "match the reference style and proportions" erwähnen.
 - Nach der Generierung auf 64x64 / 96x96 / 32x32 herunterskalieren und Palette begrenzen (Aseprite, ImageMagick oder eigenes Tool).
 - Für Tilesets: zuerst einzelne Tiles generieren, dann manuell oder per Skript zu einem Sheet zusammensetzen.
+- Pollinations Classic API ist kostenfrei, aber rate-limited (ca. 1 Anfrage alle 15–45 Sekunden).
 
 ---
 
